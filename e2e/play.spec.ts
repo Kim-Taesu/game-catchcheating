@@ -35,38 +35,53 @@ test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
   expect(width).toBeLessThanOrEqual(375)
 })
 
-test('수법 좌석 탭: 사건 카드, 발견 저장, 닫으면 적발 +1', async ({ page }) => {
+const caseName = (id: string) => cases.find((c: { id: string }) => c.id === id).name as string
+const innName = (id: string) => innocents.find((i: { id: string }) => i.id === id).name as string
+
+test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림에 링크 없음', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
   const target = cheaters.find((s) => s.id === 'phone-in-clothes')!
   await seat(page, target.seat).click()
-  const panel = page.locator('#panel')
-  await expect(panel).toBeVisible()
-  await expect(panel).toContainText(cases.find((c: { id: string }) => c.id === 'phone-in-clothes').name)
-  await expect(panel).toContainText('확인됨')
-  await expect(panel.locator('a[href="/dex#phone-in-clothes"]')).toBeVisible()
+  const toast = page.locator('#toast')
+  await expect(toast).toBeVisible()
+  await expect(toast).toHaveText(`적발! ${caseName('phone-in-clothes')} · 확인됨`)
+  await expect(toast.locator('a')).toHaveCount(0)
+  await expect(page.locator('#panel-live')).toHaveText(`적발! ${caseName('phone-in-clothes')} · 확인됨`)
   const stored = await page.evaluate(() => localStorage.getItem('cf:discovered'))
   expect(JSON.parse(stored!)).toContain('phone-in-clothes')
   await expect(seat(page, target.seat)).toHaveAttribute('data-caught', '')
-  await page.locator('#panel-close').click()
-  await expect(panel).toBeHidden()
   await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 1명 적발')
+  // The running game has no link that would navigate away.
+  await expect(page.locator('#game a')).toHaveCount(0)
 })
 
-test('Esc로 팝업 닫기', async ({ page }) => {
+test('Esc로 알림 닫기', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
   await seat(page, cheaters[0].seat).click()
-  await expect(page.locator('#panel')).toBeVisible()
+  await expect(page.locator('#toast')).toBeVisible()
   await page.keyboard.press('Escape')
-  await expect(page.locator('#panel')).toBeHidden()
+  await expect(page.locator('#toast')).toBeHidden()
 })
 
-test('평범 좌석 탭: 정상 행동 안내와 기회 -1', async ({ page }) => {
+test('평범 좌석 탭: 정상 행동 알림, 기회 -1, 확인함 표시', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
   await seat(page, innos[0].seat).click()
-  const panel = page.locator('#panel')
-  await expect(panel).toContainText('정상 행동입니다')
-  await expect(panel).toContainText('단일 행동만으로는')
+  await expect(page.locator('#toast')).toHaveText(`정상 행동입니다 · ${innName(innos[0].id)}`)
   await expect(page.locator('#game')).toContainText('기회 2')
+  await expect(seat(page, innos[0].seat)).toHaveAttribute('data-cleared', '')
+  await expect(seat(page, innos[0].seat).locator('.stamp-cleared')).toBeVisible()
+  await expect(seat(page, innos[0].seat)).toBeEnabled()
+})
+
+test('같은 평범 좌석을 다시 탭해도 기회는 한 번만 줄어듦', async ({ page }) => {
+  await page.goto(`/play?seed=${SEED}`)
+  await seat(page, innos[0].seat).click()
+  await expect(page.locator('#game')).toContainText('기회 2')
+  await seat(page, innos[0].seat).click()
+  await seat(page, innos[0].seat).click()
+  await expect(page.locator('#game')).toContainText('기회 2')
+  await seat(page, innos[1].seat).click()
+  await expect(page.locator('#game')).toContainText('기회 1')
 })
 
 test('기회 3번 소진 시 종료', async ({ page }) => {
@@ -84,21 +99,41 @@ test('수법 전원 적발 시 종료', async ({ page }) => {
   await expect(page.locator('#end')).toContainText('시험 종료')
 })
 
-test('안경 바꿔치기: 교체 전 탭은 실수, 교체 후 탭은 적발', async ({ page }) => {
-  // seed 4: seat 8 is glasses-swap (swapAtMs 18-22 s).
+test('안경 바꿔치기: 교체 전 탭은 평범 응시자와 같은 알림, 재탭 무시, 교체 후 적발', async ({ page }) => {
+  // seed 4: one seat is glasses-swap (swapAtMs 18-22 s).
   const p = plan(4)
   const sw = p.seats.find((s) => s.swapAtMs !== undefined)!
   await page.clock.install()
   await page.goto('/play?seed=4')
   await expect(page.locator('[data-seat]')).toHaveCount(9)
   await seat(page, sw.seat).click()
-  await expect(page.locator('#panel')).toContainText('아직 수상한 점이 보이지 않아요')
-  await expect(page.locator('#panel')).toContainText('단일 행동만으로는')
+  await expect(page.locator('#toast')).toHaveText(`정상 행동입니다 · 응시자 ${sw.seat + 1}`)
+  await expect(page.locator('#game')).toContainText('기회 2')
+  await expect(seat(page, sw.seat)).toHaveAttribute('data-cleared', '')
+  await expect(seat(page, sw.seat)).not.toContainText('안경 바꿔치기')
+  await seat(page, sw.seat).click()
   await expect(page.locator('#game')).toContainText('기회 2')
   await page.clock.fastForward(sw.swapAtMs! + 1000)
   await seat(page, sw.seat).click()
-  await expect(page.locator('#panel')).toContainText('안경 바꿔치기')
+  await expect(page.locator('#toast')).toContainText('적발! 안경 바꿔치기')
   await expect(seat(page, sw.seat)).toHaveAttribute('data-caught', '')
+  await expect(seat(page, sw.seat)).not.toHaveAttribute('data-cleared', '')
+  await expect(page.locator('#game')).toContainText('기회 2')
+})
+
+test('교체 전 오해는 결과 목록에서 사건 이름 없이 응시자 N으로 표시', async ({ page }) => {
+  const p = plan(4)
+  const sw = p.seats.find((s) => s.swapAtMs !== undefined)!
+  await page.clock.install()
+  await page.goto('/play?seed=4')
+  await expect(page.locator('[data-seat]')).toHaveCount(9)
+  await seat(page, sw.seat).click()
+  await page.clock.fastForward(61000)
+  await expect(page.locator('#game')).toHaveAttribute('data-ended', 'timeout')
+  const item = page.locator('#end-misjudged li').first()
+  await expect(item).toContainText(`응시자 ${sw.seat + 1} — 이때는 아직 수상한 점이 보이지 않았어요`)
+  await expect(item).not.toContainText('안경 바꿔치기')
+  await expect(page.locator('#end-missed')).toContainText('안경 바꿔치기')
 })
 
 test('시간 종료', async ({ page }) => {
@@ -108,6 +143,7 @@ test('시간 종료', async ({ page }) => {
   await page.clock.fastForward(61000)
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'timeout')
   await expect(page.locator('#end')).toContainText('시험 종료')
+  await expect(page.locator('#end')).toContainText('시간 종료')
 })
 
 test('탭 전에는 어떤 좌석도 사건 이름을 드러내지 않음', async ({ page }) => {
@@ -130,46 +166,91 @@ test('이미지가 막혀도 대체 카드는 응시자 N만 보여 줌', async 
   }
 })
 
-test('팝업은 4초 뒤 자동으로 닫힘', async ({ page }) => {
+test('알림은 2.5초 뒤 자동으로 닫히고, 새 탭은 알림을 바꿈', async ({ page }) => {
   await page.clock.install()
   await page.goto(`/play?seed=${SEED}`)
   await expect(page.locator('[data-seat]')).toHaveCount(9)
   await seat(page, innos[0].seat).click()
-  await expect(page.locator('#panel')).toBeVisible()
-  await page.clock.fastForward(3000)
-  await expect(page.locator('#panel')).toBeVisible()
-  await page.clock.fastForward(1500)
-  await expect(page.locator('#panel')).toBeHidden()
+  await expect(page.locator('#toast')).toBeVisible()
+  await page.clock.fastForward(2000)
+  await seat(page, cheaters[0].seat).click()
+  await expect(page.locator('#toast')).toContainText('적발!')
+  await page.clock.fastForward(2000)
+  await expect(page.locator('#toast')).toBeVisible()
+  await page.clock.fastForward(700)
+  await expect(page.locator('#toast')).toBeHidden()
 })
 
-test('패널을 읽는 동안(focus) 자동 닫힘이 멈추고, 벗어나면 다시 4초', async ({ page }) => {
-  await page.clock.install()
-  await page.goto(`/play?seed=${SEED}`)
-  await expect(page.locator('[data-seat]')).toHaveCount(9)
-  await seat(page, innos[0].seat).click()
-  await page.locator('#panel-close').focus()
-  await page.clock.fastForward(6000)
-  await expect(page.locator('#panel')).toBeVisible()
-  await expect(page.locator('#panel-live')).toContainText('정상 행동입니다')
-  await page.locator('#panel-close').blur()
-  await page.clock.fastForward(3000)
-  await expect(page.locator('#panel')).toBeVisible()
-  await page.clock.fastForward(1500)
-  await expect(page.locator('#panel')).toBeHidden()
-})
+for (const vp of [{ width: 375, height: 667 }, { width: 360, height: 600 }]) {
+  test.describe(`${vp.width}×${vp.height}`, () => {
+    test.use({ viewport: vp })
+    test('알림이 떠 있어도 모든 좌석 중심을 누를 수 있음', async ({ page }) => {
+      await page.goto(`/play?seed=${SEED}`)
+      await expect(page.locator('[data-seat]')).toHaveCount(9)
+      await seat(page, innos[0].seat).click()
+      const toast = page.locator('#toast')
+      await expect(toast).toBeVisible()
+      const tb = (await toast.boundingBox())!
+      expect(tb.height).toBeLessThanOrEqual(72)
+      const gb = (await page.locator('.seats').boundingBox())!
+      expect(tb.y + tb.height).toBeLessThanOrEqual(gb.y)
+      const hits = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>('[data-seat]')].map((b) => {
+          const r = b.getBoundingClientRect()
+          const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+          return hit !== null && b.contains(hit)
+        }),
+      )
+      expect(hits).toEqual(Array(9).fill(true))
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(vp.width)
+    })
+  })
+}
 
-test('종료 후: 마지막 패널 유지, 좌석 비활성, 재탭 무시, onEnd 한 번', async ({ page }) => {
+test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번, 만난 수법 목록', async ({ page }) => {
   await page.clock.install()
   await page.goto(`/play?seed=${SEED}`)
   await expect(page.locator('[data-seat]')).toHaveCount(9)
   for (const s of cheaters) await seat(page, s.seat).click()
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'clear')
   for (let i = 0; i < 9; i++) await expect(seat(page, i)).toBeDisabled()
+  await expect(page.locator('#toast')).toBeHidden()
   await page.clock.fastForward(10000)
-  await expect(page.locator('#panel')).toBeVisible()
   // Programmatic taps after the end (and on caught seats) change nothing.
   await page.evaluate(() => document.querySelectorAll<HTMLButtonElement>('[data-seat]').forEach((b) => b.click()))
   await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 3명 적발')
   await expect(page.locator('#game')).toContainText('기회 3')
+  await expect(page.locator('#toast')).toBeHidden()
   expect(await page.evaluate(() => (window as unknown as { __cfEnds: number }).__cfEnds)).toBe(1)
+  const met = page.locator('#end-met')
+  await expect(met).toContainText('이번 판에서 만난 수법')
+  await expect(met.locator('li')).toHaveCount(cheaters.length)
+  for (const s of cheaters) {
+    await expect(met).toContainText(caseName(s.id))
+    await expect(met.locator(`a[href="/dex#${s.id}"]`)).toHaveText('도감에서 자세히')
+  }
+  await expect(met).toContainText('근거:')
+  await expect(page.locator('#end-misjudged')).toHaveCount(0)
+  await expect(page.locator('#end-missed')).toHaveCount(0)
+})
+
+test('기회 소진 결과: 오해한 응시자와 놓친 수법 목록', async ({ page }) => {
+  await page.goto(`/play?seed=${SEED}`)
+  await seat(page, cheaters[0].seat).click()
+  for (const s of innos.slice(0, 3)) await seat(page, s.seat).click()
+  await expect(page.locator('#game')).toHaveAttribute('data-ended', 'lives')
+  const wrong = page.locator('#end-misjudged')
+  await expect(wrong).toContainText('오해한 응시자')
+  await expect(wrong.locator('li')).toHaveCount(3)
+  for (const s of innos.slice(0, 3)) {
+    const inn = innocents.find((i: { id: string }) => i.id === s.id)
+    await expect(wrong).toContainText(inn.name)
+    await expect(wrong).toContainText(inn.why)
+  }
+  await expect(wrong.locator('li').first()).toContainText('단일 행동만으로는 부정행위라고 단정할 수 없습니다.')
+  const missed = page.locator('#end-missed')
+  await expect(missed).toContainText('놓친 수법')
+  await expect(missed.locator('li')).toHaveCount(cheaters.length - 1)
+  for (const s of cheaters.slice(1)) await expect(missed.locator(`a[href="/dex#${s.id}"]`)).toBeVisible()
+  await expect(page.locator('#end-met li')).toHaveCount(1)
 })

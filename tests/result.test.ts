@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { TITLE_TEXT, parseShare, shareQuery, titleFor } from '../public/game/result.js'
+import { TITLE_TEXT, endTimeLine, parseShare, shareQuery, titleFor } from '../public/game/result.js'
 
 describe('titleFor', () => {
   it('eagle needs m=0, f=0, t<=30', () => {
@@ -54,5 +54,21 @@ describe('parseShare', () => {
     const r = { c: 4, m: 0, f: 0, t: 28 }
     expect(shareQuery(r)).toBe('c=4&m=0&f=0&t=28')
     expect(parseShare(new URLSearchParams(shareQuery(r)))).toEqual(r)
+  })
+})
+
+describe('endTimeLine (M-4)', () => {
+  it('clear shows the elapsed seconds', () => {
+    expect(endTimeLine({ c: 3, m: 0, f: 0, t: 21 }, 'clear')).toBe('걸린 시간 21초')
+  })
+  it('timeout says the time ran out', () => {
+    expect(endTimeLine({ c: 1, m: 2, f: 0, t: 60 }, 'timeout')).toBe('시간 종료')
+  })
+  it('lives-out has no time line (the reason line already says so)', () => {
+    expect(endTimeLine({ c: 0, m: 3, f: 3, t: 60 }, 'lives')).toBeNull()
+  })
+  it('without a reason falls back to the numbers', () => {
+    expect(endTimeLine({ c: 3, m: 0, f: 0, t: 12 })).toBe('걸린 시간 12초')
+    expect(endTimeLine({ c: 1, m: 2, f: 3, t: 60 })).toBeNull()
   })
 })

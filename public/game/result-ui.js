@@ -1,6 +1,8 @@
-// Result screen: title, numbers, share button with fallbacks.
-import { TITLE_TEXT, titleFor } from './result.js'
+// Result screen: title, numbers, share button with fallbacks, and the round's explanations
+// (cases met, misjudged examinees, missed cases). All data goes in via textContent.
+import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
+import { BASIS_LABEL, SINGLE_ACTION_NOTE, STATUS_LABEL } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '기회를 모두 사용했어요.' }
 
@@ -11,16 +13,79 @@ function el(tag, cls, text) {
   return n
 }
 
+function dexLink(id, name) {
+  const a = el('a', 'end-dex', '도감에서 자세히')
+  a.href = `/dex#${encodeURIComponent(id)}`
+  a.setAttribute('aria-label', `${name} 도감에서 자세히`)
+  return a
+}
+
+function section(id, heading, items) {
+  const sec = el('section', 'end-sec')
+  sec.id = id
+  const list = el('ul', 'end-list')
+  list.append(...items)
+  sec.append(el('h3', 'end-sec-title', heading), list)
+  return sec
+}
+
+/** Lists for the recap the play screen passes to onEnd. Empty lists are left out. */
+function recapSections(recap, cases, innocents) {
+  const caseById = new Map(cases.map((c) => [c.id, c]))
+  const innById = new Map(innocents.map((i) => [i.id, i]))
+  const caseName = (id) => caseById.get(id)?.name ?? id
+  const out = []
+
+  const met = recap.caught.map((id) => {
+    const c = caseById.get(id)
+    const li = el('li', 'end-item')
+    const title = el('p', 'end-item-title', caseName(id))
+    const st = STATUS_LABEL[c?.status]
+    if (st) title.append(' ', el('span', 'chip', st))
+    li.append(title)
+    if (c?.cue) li.append(el('p', '', c.cue))
+    const t = c?.tell
+    if (t) li.append(el('p', 'end-basis', `근거: ${BASIS_LABEL[t.basisKind] ?? ''}${t.basisNote ? ` (${t.basisNote})` : ''}`))
+    li.append(dexLink(id, caseName(id)))
+    return li
+  })
+  if (met.length) out.push(section('end-met', '이번 판에서 만난 수법', met))
+
+  const wrong = recap.misjudged.map((m) => {
+    const li = el('li', 'end-item')
+    if (m.beforeSwap) {
+      // Name the case only when it was caught later in the round.
+      const later = recap.caught.includes(m.id) ? ` (나중에 적발: ${caseName(m.id)})` : ''
+      li.append(el('p', 'end-item-title', `응시자 ${m.seat + 1} — 이때는 아직 수상한 점이 보이지 않았어요${later}`))
+    } else {
+      const inn = innById.get(m.id)
+      li.append(el('p', 'end-item-title', inn?.name ?? m.id), el('p', '', inn?.why ?? ''))
+    }
+    li.append(el('p', 'end-basis', SINGLE_ACTION_NOTE))
+    return li
+  })
+  if (wrong.length) out.push(section('end-misjudged', '오해한 응시자', wrong))
+
+  const missed = recap.missed.map((id) => {
+    const li = el('li', 'end-item')
+    li.append(el('p', 'end-item-title', caseName(id)), dexLink(id, caseName(id)))
+    return li
+  })
+  if (missed.length) out.push(section('end-missed', '놓친 수법', missed))
+  return out
+}
+
 /**
  * @param {HTMLElement} root
  * @param {{c:number,m:number,f:number,t:number}} r
- * @param {{share?:Function, clipboard?:object, reason?:string}} [deps]
+ * @param {{share?:Function, clipboard?:object, reason?:'clear'|'timeout'|'lives',
+ *   recap?:{caught:string[], missed:string[], misjudged:{seat:number,id:string,beforeSwap:boolean}[]},
+ *   cases?:any[], innocents?:any[]}} [deps]
  */
 export function showResult(root, r, deps = {}) {
   const share = deps.share ?? (typeof navigator.share === 'function' ? (d) => navigator.share(d) : undefined)
   const clipboard = deps.clipboard ?? navigator.clipboard
   const tier = titleFor(r)
-  const cleared = r.m === 0
 
   root.replaceChildren()
   root.append(el('p', 'end-label', `시험 종료${deps.reason && REASON[deps.reason] ? ' · ' + REASON[deps.reason] : ''}`))
@@ -28,7 +93,8 @@ export function showResult(root, r, deps = {}) {
   h.tabIndex = -1
   root.append(h)
   root.append(el('p', 'end-numbers', `잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}`))
-  root.append(el('p', 'end-time', cleared ? `걸린 시간 ${r.t}초` : '시간 종료'))
+  const timeLine = endTimeLine(r, deps.reason)
+  if (timeLine) root.append(el('p', 'end-time', timeLine))
   root.append(
     el(
       'p',
@@ -72,6 +138,7 @@ export function showResult(root, r, deps = {}) {
   const actions = el('div', 'end-actions')
   actions.append(shareBtn, again, dex)
   root.append(actions, status, fallback)
+  if (deps.recap) root.append(...recapSections(deps.recap, deps.cases ?? [], deps.innocents ?? []))
 
   root.hidden = false
   h.focus()

@@ -17,6 +17,17 @@ export function titleFor(r) {
   return 'sleepy'
 }
 
+/**
+ * Time line on the result screen. Only a clear has an elapsed time; a lives-out ending has
+ * no time line because the reason line already says the chances ran out.
+ * @param {'clear'|'timeout'|'lives'} [reason]
+ */
+export function endTimeLine(r, reason) {
+  if (reason === 'clear' || (reason === undefined && r.m === 0)) return `걸린 시간 ${r.t}초`
+  if (reason === 'timeout') return '시간 종료'
+  return null
+}
+
 export function shareQuery(r) {
   return `c=${r.c}&m=${r.m}&f=${r.f}&t=${r.t}`
 }

@@ -1,20 +1,9 @@
-// Play screen: renders the 3x3 seats, HUD, tap panels and drives the engine each frame.
+// Play screen: renders the 3x3 seats, HUD, a short top toast after each tap, and drives the
+// engine each frame. Full explanations live on the result screen (recap passed to onEnd).
 import { buildRound, seededRng } from './round.js'
 import { createEngine, poseAt, tap, status, result } from './engine.js'
 import { markDiscovered, safeStorage } from './storage.js'
-
-const STATUS_LABEL = {
-  confirmed: '확인됨',
-  investigating: '수사 중·일부 추정',
-  mentioned: '거론됨',
-}
-const BASIS_LABEL = {
-  report: '보도',
-  guideline: '감독 지침',
-  community: '커뮤니티 정리',
-  industry: '업계 설명',
-}
-const SINGLE_ACTION_NOTE = '단일 행동만으로는 부정행위라고 단정할 수 없습니다.'
+import { STATUS_LABEL } from './labels.js'
 
 function el(tag, props = {}, ...children) {
   const node = document.createElement(tag)
@@ -29,7 +18,9 @@ function el(tag, props = {}, ...children) {
 
 /**
  * @param {HTMLElement} root
- * @param {{cases:any[], innocents:any[], seed?:number, now?:()=>number, onEnd:(r:{c:number,m:number,f:number,t:number})=>void}} opts
+ * Recap: caught/missed case ids (catch order / seat order) and misjudged seats in tap order.
+ * @typedef {{caught:string[], missed:string[], misjudged:{seat:number, id:string, beforeSwap:boolean}[]}} Recap
+ * @param {{cases:any[], innocents:any[], seed?:number, now?:()=>number, onEnd:(r:{c:number,m:number,f:number,t:number}, recap:Recap)=>void}} opts
  * @returns {{stop():void}}
  */
 export function startGame(root, opts) {
@@ -42,7 +33,7 @@ export function startGame(root, opts) {
   const nameOf = (id) => (caseById.get(id) ?? innById.get(id))?.name ?? id
   // Behavior text shown on a seat in action pose: never reveals the case name.
   const behaviorOf = (s) => (s.kind === 'cheater' ? caseById.get(s.id)?.tell?.action : innById.get(s.id)?.name) ?? ''
-  const PANEL_MS = 4000
+  const TOAST_MS = 2500
 
   const startMs = now()
   const engine = createEngine(plan, startMs)
@@ -53,7 +44,9 @@ export function startGame(root, opts) {
   const hudTime = el('span', { class: 'hud-item', id: 'hud-time' })
   const hudLives = el('span', { class: 'hud-item', id: 'hud-lives' })
   const hudCaught = el('p', { class: 'hud-caught', id: 'hud-caught' })
-  const hud = el('div', { class: 'hud' }, el('p', { class: 'hud-row' }, hudTime, hudLives), hudCaught)
+  // The toast sits inside the HUD box, so it can never cover a seat. #panel-live announces it.
+  const toast = el('p', { class: 'toast', id: 'toast', hidden: '', 'aria-hidden': 'true' })
+  const hud = el('div', { class: 'hud' }, el('p', { class: 'hud-row' }, hudTime, hudLives), hudCaught, toast)
 
   const grid = el('div', { class: 'seats' })
   const views = new Map()
@@ -64,13 +57,13 @@ export function startGame(root, opts) {
   }
   for (const s of plan.seats) {
     const img = el('img', { class: 'px seat-img', src: `/px/${s.id}-0.webp`, alt: '' })
-    const stamp = el('span', { class: 'stamp', 'aria-hidden': 'true', text: '적발' })
     const btn = el(
       'button',
       { type: 'button', class: 'seat', 'data-seat': String(s.seat), style: `--i:${s.seat}` },
       img,
       el('span', { class: 'sr-only', text: `응시자 ${s.seat + 1}` }),
-      stamp,
+      el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '적발' }),
+      el('span', { class: 'stamp stamp-cleared', 'aria-hidden': 'true', text: '확인함' }),
     )
     const view = { s, btn, img, pose: 0, failed: false, fallback: null }
     img.addEventListener('error', () => {
@@ -84,81 +77,32 @@ export function startGame(root, opts) {
     grid.append(btn)
   }
 
-  const panelBody = el('div', { class: 'panel-body' })
-  const panelClose = el('button', { type: 'button', class: 'btn panel-close', id: 'panel-close', text: '닫기' })
-  const panel = el(
-    'div',
-    { class: 'panel card', id: 'panel', hidden: '' },
-    panelBody,
-    panelClose,
-  )
   // Always-rendered live region: screen readers announce text changes in it reliably.
   const live = el('div', { class: 'sr-only', id: 'panel-live', role: 'status', 'aria-live': 'polite' })
 
-  root.append(hud, grid, panel, live)
+  root.append(hud, grid, live)
 
-  // ---- panels ----
-  let panelTimer = 0
-  let autoClose = true
-  function armTimer() {
-    clearTimeout(panelTimer)
-    if (autoClose && !panel.hidden) panelTimer = setTimeout(closePanel, PANEL_MS)
+  // ---- toast ----
+  let toastTimer = 0
+  function hideToast(clearLive = true) {
+    clearTimeout(toastTimer)
+    toast.hidden = true
+    if (clearLive) live.textContent = ''
   }
-  function closePanel() {
-    clearTimeout(panelTimer)
-    live.textContent = ''
-    panel.hidden = true
-    root.classList.remove('has-panel')
+  function showToast(text) {
+    clearTimeout(toastTimer)
+    toast.textContent = text
+    toast.hidden = false
+    live.textContent = text
+    toastTimer = setTimeout(hideToast, TOAST_MS)
   }
-  function openPanel(...nodes) {
-    panelBody.textContent = ''
-    panelBody.append(...nodes)
-    panel.hidden = false
-    root.classList.add('has-panel')
-    live.textContent = panelBody.textContent
-    armTimer()
-  }
-  panelClose.addEventListener('click', closePanel)
-  // Reading or focusing the panel pauses the auto-close; leaving restarts the full interval.
-  for (const ev of ['pointerenter', 'focusin']) panel.addEventListener(ev, () => clearTimeout(panelTimer))
-  for (const ev of ['pointerleave', 'focusout']) panel.addEventListener(ev, armTimer)
   const onKey = (ev) => {
-    if (ev.key === 'Escape' && !panel.hidden) closePanel()
+    if (ev.key === 'Escape' && !toast.hidden) hideToast()
   }
   document.addEventListener('keydown', onKey)
 
-  function showCaught(id) {
-    const c = caseById.get(id)
-    const t = c?.tell
-    const nodes = [
-      el('p', { class: 'panel-tag', text: '적발!' }),
-      el('h2', { class: 'panel-title', text: c?.name ?? id }),
-      el('p', {}, el('span', { class: 'chip', text: STATUS_LABEL[c?.status] ?? '' })),
-      el('p', { text: c?.cue ?? '' }),
-    ]
-    if (t) {
-      const basis = `근거: ${BASIS_LABEL[t.basisKind] ?? ''}${t.basisNote ? ` (${t.basisNote})` : ''}`
-      nodes.push(el('p', { class: 'panel-basis', text: basis }))
-    }
-    nodes.push(el('a', { href: `/dex#${id}`, text: '도감에서 자세히' }))
-    openPanel(...nodes)
-  }
-  function showInnocent(out) {
-    if (out.reason === 'before-swap') {
-      openPanel(
-        el('h2', { class: 'panel-title', text: '아직 수상한 점이 보이지 않아요' }),
-        el('p', { text: SINGLE_ACTION_NOTE }),
-      )
-      return
-    }
-    const inn = innById.get(out.id)
-    openPanel(
-      el('h2', { class: 'panel-title', text: '정상 행동입니다' }),
-      el('p', { class: 'panel-name', text: inn?.name ?? out.id }),
-      el('p', { text: inn?.why ?? '' }),
-      el('p', { class: 'panel-note', text: SINGLE_ACTION_NOTE }),
-    )
-  }
+  /** @type {{caught:string[], misjudged:{seat:number, id:string, beforeSwap:boolean}[]}} */
+  const recap = { caught: [], misjudged: [] }
 
   // ---- loop ----
   let rafId = 0
@@ -181,11 +125,12 @@ export function startGame(root, opts) {
     if (st.ended !== null && !finished) {
       finished = true
       cancelAnimationFrame(rafId)
-      autoClose = false
-      clearTimeout(panelTimer)
+      // Nothing overlays the result; the live region keeps the last announcement.
+      hideToast(false)
       for (const v of views.values()) v.btn.disabled = true
       root.dataset.ended = st.ended
-      opts.onEnd(result(engine, t))
+      const missed = plan.seats.filter((x) => x.kind === 'cheater' && !recap.caught.includes(x.id)).map((x) => x.id)
+      opts.onEnd(result(engine, t), { caught: [...recap.caught], missed, misjudged: [...recap.misjudged] })
     }
   }
   function frame() {
@@ -196,14 +141,24 @@ export function startGame(root, opts) {
   function onTap(seatNo) {
     if (finished) return
     const out = tap(engine, seatNo, now())
+    const v = views.get(seatNo)
+    const label = v.btn.querySelector('.sr-only')
     if (out.kind === 'caught') {
-      const v = views.get(seatNo)
+      const c = caseById.get(out.id)
+      v.btn.removeAttribute('data-cleared')
       v.btn.setAttribute('data-caught', '')
-      v.btn.querySelector('.sr-only').textContent = `응시자 ${seatNo + 1} 적발: ${nameOf(out.id)}`
+      label.textContent = `응시자 ${seatNo + 1} 적발: ${nameOf(out.id)}`
       markDiscovered(storage, out.id)
-      showCaught(out.id)
+      recap.caught.push(out.id)
+      const st = STATUS_LABEL[c?.status]
+      showToast(`적발! ${nameOf(out.id)}${st ? ` · ${st}` : ''}`)
     } else if (out.kind === 'innocent') {
-      showInnocent(out)
+      const beforeSwap = out.reason === 'before-swap'
+      v.btn.setAttribute('data-cleared', '')
+      label.textContent = `응시자 ${seatNo + 1} 확인함`
+      recap.misjudged.push({ seat: seatNo, id: out.id, beforeSwap })
+      // Before its swap the seat must not reveal what it is: no case name, no extra hint.
+      showToast(`정상 행동입니다 · ${beforeSwap ? `응시자 ${seatNo + 1}` : nameOf(out.id)}`)
     }
     render()
   }
@@ -215,7 +170,7 @@ export function startGame(root, opts) {
     stop() {
       finished = true
       cancelAnimationFrame(rafId)
-      clearTimeout(panelTimer)
+      clearTimeout(toastTimer)
       document.removeEventListener('keydown', onKey)
     },
   }

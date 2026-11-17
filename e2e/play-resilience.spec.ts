@@ -34,7 +34,7 @@ test('이미지가 모두 실패해도 대체 카드로 한 판이 끝까지 진
   }
   for (const s of cheaters) {
     await seat(page, s.seat).click()
-    await expect(page.locator('#panel')).toBeVisible()
+    await expect(page.locator('#panel-live')).toContainText('적발!')
   }
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'clear')
   await expect(page.locator('#end')).toBeVisible()

@@ -100,11 +100,14 @@ test('share·클립보드 모두 실패: 선택된 링크 입력창 표시', asy
   expect(sel).toBe(await input.inputValue())
 })
 
-test('기회 소진 종료: 시간 종료 표기, 놓친 수 표시', async ({ page }) => {
+test('기회 소진 종료: 기회 소진 표기, 시간 줄 없음, 놓친 수 표시', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
   await expect(page.locator('[data-seat]')).toHaveCount(9)
   const inn = plan.seats.filter((s: { kind: string }) => s.kind === 'innocent') as { seat: number }[]
   for (const s of inn.slice(0, 3)) await page.locator(`[data-seat="${s.seat}"]`).click()
   await expect(page.locator('#end')).toContainText('오해 3')
+  await expect(page.locator('#end')).toContainText('기회를 모두 사용했어요')
   await expect(page.locator('#end')).not.toContainText('걸린 시간')
+  await expect(page.locator('#end')).not.toContainText('시간 종료')
+  await expect(page.locator('#end .end-time')).toHaveCount(0)
 })
