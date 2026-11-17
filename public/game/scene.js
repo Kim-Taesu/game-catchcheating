@@ -158,8 +158,9 @@ export function startGame(root, opts) {
       v.btn.setAttribute('data-cleared', '')
       label.textContent = `응시자 ${seatNo + 1} 확인함`
       recap.misjudged.push({ seat: seatNo, id: out.id, beforeSwap })
-      // Before its swap the seat must not reveal what it is: no case name, no extra hint.
-      showToast(`정상 행동입니다 · ${beforeSwap ? `응시자 ${seatNo + 1}` : nameOf(out.id)}`)
+      // Same text for every non-catch tap (innocent or swap seat before its swap), so the toast
+      // never tells the swap seat apart. Names and reasons are on the result screen.
+      showToast(`정상 행동입니다 · 응시자 ${seatNo + 1}`)
     }
     render()
   }

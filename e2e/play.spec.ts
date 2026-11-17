@@ -36,7 +36,8 @@ test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
 })
 
 const caseName = (id: string) => cases.find((c: { id: string }) => c.id === id).name as string
-const innName = (id: string) => innocents.find((i: { id: string }) => i.id === id).name as string
+// Every non-catch tap gets the same toast shape, so the toast never tells the swap seat apart.
+const NON_CATCH = /^정상 행동입니다 · 응시자 \d$/
 
 test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림에 링크 없음', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
@@ -66,7 +67,10 @@ test('Esc로 알림 닫기', async ({ page }) => {
 test('평범 좌석 탭: 정상 행동 알림, 기회 -1, 확인함 표시', async ({ page }) => {
   await page.goto(`/play?seed=${SEED}`)
   await seat(page, innos[0].seat).click()
-  await expect(page.locator('#toast')).toHaveText(`정상 행동입니다 · ${innName(innos[0].id)}`)
+  await expect(page.locator('#toast')).toHaveText(`정상 행동입니다 · 응시자 ${innos[0].seat + 1}`)
+  await expect(page.locator('#toast')).toHaveText(NON_CATCH)
+  await expect(page.locator('#toast')).not.toContainText(innocents.find((i: { id: string }) => i.id === innos[0].id).name)
+  await expect(page.locator('#panel-live')).toHaveText(`정상 행동입니다 · 응시자 ${innos[0].seat + 1}`)
   await expect(page.locator('#game')).toContainText('기회 2')
   await expect(seat(page, innos[0].seat)).toHaveAttribute('data-cleared', '')
   await expect(seat(page, innos[0].seat).locator('.stamp-cleared')).toBeVisible()
@@ -108,6 +112,8 @@ test('안경 바꿔치기: 교체 전 탭은 평범 응시자와 같은 알림, 
   await expect(page.locator('[data-seat]')).toHaveCount(9)
   await seat(page, sw.seat).click()
   await expect(page.locator('#toast')).toHaveText(`정상 행동입니다 · 응시자 ${sw.seat + 1}`)
+  await expect(page.locator('#toast')).toHaveText(NON_CATCH)
+  await expect(page.locator('#panel-live')).toHaveText(`정상 행동입니다 · 응시자 ${sw.seat + 1}`)
   await expect(page.locator('#game')).toContainText('기회 2')
   await expect(seat(page, sw.seat)).toHaveAttribute('data-cleared', '')
   await expect(seat(page, sw.seat)).not.toContainText('안경 바꿔치기')
