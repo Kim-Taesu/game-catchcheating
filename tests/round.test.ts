@@ -64,16 +64,16 @@ const cases: CaseEntry[] = [
 ]
 
 const innocents: Innocent[] = [
-  { id: 'inn-glasses', name: 'g', behavior: 'oneoff', why: 'w' },
-  { id: 'inn-watch', name: 'w', behavior: 'repeat', why: 'w' },
-  { id: 'inn-3', name: '3', behavior: 'oneoff', why: 'w' },
-  { id: 'inn-4', name: '4', behavior: 'repeat', why: 'w' },
-  { id: 'inn-5', name: '5', behavior: 'oneoff', why: 'w' },
-  { id: 'inn-6', name: '6', behavior: 'repeat', why: 'w' },
-  { id: 'inn-7', name: '7', behavior: 'oneoff', why: 'w' },
-  { id: 'inn-8', name: '8', behavior: 'repeat', why: 'w' },
-  { id: 'inn-9', name: '9', behavior: 'oneoff', why: 'w' },
-  { id: 'inn-10', name: '10', behavior: 'repeat', why: 'w' },
+  { id: 'inn-glasses', name: 'g', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-watch', name: 'w', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-3', name: '3', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-4', name: '4', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-5', name: '5', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-6', name: '6', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-7', name: '7', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-8', name: '8', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-9', name: '9', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-10', name: '10', behavior: 'repeat', action: '한다', why: 'w' },
 ]
 
 const seeds = Array.from({ length: 200 }, (_, i) => i + 1)

@@ -59,10 +59,12 @@ describe('placeholder art', () => {
       expect(captionFor(c, 1), c.id).toBe(c.tell!.action)
       expect(captionFor(c, 1), c.id).not.toBe(c.name)
     }
-    const inn = readJson('data/innocents.json') as unknown as { name: string }[]
+    // Innocents use their action sentence, same form as tell.action, so the caption style gives no hint.
+    const inn = readJson('data/innocents.json') as unknown as { id: string; name: string; action: string }[]
     for (const i of inn) {
       expect(captionFor(i, 0)).toBe('')
-      expect(captionFor(i, 1)).toBe(i.name)
+      expect(captionFor(i, 1), i.id).toBe(i.action)
+      expect(captionFor(i, 1), i.id).not.toBe(i.name)
     }
   })
 })

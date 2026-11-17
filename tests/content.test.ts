@@ -110,6 +110,14 @@ describe('innocents.json', () => {
     expect(innocents.filter((i) => i.behavior === 'oneoff').length).toBeGreaterThanOrEqual(5)
   })
 
+  it('every innocent has an action sentence in the same style as tell.action (M-2)', () => {
+    for (const i of innocents) {
+      expect(i.action.trim(), i.id).not.toBe('')
+      expect(i.action.trim().endsWith('다'), i.id).toBe(true)
+      expect(i.action, i.id).not.toBe(i.name)
+    }
+  })
+
   it('does not attribute its guidance to an official body', () => {
     for (const i of innocents) for (const word of ['지침', '교육부', '교육청']) expect(i.why.includes(word), i.id).toBe(false)
   })

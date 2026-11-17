@@ -32,6 +32,8 @@ export type Innocent = {
   id: string
   name: string
   behavior: 'oneoff' | 'repeat'
+  /** Action-pose sentence, same style as `Tell.action` (ends in "다"). */
+  action: string
   why: string
 }
 

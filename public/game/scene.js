@@ -32,7 +32,8 @@ export function startGame(root, opts) {
   const innById = new Map(opts.innocents.map((i) => [i.id, i]))
   const nameOf = (id) => (caseById.get(id) ?? innById.get(id))?.name ?? id
   // Behavior text shown on a seat in action pose: never reveals the case name.
-  const behaviorOf = (s) => (s.kind === 'cheater' ? caseById.get(s.id)?.tell?.action : innById.get(s.id)?.name) ?? ''
+  // Both are sentences in the same style, so the image-failure screen gives no hint either.
+  const behaviorOf = (s) => (s.kind === 'cheater' ? caseById.get(s.id)?.tell?.action : innById.get(s.id)?.action) ?? ''
   const TOAST_MS = 2500
 
   const startMs = now()
