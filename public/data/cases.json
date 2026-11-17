@@ -1,0 +1,467 @@
+[
+  {
+    "id": "smart-glasses-frame",
+    "name": "AI 스마트안경",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "정보처리기사 CBT" },
+      { "country": "KR", "year": 2026, "label": "전기산업기사" },
+      { "country": "KR", "year": 2026, "label": "중·고교 내신 시험" },
+      { "country": "JP", "year": 2024, "label": "와세다대 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
+      { "country": "IN", "year": 2026, "label": "심바이오시스공대 시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "summary": "카메라가 달린 AI 안경으로 문제를 찍어 답을 받는 수법. 2026년 국내 국가기술자격시험과 학교 시험에서 잇따라 적발됐다.",
+    "cue": "평소 안경을 안 쓰던 응시자가 안경테를 자꾸 어색하게 만졌다. 안경테의 카메라 렌즈·표시등, 렌즈에 비친 초록 불빛도 단서였다.",
+    "detect": "의심되면 시험이 끝난 뒤 안경을 벗어 책상에 올리게 하고 카메라·표시등·두꺼운 안경다리를 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: AI 스마트안경 쓰고 국가자격시험 부정행위… 20대 불구속 송치", "url": "https://www.hankookilbo.com/news/article/A2026102217110004674" },
+      { "title": "뉴데일리: 전기산업기사 시험 AI 안경 부정행위 적발", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+      { "title": "이투데이: 중·고교 'AI 안경 부정행위' 4건 적발", "url": "https://www.etoday.co.kr/news/view/2645738" },
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" },
+      { "title": "헤럴드경제: 수능 감독관 '육안검사만으론 한계' (교육부 지침)", "url": "https://biz.heraldcorp.com/article/10938494" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "안경테를 만지며 우측 상단을 힐끗 본다",
+      "basisKind": "report",
+      "basisNote": "안경테를 반복해서 만진 행동은 보도, 우측 상단 시선은 업계 설명",
+      "basisSources": [
+        { "title": "뉴데일리: 감독관이 안경테를 부자연스럽게 만지는 모습을 수상히 여겨 적발", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+        { "title": "이투데이: 시험 중 안경테를 자꾸 만지는 모습이 의심을 삼", "url": "https://www.etoday.co.kr/news/view/2645738" },
+        { "title": "VICTVS: 안경 쪽을 반복해서 올려다보는 행동", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" }
+      ]
+    },
+    "lookalike": "plain-glasses"
+  },
+  {
+    "id": "glasses-lens-heat",
+    "name": "두꺼운 뿔테와 모자",
+    "group": "device",
+    "origins": [
+      { "country": "TW", "year": 2026, "label": "국립대만대 의학계열 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "summary": "스마트안경이 문제를 인식해 렌즈에 답을 띄운 사례. 두꺼운 뿔테와 모자로 안경을 가렸다. 성적 0점 처리 후 경찰에 신고됐다.",
+    "cue": "문제지를 얼굴 가까이 가져가 부자연스럽게 들여다봤다. 안경을 검사하자 비정상적인 발열이 느껴졌다.",
+    "detect": "안경을 벗겨 두께·발열·렌즈를 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "문제지를 얼굴 앞으로 바짝 들었다 내린다",
+      "basisKind": "report",
+      "basisSources": [
+        { "title": "이투데이: 문제지를 얼굴 가까이 가져가며 부자연스럽게 응시", "url": "https://www.etoday.co.kr/news/view/2648649" }
+      ]
+    }
+  },
+  {
+    "id": "earpiece-hidden",
+    "name": "귀 속 초소형 이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" },
+      { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" }
+    ],
+    "summary": "귀에 숨긴 초소형 이어폰으로 시험장 밖 공범이 불러 주는 답을 듣는 수법. 모자·귀마개로 귀를 가렸다.",
+    "cue": "모자나 귀마개로 귀를 가린 응시자가 혼잣말하듯 입술을 움직였다.",
+    "detect": "본인 확인 때 귀·모자를 확인하고, 의심되면 금속탐지기로 추가 검사한다. 전파탐지기 도입이 검토되고 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: 영상통화 앱으로 부정행위 운전면허 딴 시리아인 적발", "url": "https://www.hankookilbo.com/news/article/201703101486877952" },
+      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "허공을 보며 혼잣말하듯 입술을 움직인다",
+      "basisKind": "industry",
+      "basisNote": "모자·귀마개로 귀를 가린 외형은 보도, 중얼거림은 업계 설명",
+      "basisSources": [
+        { "title": "VICTVS: 중얼거리거나 혼잣말하는 행동은 숨긴 이어폰의 신호", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" },
+        { "title": "한국일보: 이어폰을 감추려 모자·귀마개를 씀", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+      ]
+    },
+    "lookalike": "sneeze"
+  },
+  {
+    "id": "bone-conduction",
+    "name": "뼈 전도 이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "수능 앞 신종 수단으로 거론" }
+    ],
+    "summary": "귀에 꽂지 않고 뼈로 소리를 전달하는 이어폰. 운동용으로 정식 유통돼 금지 품목으로 규정하기 어렵다는 지적이 나왔다.",
+    "cue": "귀에 아무것도 없는데 목 뒤 밴드를 하고 입술이 움직였다.",
+    "detect": "금속탐지기·전파탐지기 같은 장비가 필요하다. 육안 식별은 어렵다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "공감신문: 시험 부정행위 수법은 진화했는데 규정은 그대로", "url": "https://www.gokorea.kr/news/articleView.html?idxno=886022" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "목 뒤 밴드를 만지며 입술을 작게 움직인다",
+      "basisKind": "industry",
+      "basisSources": [
+        { "title": "Talview: 작은 속삭임·뼈 전도 소리 새어 나옴을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
+      ]
+    }
+  },
+  {
+    "id": "smartwatch",
+    "name": "스마트워치·손목시계형 기기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2013, "label": "토익·텝스 조직적 부정행위" },
+      { "country": "KR", "year": 2026, "label": "국가자격시험 반입 금지 품목" }
+    ],
+    "summary": "손목시계 모양의 기기로 정답을 받아 본 수법. 2013년 토익·텝스 조직 사건에서 고막 이어폰과 함께 쓰였다.",
+    "cue": "손목을 눈높이로 자꾸 들어 올려 화면을 봤다.",
+    "detect": "스마트워치는 착용·소지만으로 부정행위. 일반 전자시계도 개조 여부는 겉모습으로 가리기 어렵다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "쿠키뉴스: 토익·텝스 고막 이어폰·스마트 시계 부정행위 (2013)", "url": "https://www.kukinews.com/article/view/kuk201304170016" },
+      { "title": "와이드경제: 계산기·전자시계 개조하면 속수무책?", "url": "https://www.widedaily.com/news/articleView.html?idxno=303738" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "손목을 눈높이로 들어 시계 화면을 본다",
+      "basisKind": "industry",
+      "basisSources": [
+        { "title": "Talview: 몸짓 이상·시선 방향 이상을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
+      ]
+    },
+    "lookalike": "analog-watch"
+  },
+  {
+    "id": "phone-in-clothes",
+    "name": "옷 속에 숨긴 휴대폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "전기산업기사" },
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" }
+    ],
+    "summary": "휴대폰 2대를 준비해 1대만 내고 나머지를 몸에 숨긴 채 들어간 수법. AI 안경·영상통화와 함께 쓰였다.",
+    "cue": "실제 적발은 안경테 만지기 같은 다른 행동에서 시작됐다. 몸에 숨긴 폰은 겉으로 잘 안 보인다.",
+    "detect": "휴대폰을 일괄 수거하고, 의심되면 금속탐지기로 추가 검사한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴데일리: 휴대전화 2대 중 1대만 제출하고 1대는 몸에 숨김", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+      { "title": "한국일보: 휴대폰 두 대 중 한 대는 옷 속에 숨겨 반입", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "가슴께를 손으로 누르고 옷 안쪽을 내려다본다",
+      "basisKind": "report",
+      "basisNote": "수법은 보도, 행동 포즈는 연출",
+      "basisSources": [
+        { "title": "뉴데일리: 휴대전화 2대 중 1대는 몸에 숨김", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" }
+      ]
+    }
+  },
+  {
+    "id": "glasses-swap",
+    "name": "안경 바꿔치기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "법학적성시험(LEET)" },
+      { "country": "KR", "year": 2026, "label": "고교 내신 시험" }
+    ],
+    "summary": "감독관 검사 때는 일반 안경을 쓰고 있다가 교시 사이에 AI 스마트안경으로 바꿔 쓴 수법. 0점 처리와 4년 응시 제한을 받았다.",
+    "cue": "검사가 끝난 뒤 시험 도중에 안경이 바뀌어 있었다. 한 번 검사했다고 끝이 아니다.",
+    "detect": "쉬는 시간 뒤나 교시가 바뀔 때 안경을 다시 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "YTN: 리트(LEET)에서 감독관 검사 뒤 AI 스마트안경 바꿔치기 적발", "url": "https://www.ytn.co.kr/_cs/_ln_0101_202611170916524557_005.html" },
+      { "title": "이투데이: 시험 도중 일반 안경을 스마트안경으로 바꿔 쓴 장면 확인", "url": "https://www.etoday.co.kr/news/view/2645738" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "시험 중간에 안경을 다른 안경으로 바꿔 쓴다",
+      "basisKind": "report",
+      "basisSources": [
+        { "title": "YTN: 1·2교시 사이 AI 스마트안경으로 교체", "url": "https://www.ytn.co.kr/_cs/_ln_0101_202611170916524557_005.html" },
+        { "title": "이투데이: 시험 도중 안경을 바꿔 쓰는 장면 확인", "url": "https://www.etoday.co.kr/news/view/2645738" }
+      ],
+      "swap": true
+    },
+    "lookalike": "plain-glasses"
+  },
+  {
+    "id": "earbud-swallow",
+    "name": "들키자 이어폰 삼키기",
+    "group": "device",
+    "origins": [
+      { "country": "IT", "year": 2023, "label": "볼차노 운전면허 필기시험", "sourceUrl": "https://www.etnews.com/20231115000253" }
+    ],
+    "summary": "한쪽 귀에 이어폰을 꽂고 있다가 사복 경찰에게 들키자 이어폰을 삼켰다. 병원 X-ray로 배 속 이어폰이 확인됐다.",
+    "cue": "귀의 이어폰을 사복 경찰이 발견했다. 들킨 순간 입으로 가져가 삼켰다.",
+    "detect": "이탈리아는 운전면허 시험장에 사복 경찰을 투입해 단속을 강화했다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "전자신문: 운전 필기 보던 伊 응시자, 커닝 들키자 이어폰 '꿀꺽'", "url": "https://www.etnews.com/20231115000253" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "손으로 입을 가리고 무언가를 삼킨다",
+      "basisKind": "report",
+      "basisSources": [
+        { "title": "전자신문: 들키자 이어폰을 삼킴", "url": "https://www.etnews.com/20231115000253" }
+      ]
+    },
+    "lookalike": "sneeze"
+  },
+  {
+    "id": "ear-bandage",
+    "name": "붕대·귀마개로 귀 가리기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" }
+    ],
+    "summary": "귀의 이어폰을 감추려고 모자·귀마개를 쓰거나 귀를 다친 것처럼 붕대를 감았다. 공범이 영상통화로 답을 불러 줬다.",
+    "cue": "귀를 가리는 붕대·귀마개 자체가 단서였다.",
+    "detect": "본인 확인 때 귀를 가린 물건을 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: 영상통화 앱으로 부정행위 운전면허 딴 시리아인 적발", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "귀 붕대를 만지며 앞쪽을 힐끗 본다",
+      "basisKind": "report",
+      "basisNote": "귀를 가린 외형은 보도, 붕대를 만지는 동작은 연출",
+      "basisSources": [
+        { "title": "한국일보: 모자·귀마개·붕대로 이어폰을 감춤", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+      ]
+    }
+  },
+  {
+    "id": "signal-fingers",
+    "name": "손가락·동작 신호",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "턱 괴기·이마 짚기 같은 동작이나 필기구 방향으로 옆 사람에게 답을 알려 주는 고전 수법.",
+    "cue": "같은 동작을 반복하는 응시자, 답안이 똑같이 틀린 패턴.",
+    "detect": "좌석을 섞어 배치하고 홀짝형 문제지를 쓴다. 답안 일치 패턴을 대조한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "책상 옆으로 손가락 숫자를 내밀고 옆자리를 힐끗 본다",
+      "basisKind": "community",
+      "basisSources": [
+        { "title": "나무위키: 특정 동작·필기구 방향으로 신호 교환", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "peek",
+    "name": "곁눈질",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "옆 사람 답안을 훔쳐보는 가장 오래된 수법. 홀짝형 문제지로 효과가 줄었다.",
+    "cue": "머리를 자주 돌리거나 옆 답안을 노골적으로 살폈다.",
+    "detect": "문제지 유형을 섞고 좌석 간격을 띄운다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "옆자리 쪽으로 고개를 돌렸다 돌아온다",
+      "basisKind": "community",
+      "basisSources": [
+        { "title": "나무위키: 머리를 자주 돌리는 행동", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "cheat-sheet-sleeve",
+    "name": "소매 속 쪽지",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "수능 감독 강화(소매 확인)" }
+    ],
+    "summary": "작은 쪽지를 소매·옷에 숨겨 몰래 보는 수법. 쉬는 시간마다 쪽지를 찢는 모습이 친구들 눈에 띄어 들킨 사례도 있다.",
+    "cue": "소맷단 안쪽을 자꾸 내려다봤다.",
+    "detect": "본인 확인 때 단추·옷깃·소매를 확인한다(대전교육청 수능 감독 강화).",
+    "status": "mentioned",
+    "sources": [
+      { "title": "SBS: Exam Proctors to Check Buttons, Collars, and Sleeves", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "소맷단 안쪽을 내려다본다",
+      "basisKind": "guideline",
+      "basisNote": "소매 확인은 감독 지침, 쉬는 시간마다 쪽지를 찢은 사례는 커뮤니티 정리",
+      "basisSources": [
+        { "title": "SBS: 대전교육청, 수험생 단추·옷깃·소매 확인", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
+        { "title": "나무위키: 쉬는 시간마다 커닝 페이퍼를 찢은 사례", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "button-camera",
+    "name": "단추형 초소형 카메라",
+    "group": "device",
+    "origins": [
+      { "country": "TR", "year": 2024, "label": "이스파르타 대학입시", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "summary": "셔츠 단추로 위장한 카메라로 문제를 찍어 밖으로 보내고, 공범이 AI로 만든 답을 귀 속 이어폰으로 받았다.",
+    "cue": "수상한 행동을 감독관이 발견했다. 단추 자체는 겉으로 거의 구별되지 않는다.",
+    "detect": "본인 확인 때 단추·옷깃·소매를 확인한다. 전파탐지기 도입이 검토되고 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" },
+      { "title": "SBS: Exam Proctors to Check Buttons, Collars, and Sleeves", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "calculator-mod",
+    "name": "개조 계산기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "세무사 시험" }
+    ],
+    "summary": "세무사 시험 수석 합격자가 초소형 카메라와 생성형 AI로 부정행위를 했다고 자수했다. 경찰은 개조된 계산기를 활용한 것으로 보고 수사 중이다.",
+    "cue": "감독위원 4명이 특이사항을 못 봤다. 겉모습으로는 일반 계산기와 구별되지 않았다.",
+    "detect": "허용 계산기 모델을 제한하고 점검한다. 통신을 막는 장비 도입이 거론된다.",
+    "status": "investigating",
+    "sources": [
+      { "title": "한국일보: AI 부정행위 세무사 수석 '계산기 개조해 활용'", "url": "https://www.hankookilbo.com/news/article/A2026111713030003155" },
+      { "title": "한국경제: 세무사 수석 만든 쌀집 계산기?", "url": "https://www.hankyung.com/article/202611171766H" },
+      { "title": "경향신문: 감독관 코앞, 첫 줄 앉아 부정행위", "url": "https://www.khan.co.kr/article/202611152118005/" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "body-writing",
+    "name": "몸·책상에 적어 두기",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "책상·벽·옷·피부에 내용을 적어 두는 고전 수법.",
+    "cue": "행동만으로는 알아채기 어렵다. 시험 전 자리 점검에서 드러난다.",
+    "detect": "시험 전에 책상과 주변을 확인한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "disguised-item",
+    "name": "물건에 숨긴 쪽지",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "필통·지우개 커버·물병 장식·신발 깔창 같은 물건에 내용을 숨기는 수법.",
+    "cue": "행동만으로는 알아채기 어렵다. 소지품 점검에서 드러난다.",
+    "detect": "책상 위 물품을 제한하고 소지품을 확인한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "phone-in-bag",
+    "name": "가방 속 휴대폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2016, "label": "2017학년도 수능" }
+    ],
+    "summary": "도시락 가방에 깜빡하고 넣어 둔 휴대폰이 시험 중 울려 시험을 그만둬야 했던 사례. 직접 쓰지 않아도 소지만으로 부정행위다.",
+    "cue": "가방 속 휴대폰이 10초 동안 울렸다.",
+    "detect": "휴대폰은 시험 전에 모두 걷는다. 전원을 끄고 가방에 넣게만 하면 구멍이 생긴다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴스핌: 수능 도시락 가방 속 휴대전화 울려 시험 중단 (2016)", "url": "https://newspim.com/news/view/20161118000026" },
+      { "title": "경향신문: 휴대폰 미수거·CCTV 없는 시험장", "url": "https://www.khan.co.kr/article/202611152118005/" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "proxy-id",
+    "name": "위조 신분증 대리응시",
+    "group": "proxy",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" },
+      { "country": "KR", "year": 2014, "label": "TOPIK 대리시험" }
+    ],
+    "summary": "의뢰자 인적사항에 닮은 대리 응시자의 사진을 합성한 신분증으로 대신 시험을 봤다. 2026년 113명이 입건됐다.",
+    "cue": "신분증 사진과 얼굴을 맨눈으로 대조하는 허점을 노렸다. 2014년에는 응시자가 신분증 번호를 잘못 적어 들켰다.",
+    "detect": "경찰은 생체인식 본인 확인과 금속탐지기 도입을 요청했다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" },
+      { "title": "경향신문: TOPIK 대리시험 적발 (2014)", "url": "https://www.khan.co.kr/article/201403111659421" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "rumor-forum-confession",
+    "name": "커뮤니티 자백 글",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "온라인 커뮤니티 글" }
+    ],
+    "summary": "단추형 카메라 셔츠와 AI로 수능을 봤다는 익명 자백 글이 올라왔다. 진위는 확인되지 않았고 증빙도 없다.",
+    "cue": "확인되지 않은 주장이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  },
+  {
+    "id": "rumor-video-comment",
+    "name": "공무원 시험 기기 대여 주장",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "영상 댓글" }
+    ],
+    "summary": "전자기기로 공무원 시험에 붙었고 지인에게 기기를 빌려줬다는 댓글이 퍼졌다. 진위는 확인되지 않았다.",
+    "cue": "확인되지 않은 주장이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  },
+  {
+    "id": "rumor-broker-telegram",
+    "name": "메신저 장비 알선 의혹",
+    "group": "proxy",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "온라인 의혹" }
+    ],
+    "summary": "메신저에서 부정행위 장비를 알선하는 브로커가 있다는 의혹이 제기됐다. 확인된 사실은 없다.",
+    "cue": "확인되지 않은 의혹이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  }
+]
