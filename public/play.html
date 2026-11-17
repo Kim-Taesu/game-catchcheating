@@ -32,7 +32,9 @@
           innocents,
           seed,
           onEnd(result, recap) {
-            showResult(document.getElementById('end'), result, { reason: game.dataset.ended, recap, cases, innocents })
+            const endEl = document.getElementById('end')
+            endEl.dataset.endCount = String(Number(endEl.dataset.endCount ?? 0) + 1)
+            showResult(endEl, result, { reason: game.dataset.ended, recap, cases, innocents })
           },
         })
       } catch {

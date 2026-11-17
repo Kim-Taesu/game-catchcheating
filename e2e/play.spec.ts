@@ -220,9 +220,9 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 3명 적발')
   await expect(page.locator('#game')).toContainText('기회 3')
   await expect(page.locator('#toast')).toBeHidden()
-  // onEnd ran once: a single result heading and no duplicated lists.
-  await expect(page.locator('#end .end-title')).toHaveCount(1)
-  await expect(page.locator('#end #end-met')).toHaveCount(1)
+  // onEnd ran exactly once (showResult rebuilds the DOM, so only the counter can tell).
+  await page.waitForTimeout(300)
+  await expect(page.locator('#end')).toHaveAttribute('data-end-count', '1')
   const met = page.locator('#end-met')
   await expect(met).toContainText('이번 판에서 만난 수법')
   await expect(met.locator('li')).toHaveCount(cheaters.length)
