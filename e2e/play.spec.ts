@@ -109,3 +109,35 @@ test('시간 종료', async ({ page }) => {
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'timeout')
   await expect(page.locator('#end')).toContainText('시험 종료')
 })
+
+test('탭 전에는 어떤 좌석도 사건 이름을 드러내지 않음', async ({ page }) => {
+  await page.goto(`/play?seed=${SEED}`)
+  await expect(page.locator('[data-seat]')).toHaveCount(9)
+  for (let i = 0; i < 9; i++) {
+    const text = (await seat(page, i).textContent()) ?? ''
+    expect(text).toContain(`응시자 ${i + 1}`)
+    for (const c of cases) expect(text).not.toContain(c.name)
+  }
+})
+
+test('이미지가 막혀도 대체 카드는 응시자 N만 보여 줌', async ({ page }) => {
+  await page.route('**/px/**', (r) => r.abort())
+  await page.goto(`/play?seed=${SEED}`)
+  await expect(page.locator('.seat-fallback')).toHaveCount(9)
+  for (let i = 0; i < 9; i++) {
+    const text = (await seat(page, i).locator('.seat-fallback').textContent()) ?? ''
+    for (const c of cases) expect(text).not.toContain(c.name)
+  }
+})
+
+test('팝업은 4초 뒤 자동으로 닫힘', async ({ page }) => {
+  await page.clock.install()
+  await page.goto(`/play?seed=${SEED}`)
+  await expect(page.locator('[data-seat]')).toHaveCount(9)
+  await seat(page, innos[0].seat).click()
+  await expect(page.locator('#panel')).toBeVisible()
+  await page.clock.fastForward(3000)
+  await expect(page.locator('#panel')).toBeVisible()
+  await page.clock.fastForward(1500)
+  await expect(page.locator('#panel')).toBeHidden()
+})

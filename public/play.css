@@ -45,6 +45,7 @@
   font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.25;
+  white-space: pre-line;
   background: var(--paper);
   border-radius: 6px;
 }

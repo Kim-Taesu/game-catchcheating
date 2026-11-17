@@ -40,6 +40,9 @@ export function startGame(root, opts) {
   const caseById = new Map(opts.cases.map((c) => [c.id, c]))
   const innById = new Map(opts.innocents.map((i) => [i.id, i]))
   const nameOf = (id) => (caseById.get(id) ?? innById.get(id))?.name ?? id
+  // Behavior text shown on a seat in action pose: never reveals the case name.
+  const behaviorOf = (s) => (s.kind === 'cheater' ? caseById.get(s.id)?.tell?.action : innById.get(s.id)?.name) ?? ''
+  const PANEL_MS = 4000
 
   const startMs = now()
   const engine = createEngine(plan, startMs)
@@ -54,6 +57,11 @@ export function startGame(root, opts) {
 
   const grid = el('div', { class: 'seats' })
   const views = new Map()
+  function paintFallback(v) {
+    if (!v.fallback) return
+    const label = `응시자 ${v.s.seat + 1}`
+    v.fallback.textContent = v.pose === 1 ? `${label}\n${behaviorOf(v.s)}` : label
+  }
   for (const s of plan.seats) {
     const img = el('img', { class: 'px seat-img', src: `/px/${s.id}-0.webp`, alt: '' })
     const stamp = el('span', { class: 'stamp', 'aria-hidden': 'true', text: '적발' })
@@ -61,13 +69,15 @@ export function startGame(root, opts) {
       'button',
       { type: 'button', class: 'seat', 'data-seat': String(s.seat), style: `--i:${s.seat}` },
       img,
-      el('span', { class: 'sr-only', text: nameOf(s.id) }),
+      el('span', { class: 'sr-only', text: `응시자 ${s.seat + 1}` }),
       stamp,
     )
-    const view = { s, btn, img, pose: 0, failed: false }
+    const view = { s, btn, img, pose: 0, failed: false, fallback: null }
     img.addEventListener('error', () => {
       view.failed = true
-      img.replaceWith(el('span', { class: 'seat-fallback', text: nameOf(s.id) }))
+      view.fallback = el('span', { class: 'seat-fallback' })
+      img.replaceWith(view.fallback)
+      paintFallback(view)
     })
     btn.addEventListener('click', () => onTap(s.seat))
     views.set(s.seat, view)
@@ -86,7 +96,9 @@ export function startGame(root, opts) {
   root.append(hud, grid, panel)
 
   // ---- panels ----
+  let panelTimer = 0
   function closePanel() {
+    clearTimeout(panelTimer)
     panel.hidden = true
     root.classList.remove('has-panel')
   }
@@ -95,6 +107,8 @@ export function startGame(root, opts) {
     panelBody.append(...nodes)
     panel.hidden = false
     root.classList.add('has-panel')
+    clearTimeout(panelTimer)
+    panelTimer = setTimeout(closePanel, PANEL_MS)
   }
   panelClose.addEventListener('click', closePanel)
   const onKey = (ev) => {
@@ -150,6 +164,7 @@ export function startGame(root, opts) {
       if (pose !== v.pose) {
         v.pose = pose
         if (!v.failed) v.img.src = `/px/${v.s.id}-${pose}.webp`
+        else paintFallback(v)
       }
     }
     if (st.ended !== null && !finished) {
@@ -170,6 +185,7 @@ export function startGame(root, opts) {
     if (out.kind === 'caught') {
       const v = views.get(seatNo)
       v.btn.setAttribute('data-caught', '')
+      v.btn.querySelector('.sr-only').textContent = `응시자 ${seatNo + 1} 적발: ${nameOf(out.id)}`
       markDiscovered(storage, out.id)
       showCaught(out.id)
     } else if (out.kind === 'innocent') {
@@ -185,6 +201,7 @@ export function startGame(root, opts) {
     stop() {
       finished = true
       cancelAnimationFrame(rafId)
+      clearTimeout(panelTimer)
       document.removeEventListener('keydown', onKey)
     },
   }
