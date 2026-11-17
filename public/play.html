@@ -40,6 +40,7 @@
           innocents,
           seed,
           onEnd() {
+            window.__cfEnds = (window.__cfEnds ?? 0) + 1
             document.getElementById('end-reason').textContent = REASON[game.dataset.ended] ?? ''
             document.getElementById('end').hidden = false
           },

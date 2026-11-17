@@ -88,17 +88,25 @@ export function startGame(root, opts) {
   const panelClose = el('button', { type: 'button', class: 'btn panel-close', id: 'panel-close', text: '닫기' })
   const panel = el(
     'div',
-    { class: 'panel card', id: 'panel', role: 'status', 'aria-live': 'polite', hidden: '' },
+    { class: 'panel card', id: 'panel', hidden: '' },
     panelBody,
     panelClose,
   )
+  // Always-rendered live region: screen readers announce text changes in it reliably.
+  const live = el('div', { class: 'sr-only', id: 'panel-live', role: 'status', 'aria-live': 'polite' })
 
-  root.append(hud, grid, panel)
+  root.append(hud, grid, panel, live)
 
   // ---- panels ----
   let panelTimer = 0
+  let autoClose = true
+  function armTimer() {
+    clearTimeout(panelTimer)
+    if (autoClose && !panel.hidden) panelTimer = setTimeout(closePanel, PANEL_MS)
+  }
   function closePanel() {
     clearTimeout(panelTimer)
+    live.textContent = ''
     panel.hidden = true
     root.classList.remove('has-panel')
   }
@@ -107,10 +115,13 @@ export function startGame(root, opts) {
     panelBody.append(...nodes)
     panel.hidden = false
     root.classList.add('has-panel')
-    clearTimeout(panelTimer)
-    panelTimer = setTimeout(closePanel, PANEL_MS)
+    live.textContent = panelBody.textContent
+    armTimer()
   }
   panelClose.addEventListener('click', closePanel)
+  // Reading or focusing the panel pauses the auto-close; leaving restarts the full interval.
+  for (const ev of ['pointerenter', 'focusin']) panel.addEventListener(ev, () => clearTimeout(panelTimer))
+  for (const ev of ['pointerleave', 'focusout']) panel.addEventListener(ev, armTimer)
   const onKey = (ev) => {
     if (ev.key === 'Escape' && !panel.hidden) closePanel()
   }
@@ -170,6 +181,9 @@ export function startGame(root, opts) {
     if (st.ended !== null && !finished) {
       finished = true
       cancelAnimationFrame(rafId)
+      autoClose = false
+      clearTimeout(panelTimer)
+      for (const v of views.values()) v.btn.disabled = true
       root.dataset.ended = st.ended
       opts.onEnd(result(engine, t))
     }
