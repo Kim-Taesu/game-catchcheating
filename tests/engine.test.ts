@@ -192,4 +192,34 @@ describe('Review Focus 3: swap seat before swap', () => {
     expect(r2.kind).toBe('caught')
     expect(status(e, START + 21000).caught).toBe(1)
   })
+
+  it('a second before-swap tap is ignored, and the seat can still be caught after the swap', () => {
+    const e = createEngine(plan(), START)
+    expect(tap(e, 2, START + 5000).kind).toBe('innocent')
+    expect(tap(e, 2, START + 9000)).toEqual({ kind: 'ignored', seat: 2, id: 'glasses-swap' })
+    expect(status(e, START + 9000).lives).toBe(2)
+    expect(tap(e, 2, START + 21000).kind).toBe('caught')
+    expect(status(e, START + 21000).lives).toBe(2)
+  })
+})
+
+describe('re-tapping a judged-innocent seat (I-2)', () => {
+  it('costs a life only once', () => {
+    const e = createEngine(plan(), START)
+    expect(tap(e, 1, START + 1000).kind).toBe('innocent')
+    expect(tap(e, 1, START + 2000)).toEqual({ kind: 'ignored', seat: 1, id: 'yawn' })
+    expect(tap(e, 1, START + 3000).kind).toBe('ignored')
+    const st = status(e, START + 3000)
+    expect(st.lives).toBe(2)
+    expect(st.ended).toBeNull()
+    expect(result(e, START + 3000).f).toBe(1)
+  })
+
+  it('other innocent seats still cost a life', () => {
+    const e = createEngine(plan(), START)
+    tap(e, 1, START + 1000)
+    tap(e, 1, START + 1100)
+    expect(tap(e, 3, START + 1200).kind).toBe('innocent')
+    expect(status(e, START + 1200).lives).toBe(1)
+  })
 })
