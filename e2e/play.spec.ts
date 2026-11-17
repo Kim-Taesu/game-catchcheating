@@ -23,6 +23,18 @@ test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
   expect(width).toBeLessThanOrEqual(375)
 })
 
+test('행동 포즈 이미지 9장이 로드 직후 미리 요청된다', async ({ page }) => {
+  const urls = new Set<string>()
+  page.on('request', (r) => {
+    const m = new URL(r.url()).pathname.match(/^\/px\/.+-1\.webp$/)
+    if (m) urls.add(m[0])
+  })
+  await startRound(page, SEED)
+  const expected = [...new Set(p7.seats.map((s) => `/px/${s.id}-1.webp`))]
+  expect(expected).toHaveLength(9)
+  await expect.poll(() => expected.every((u) => urls.has(u)), { timeout: 2000 }).toBe(true)
+})
+
 const caseName = (id: string) => cases.find((c: { id: string }) => c.id === id).name as string
 // Every non-catch tap gets the same toast shape, so the toast never tells the swap seat apart.
 const NON_CATCH = /^정상 행동입니다 · 응시자 \d$/
@@ -208,7 +220,9 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 3명 적발')
   await expect(page.locator('#game')).toContainText('기회 3')
   await expect(page.locator('#toast')).toBeHidden()
-  expect(await page.evaluate(() => (window as unknown as { __cfEnds: number }).__cfEnds)).toBe(1)
+  // onEnd ran once: a single result heading and no duplicated lists.
+  await expect(page.locator('#end .end-title')).toHaveCount(1)
+  await expect(page.locator('#end #end-met')).toHaveCount(1)
   const met = page.locator('#end-met')
   await expect(met).toContainText('이번 판에서 만난 수법')
   await expect(met.locator('li')).toHaveCount(cheaters.length)

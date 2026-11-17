@@ -32,7 +32,6 @@
           innocents,
           seed,
           onEnd(result, recap) {
-            window.__cfEnds = (window.__cfEnds ?? 0) + 1
             showResult(document.getElementById('end'), result, { reason: game.dataset.ended, recap, cases, innocents })
           },
         })

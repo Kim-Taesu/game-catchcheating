@@ -38,6 +38,7 @@ public/game/storage.js  도감 발견 표시 저장 (localStorage)
 public/game/scene.js    3×3 좌석·HUD·상단 짧은 알림(toast). 끝나면 onEnd(result, recap)
 public/game/result-ui.js  결과 화면: 칭호·숫자·공유 + 목록 3개(만난 수법·오해한 응시자·놓친 수법)
 public/game/labels.js   상태·근거 라벨, 단일 행동 안내 문구 (scene·result-ui 공용)
+public/game/identity.js  정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage), 교체 전 오해 줄
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 현재 임시본
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
