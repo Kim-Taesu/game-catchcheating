@@ -5,8 +5,6 @@ import { ACTION_MS } from './round.js'
 export const DURATION_MS = 60000
 export const LIVES = 3
 
-/** @typedef {{kind:'caught'|'innocent'|'ignored', seat:number, id:string, reason?:'before-swap'}} TapOutcome */
-
 export function createEngine(plan, startMs) {
   return {
     plan,

@@ -12,7 +12,7 @@ export function shareText(r, url) {
 /**
  * @returns {Promise<'shared'|'cancelled'|'copied'|'failed'>}
  */
-export async function shareResult(text, _url, deps) {
+export async function shareResult(text, deps) {
   if (deps.share) {
     try {
       await deps.share({ text })

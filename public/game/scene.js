@@ -3,7 +3,7 @@
 import { buildRound, seededRng } from './round.js'
 import { createEngine, poseAt, tap, status, result } from './engine.js'
 import { markDiscovered, safeStorage } from './storage.js'
-import { STATUS_LABEL } from './labels.js'
+import { statusLabel } from './labels.js'
 
 function el(tag, props = {}, ...children) {
   const node = document.createElement(tag)
@@ -109,12 +109,20 @@ export function startGame(root, opts) {
   let rafId = 0
   let finished = false
 
+  // Write a HUD node only when its text changed (render runs every frame).
+  const hudShown = {}
+  function setHud(node, key, text) {
+    if (hudShown[key] === text) return
+    hudShown[key] = text
+    node.textContent = text
+  }
+
   function render() {
     const t = now()
     const st = status(engine, t)
-    hudTime.textContent = `남은 시간 ${Math.ceil(st.remainingMs / 1000)}초`
-    hudLives.textContent = `기회 ${st.lives}`
-    hudCaught.textContent = `수상한 응시자 ${st.total}명 중 ${st.caught}명 적발`
+    setHud(hudTime, 'time', `남은 시간 ${Math.ceil(st.remainingMs / 1000)}초`)
+    setHud(hudLives, 'lives', `기회 ${st.lives}`)
+    setHud(hudCaught, 'caught', `수상한 응시자 ${st.total}명 중 ${st.caught}명 적발`)
     for (const v of views.values()) {
       const pose = poseAt(v.s, t, startMs)
       if (pose !== v.pose) {
@@ -151,7 +159,7 @@ export function startGame(root, opts) {
       label.textContent = `응시자 ${seatNo + 1} 적발: ${nameOf(out.id)}`
       markDiscovered(storage, out.id)
       recap.caught.push(out.id)
-      const st = STATUS_LABEL[c?.status]
+      const st = statusLabel(c)
       showToast(`적발! ${nameOf(out.id)}${st ? ` · ${st}` : ''}`)
     } else if (out.kind === 'innocent') {
       const beforeSwap = out.reason === 'before-swap'

@@ -2,7 +2,7 @@
 // (cases met, misjudged examinees, missed cases). All data goes in via textContent.
 import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
-import { BASIS_LABEL, SINGLE_ACTION_NOTE, STATUS_LABEL } from './labels.js'
+import { SINGLE_ACTION_NOTE, basisLine, statusLabel } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '기회를 모두 사용했어요.' }
 
@@ -20,7 +20,9 @@ function dexLink(id, name) {
   return a
 }
 
+/** A titled list section; null for an empty list so callers can filter it out. */
 function section(id, heading, items) {
+  if (!items.length) return null
   const sec = el('section', 'end-sec')
   sec.id = id
   const list = el('ul', 'end-list')
@@ -34,22 +36,20 @@ function recapSections(recap, cases, innocents) {
   const caseById = new Map(cases.map((c) => [c.id, c]))
   const innById = new Map(innocents.map((i) => [i.id, i]))
   const caseName = (id) => caseById.get(id)?.name ?? id
-  const out = []
 
   const met = recap.caught.map((id) => {
     const c = caseById.get(id)
     const li = el('li', 'end-item')
     const title = el('p', 'end-item-title', caseName(id))
-    const st = STATUS_LABEL[c?.status]
+    const st = statusLabel(c)
     if (st) title.append(' ', el('span', 'chip', st))
     li.append(title)
     if (c?.cue) li.append(el('p', '', c.cue))
     const t = c?.tell
-    if (t) li.append(el('p', 'end-basis', `근거: ${BASIS_LABEL[t.basisKind] ?? ''}${t.basisNote ? ` (${t.basisNote})` : ''}`))
+    if (t) li.append(el('p', 'end-basis', basisLine(t)))
     li.append(dexLink(id, caseName(id)))
     return li
   })
-  if (met.length) out.push(section('end-met', '이번 판에서 만난 수법', met))
 
   const wrong = recap.misjudged.map((m) => {
     const li = el('li', 'end-item')
@@ -64,15 +64,17 @@ function recapSections(recap, cases, innocents) {
     li.append(el('p', 'end-basis', SINGLE_ACTION_NOTE))
     return li
   })
-  if (wrong.length) out.push(section('end-misjudged', '오해한 응시자', wrong))
 
   const missed = recap.missed.map((id) => {
     const li = el('li', 'end-item')
     li.append(el('p', 'end-item-title', caseName(id)), dexLink(id, caseName(id)))
     return li
   })
-  if (missed.length) out.push(section('end-missed', '놓친 수법', missed))
-  return out
+  return [
+    section('end-met', '이번 판에서 만난 수법', met),
+    section('end-misjudged', '오해한 응시자', wrong),
+    section('end-missed', '놓친 수법', missed),
+  ].filter(Boolean)
 }
 
 /**
@@ -119,7 +121,7 @@ export function showResult(root, r, deps = {}) {
   const text = shareText(r, url)
   shareBtn.addEventListener('click', async () => {
     status.textContent = ''
-    const out = await shareResult(text, url, { share, clipboard })
+    const out = await shareResult(text, { share, clipboard })
     if (out === 'copied') {
       status.textContent = '복사했어요'
     } else if (out === 'failed') {

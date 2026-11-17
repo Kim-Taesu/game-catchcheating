@@ -1,8 +1,8 @@
 import { filterCases } from '/dex-logic.js'
 import { safeStorage, loadDiscovered } from '/game/storage.js'
+import { BASIS_LABEL, STATUS_LABEL } from '/game/labels.js'
 
-const STATUS = { confirmed: '확인됨', investigating: '수사 중·일부 추정', mentioned: '거론됨', unverified: '미검증 소문' }
-const BASIS = { report: '보도', guideline: '감독 지침', community: '커뮤니티 정리', industry: '업계 설명' }
+const STATUS = { ...STATUS_LABEL, unverified: '미검증 소문' }
 const GROUP = { device: '전자기기', collab: '협력', classic: '고전', proxy: '대리응시' }
 const COUNTRY = { KR: '한국', JP: '일본', IN: '인도', TH: '태국', TW: '대만', IT: '이탈리아', TR: '튀르키예', VN: '베트남' }
 const PROP = {
@@ -115,7 +115,7 @@ function openDetail(id) {
   if (c.tell) {
     const t = c.tell
     const basis = el('p', { class: 'tell-basis' }, [
-      el('span', { class: 'chip', text: `근거: ${BASIS[t.basisKind] ?? t.basisKind}` }),
+      el('span', { class: 'chip', text: `근거: ${BASIS_LABEL[t.basisKind] ?? t.basisKind}` }),
     ])
     if (t.basisNote) basis.append(' ', el('span', { text: t.basisNote }))
     const parts = [el('p', { text: t.action }), basis]

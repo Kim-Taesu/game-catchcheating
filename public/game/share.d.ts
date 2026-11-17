@@ -6,4 +6,4 @@ export type ShareDeps = {
 }
 export function shareUrl(origin: string, r: Result): string
 export function shareText(r: Result, url: string): string
-export function shareResult(text: string, url: string, deps: ShareDeps): Promise<'shared' | 'cancelled' | 'copied' | 'failed'>
+export function shareResult(text: string, deps: ShareDeps): Promise<'shared' | 'cancelled' | 'copied' | 'failed'>
