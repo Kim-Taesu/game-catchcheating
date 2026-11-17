@@ -4,7 +4,9 @@ import { existsSync, readFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
-import { esc, makeOg } from './make-og.mjs'
+import { makeOg } from './make-og.mjs'
+import { esc } from './lib/esc.mjs'
+import { PROP_IDS } from './lib/assets.mjs'
 import { captionFor } from './lib/caption.mjs'
 
 const pub = (rel) => fileURLToPath(new URL(`../public/${rel}`, import.meta.url))
@@ -12,13 +14,13 @@ const readJson = (rel) => JSON.parse(readFileSync(pub(rel), 'utf8'))
 const force = process.argv.includes('--force')
 const FONT = 'Apple SD Gothic Neo, sans-serif'
 
-const PROPS = [
-  ['prop-smart-glasses', '스마트안경', '🕶'], ['prop-earbud', '이어폰', '🎧'],
-  ['prop-button-camera', '단추 카메라', '🔘'], ['prop-calculator-back', '개조 계산기', '🧮'],
-  ['prop-id-card', '위조 신분증', '🪪'], ['prop-bone-band', '뼈 전도', '〰'],
-  ['prop-smartwatch', '스마트워치', '⌚'], ['prop-cheat-note', '쪽지', '📝'],
-  ['prop-phone-glow', '가방 속 폰', '📱'],
-]
+const PROP_LOOK = {
+  'prop-smart-glasses': ['스마트안경', '🕶'], 'prop-earbud': ['이어폰', '🎧'],
+  'prop-button-camera': ['단추 카메라', '🔘'], 'prop-calculator-back': ['개조 계산기', '🧮'],
+  'prop-id-card': ['위조 신분증', '🪪'], 'prop-bone-band': ['뼈 전도', '〰'],
+  'prop-smartwatch': ['스마트워치', '⌚'], 'prop-cheat-note': ['쪽지', '📝'],
+  'prop-phone-glow': ['가방 속 폰', '📱'],
+}
 
 function hue(id) {
   let h = 0
@@ -112,7 +114,10 @@ for (const e of jobs) {
   await put(`px/${e.id}-0.webp`, personSvg(e.id, e, 0))
   await put(`px/${e.id}-1.webp`, personSvg(e.id, e, 1))
 }
-for (const [id, label, glyph] of PROPS) await put(`px/${id}.webp`, propSvg(id, label, glyph))
+for (const id of PROP_IDS) {
+  const [label, glyph] = PROP_LOOK[id]
+  await put(`px/${id}.webp`, propSvg(id, label, glyph))
+}
 await put('px/classroom.webp', classroomSvg)
 await makeOg()
 console.log(`placeholders: ${written} written, ${skipped} skipped${force ? ' (--force)' : ''}; og regenerated`)

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import sharp from 'sharp'
 import { captionFor } from '../scripts/lib/caption.mjs'
+import { PROP_IDS } from '../scripts/lib/assets.mjs'
 
 const root = new URL('../public/', import.meta.url)
 const p = (rel: string) => new URL(rel, root).pathname
@@ -11,10 +12,7 @@ const ids = [
   ...readJson('data/cases.json').filter((c) => c.playable).map((c) => c.id),
   ...readJson('data/innocents.json').map((c) => c.id),
 ]
-const props = [
-  'prop-smart-glasses', 'prop-earbud', 'prop-button-camera', 'prop-calculator-back', 'prop-id-card',
-  'prop-bone-band', 'prop-smartwatch', 'prop-cheat-note', 'prop-phone-glow',
-]
+const props = PROP_IDS
 const cases = readJson('data/cases.json') as unknown as { id: string; name: string; playable?: boolean; tell?: { action: string } }[]
 const tiers = ['eagle', 'veteran', 'suspicious', 'rookie', 'sleepy']
 

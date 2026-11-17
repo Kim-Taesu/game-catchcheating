@@ -5,6 +5,7 @@ import { mkdir } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { TITLE_TEXT } from '../public/game/result.js'
+import { esc } from './lib/esc.mjs'
 
 const pub = (rel) => fileURLToPath(new URL(`../public/${rel}`, import.meta.url))
 const FONT = 'Apple SD Gothic Neo, sans-serif'
@@ -25,9 +26,6 @@ const SPRITES = {
   sleepy: ['yawn', 'rub-eyes', 'stretch', 'scratch-head'],
 }
 
-export const esc = (s) =>
-  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
-
 function cardSvg(tier) {
   const t = THEME[tier]
   return `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400">
@@ -40,8 +38,10 @@ function cardSvg(tier) {
 
 export async function makeOg() {
   await mkdir(pub('og'), { recursive: true })
-  const tiers = Object.keys(THEME)
+  const tiers = Object.keys(TITLE_TEXT)
   for (const tier of tiers) {
+    if (!SPRITES[tier]) throw new Error(`make-og: no SPRITES entry for tier "${tier}"`)
+    if (!THEME[tier]) throw new Error(`make-og: no THEME entry for tier "${tier}"`)
     const layers = []
     const files = SPRITES[tier].map((id) => pub(`px/${id}-0.webp`)).filter(existsSync)
     const w = 128

@@ -22,13 +22,18 @@ const { data, info } = await sharp(sheetPath).ensureAlpha().raw().toBuffer({ res
 // Key the magenta background, then despill the pink fringe around the figures.
 const keyed = despillMagenta(keyMagenta(new Uint8Array(data.buffer, data.byteOffset, data.length)))
 mkdirSync(outDir, { recursive: true })
+// Zero-copy Buffer view over the keyed pixels; each cell clones the same raw input.
+const base = sharp(Buffer.from(keyed.buffer, keyed.byteOffset, keyed.length), {
+  raw: { width: info.width, height: info.height, channels: 4 },
+})
 
 async function save(rect, file) {
   const left = Math.max(0, rect.x)
   const top = Math.max(0, rect.y)
   const width = Math.min(rect.w, info.width - left)
   const height = Math.min(rect.h, info.height - top)
-  await sharp(Buffer.from(keyed), { raw: { width: info.width, height: info.height, channels: 4 } })
+  await base
+    .clone()
     .extract({ left, top, width, height })
     // Pixel art: nearest-neighbour keeps hard edges, lossless webp keeps exact colours.
     .resize(SIZE, SIZE, { fit: 'contain', kernel: 'nearest', background: { r: 0, g: 0, b: 0, alpha: 0 } })
