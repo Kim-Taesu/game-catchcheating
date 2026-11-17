@@ -25,11 +25,11 @@
     "tell": {
       "action": "안경테를 만지며 우측 상단을 힐끗 본다",
       "basisKind": "report",
-      "basisNote": "안경테를 반복해서 만진 행동은 보도, 우측 상단 시선은 업계 설명",
+      "basisNote": "안경테를 반복해서 만진 행동은 보도, 위쪽을 올려다보는 시선은 업계 설명, 오른쪽 방향은 연출",
       "basisSources": [
         { "title": "뉴데일리: 감독관이 안경테를 부자연스럽게 만지는 모습을 수상히 여겨 적발", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
         { "title": "이투데이: 시험 중 안경테를 자꾸 만지는 모습이 의심을 삼", "url": "https://www.etoday.co.kr/news/view/2645738" },
-        { "title": "VICTVS: 안경 쪽을 반복해서 올려다보는 행동", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" }
+        { "title": "VICTVS: 안경 쪽을 반복해서 올려다보는 행동을 신호로 봄(업계 설명)", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" }
       ]
     },
     "lookalike": "plain-glasses"
@@ -41,7 +41,7 @@
     "origins": [
       { "country": "TW", "year": 2026, "label": "국립대만대 의학계열 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" }
     ],
-    "summary": "스마트안경이 문제를 인식해 렌즈에 답을 띄운 사례. 두꺼운 뿔테와 모자로 안경을 가렸다. 성적 0점 처리 후 경찰에 신고됐다.",
+    "summary": "스마트안경으로 문제를 찍으면 렌즈에 답이 표시되는 방식이었다고 보도됐다. 두꺼운 뿔테와 모자를 썼고, 성적 0점 처리 후 경찰에 신고됐다.",
     "cue": "문제지를 얼굴 가까이 가져가 부자연스럽게 들여다봤다. 안경을 검사하자 비정상적인 발열이 느껴졌다.",
     "detect": "안경을 벗겨 두께·발열·렌즈를 확인한다.",
     "status": "confirmed",
@@ -66,18 +66,19 @@
       { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" }
     ],
     "summary": "귀에 숨긴 초소형 이어폰으로 시험장 밖 공범이 불러 주는 답을 듣는 수법. 모자·귀마개로 귀를 가렸다.",
-    "cue": "모자나 귀마개로 귀를 가린 응시자가 혼잣말하듯 입술을 움직였다.",
-    "detect": "본인 확인 때 귀·모자를 확인하고, 의심되면 금속탐지기로 추가 검사한다. 전파탐지기 도입이 검토되고 있다.",
+    "cue": "2017년 사건에서는 모자·귀마개로 귀를 가렸다. 업계에서는 중얼거림·혼잣말을 숨긴 이어폰의 신호로 본다.",
+    "detect": "귓속 초소형 이어폰은 육안으로 찾기 어렵다. 시험장 전파탐지기 도입이 검토되고 있다.",
     "status": "confirmed",
     "sources": [
       { "title": "한국일보: 영상통화 앱으로 부정행위 운전면허 딴 시리아인 적발", "url": "https://www.hankookilbo.com/news/article/201703101486877952" },
-      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" }
+      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" },
+      { "title": "대구신문: 안경에 초소형 이어폰까지…수능 감독 비상 (전파탐지기 검토)", "url": "https://www.idaegu.co.kr/news/articleView.html?idxno=565328" }
     ],
     "playable": true,
     "tell": {
       "action": "허공을 보며 혼잣말하듯 입술을 움직인다",
       "basisKind": "industry",
-      "basisNote": "모자·귀마개로 귀를 가린 외형은 보도, 중얼거림은 업계 설명",
+      "basisNote": "모자·귀마개로 귀를 가린 외형은 보도, 중얼거림은 업계 설명(실제 적발 단서로 보도된 것은 아님)",
       "basisSources": [
         { "title": "VICTVS: 중얼거리거나 혼잣말하는 행동은 숨긴 이어폰의 신호", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" },
         { "title": "한국일보: 이어폰을 감추려 모자·귀마개를 씀", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
@@ -93,7 +94,7 @@
       { "country": "KR", "year": 2026, "label": "수능 앞 신종 수단으로 거론" }
     ],
     "summary": "귀에 꽂지 않고 뼈로 소리를 전달하는 이어폰. 운동용으로 정식 유통돼 금지 품목으로 규정하기 어렵다는 지적이 나왔다.",
-    "cue": "귀에 아무것도 없는데 목 뒤 밴드를 하고 입술이 움직였다.",
+    "cue": "귀에 꽂지 않아 겉으로 찾기 어렵다. 업계에서는 작은 속삭임이나 새어 나오는 소리를 신호로 본다.",
     "detect": "금속탐지기·전파탐지기 같은 장비가 필요하다. 육안 식별은 어렵다.",
     "status": "mentioned",
     "sources": [
@@ -103,6 +104,7 @@
     "tell": {
       "action": "목 뒤 밴드를 만지며 입술을 작게 움직인다",
       "basisKind": "industry",
+      "basisNote": "속삭임을 신호로 보는 것은 업계 설명, 밴드를 만지는 포즈는 연출",
       "basisSources": [
         { "title": "Talview: 작은 속삭임·뼈 전도 소리 새어 나옴을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
       ]
@@ -117,7 +119,7 @@
       { "country": "KR", "year": 2026, "label": "국가자격시험 반입 금지 품목" }
     ],
     "summary": "손목시계 모양의 기기로 정답을 받아 본 수법. 2013년 토익·텝스 조직 사건에서 고막 이어폰과 함께 쓰였다.",
-    "cue": "손목을 눈높이로 자꾸 들어 올려 화면을 봤다.",
+    "cue": "2013년 사건에서는 시계형 기기로 답을 받았다. 업계에서는 반복되는 이상한 몸짓·시선을 신호로 본다.",
     "detect": "스마트워치는 착용·소지만으로 부정행위. 일반 전자시계도 개조 여부는 겉모습으로 가리기 어렵다.",
     "status": "confirmed",
     "sources": [
@@ -128,6 +130,7 @@
     "tell": {
       "action": "손목을 눈높이로 들어 시계 화면을 본다",
       "basisKind": "industry",
+      "basisNote": "이상한 몸짓·시선을 신호로 보는 것은 업계 설명, 손목을 보는 포즈는 연출",
       "basisSources": [
         { "title": "Talview: 몸짓 이상·시선 방향 이상을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
       ]
@@ -206,6 +209,7 @@
     "tell": {
       "action": "손으로 입을 가리고 무언가를 삼킨다",
       "basisKind": "report",
+      "basisNote": "들키자 삼킨 행동은 보도, 입을 가리는 포즈는 연출",
       "basisSources": [
         { "title": "전자신문: 들키자 이어폰을 삼킴", "url": "https://www.etnews.com/20231115000253" }
       ]
@@ -245,7 +249,7 @@
     ],
     "summary": "턱 괴기·이마 짚기 같은 동작이나 필기구 방향으로 옆 사람에게 답을 알려 주는 고전 수법.",
     "cue": "같은 동작을 반복하는 응시자, 답안이 똑같이 틀린 패턴.",
-    "detect": "좌석을 섞어 배치하고 홀짝형 문제지를 쓴다. 답안 일치 패턴을 대조한다.",
+    "detect": "같은 오답·같은 풀이 과정이 나오는지 답안을 대조한다.",
     "status": "mentioned",
     "sources": [
       { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
@@ -254,6 +258,7 @@
     "tell": {
       "action": "책상 옆으로 손가락 숫자를 내밀고 옆자리를 힐끗 본다",
       "basisKind": "community",
+      "basisNote": "동작으로 신호를 주고받는 수법은 커뮤니티 정리, 손가락 숫자 포즈는 연출",
       "basisSources": [
         { "title": "나무위키: 특정 동작·필기구 방향으로 신호 교환", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
       ]
@@ -268,7 +273,7 @@
     ],
     "summary": "옆 사람 답안을 훔쳐보는 가장 오래된 수법. 홀짝형 문제지로 효과가 줄었다.",
     "cue": "머리를 자주 돌리거나 옆 답안을 노골적으로 살폈다.",
-    "detect": "문제지 유형을 섞고 좌석 간격을 띄운다.",
+    "detect": "홀짝형 문제지를 쓰면 옆 답안을 봐도 소용이 없다.",
     "status": "mentioned",
     "sources": [
       { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
@@ -287,7 +292,7 @@
     "name": "소매 속 쪽지",
     "group": "classic",
     "origins": [
-      { "country": "KR", "year": 2026, "label": "수능 감독 강화(소매 확인)" }
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
     ],
     "summary": "작은 쪽지를 소매·옷에 숨겨 몰래 보는 수법. 쉬는 시간마다 쪽지를 찢는 모습이 친구들 눈에 띄어 들킨 사례도 있다.",
     "cue": "소맷단 안쪽을 자꾸 내려다봤다.",
@@ -301,7 +306,7 @@
     "tell": {
       "action": "소맷단 안쪽을 내려다본다",
       "basisKind": "guideline",
-      "basisNote": "소매 확인은 감독 지침, 쉬는 시간마다 쪽지를 찢은 사례는 커뮤니티 정리",
+      "basisNote": "소매 확인은 감독 지침, 쉬는 시간마다 쪽지를 찢은 사례는 커뮤니티 정리, 소맷단을 내려다보는 포즈는 연출",
       "basisSources": [
         { "title": "SBS: 대전교육청, 수험생 단추·옷깃·소매 확인", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
         { "title": "나무위키: 쉬는 시간마다 커닝 페이퍼를 찢은 사례", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
@@ -333,14 +338,15 @@
     "origins": [
       { "country": "KR", "year": 2026, "label": "세무사 시험" }
     ],
-    "summary": "세무사 시험 수석 합격자가 초소형 카메라와 생성형 AI로 부정행위를 했다고 자수했다. 경찰은 개조된 계산기를 활용한 것으로 보고 수사 중이다.",
-    "cue": "감독위원 4명이 특이사항을 못 봤다. 겉모습으로는 일반 계산기와 구별되지 않았다.",
-    "detect": "허용 계산기 모델을 제한하고 점검한다. 통신을 막는 장비 도입이 거론된다.",
+    "summary": "세무사 시험 수석 합격자가 초소형 카메라와 생성형 AI로 부정행위를 했다고 자수했다. 자수서에 계산기를 개조해 썼다고 적었고, 계산기의 역할은 수사 중이다.",
+    "cue": "감독위원 4명이 특이사항을 못 봤다고 했다. 겉모습으로는 개조 여부를 가리기 어렵다는 지적이 나왔다.",
+    "detect": "외관 점검만으로는 한계가 있다. 통신을 막거나 잡아내는 장비 도입이 거론된다.",
     "status": "investigating",
     "sources": [
       { "title": "한국일보: AI 부정행위 세무사 수석 '계산기 개조해 활용'", "url": "https://www.hankookilbo.com/news/article/A2026111713030003155" },
       { "title": "한국경제: 세무사 수석 만든 쌀집 계산기?", "url": "https://www.hankyung.com/article/202611171766H" },
-      { "title": "경향신문: 감독관 코앞, 첫 줄 앉아 부정행위", "url": "https://www.khan.co.kr/article/202611152118005/" }
+      { "title": "경향신문: 감독관 코앞, 첫 줄 앉아 부정행위", "url": "https://www.khan.co.kr/article/202611152118005/" },
+      { "title": "와이드경제: 계산기·전자시계 개조하면 속수무책?", "url": "https://www.widedaily.com/news/articleView.html?idxno=303738" }
     ],
     "playable": false,
     "visibility": "low"
@@ -386,7 +392,7 @@
     "origins": [
       { "country": "KR", "year": 2016, "label": "2017학년도 수능" }
     ],
-    "summary": "도시락 가방에 깜빡하고 넣어 둔 휴대폰이 시험 중 울려 시험을 그만둬야 했던 사례. 직접 쓰지 않아도 소지만으로 부정행위다.",
+    "summary": "어머니가 깜빡하고 도시락 가방에 넣어 둔 휴대폰이 시험 중 울려 더 응시하지 못한 사례. 직접 쓰지 않아도 소지만으로 부정행위다.",
     "cue": "가방 속 휴대폰이 10초 동안 울렸다.",
     "detect": "휴대폰은 시험 전에 모두 걷는다. 전원을 끄고 가방에 넣게만 하면 구멍이 생긴다.",
     "status": "confirmed",

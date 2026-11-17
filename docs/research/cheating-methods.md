@@ -119,6 +119,22 @@
 **원문으로 확인된 감독 요령**: 대전교육청 — 수험생 단추·옷깃·소매 확인(SBS 2026-11-17). 교육부 — 스마트안경 의심 시 시험 중 바로 벗기지 않고 답안지 수거 뒤 확인, 카메라·표시등·두꺼운 안경다리 확인(헤럴드경제 2026-11-16, MBC). 서울교육청 — 기말고사 전 "AI 글라스 사용은 부정행위" 공문(뉴스1 2026-06-12).
 **확인 못 한 것**: "귀 반복 만짐·고개 까딱임 관찰", "단일 행동만으로 단정하지 말라"는 지침 문구 — 검색 요약에만 있고 원문 미확인. 게임 문구는 지침 인용이 아니라 자체 안내로 쓴다.
 
+## H. 데이터 작성 중 원문으로 추가 확인한 출처 (2026-11-17)
+
+| 사건 | 확인한 사실 | 출처 |
+| --- | --- | --- |
+| 중·고교 내신 AI 안경 4건 (교육부 2026-11-09 발표) | 평소 안경을 쓰지 않던 학생이 시험 중 안경을 쓰고 테를 자꾸 만짐, 안경에 비친 초록 불빛, 시험 도중 안경 교체. 4건 모두 0점 | 이투데이 https://www.etoday.co.kr/news/view/2645738 |
+| 전기산업기사 2026-05-24 | 안경테를 부자연스럽게 만지는 모습을 감독관이 수상히 여김, 휴대전화 2대 중 1대만 제출하고 1대는 몸에 숨김, 렌즈에 답 표시 | 뉴데일리 https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html |
+| 토익·텝스 조직 (2013-04 발표) | 고막 이어폰과 스마트 시계(손목시계형 컴퓨터)로 정답 전달, 9회 시험, 구속 | 쿠키뉴스 https://www.kukinews.com/article/view/kuk201304170016 |
+| 2017학년도 수능 (2016-11-17) | 어머니가 깜빡하고 도시락 가방에 넣은 휴대폰이 1교시에 10초 울림, 응시 중단·귀가 | 뉴스핌 https://newspim.com/news/view/20161118000026 |
+| TOPIK 대리시험 (2014-01-19 시험, 2014-03 발표) | 응시자가 신분증 번호를 잘못 적어 감독관 확인 중 발각 | 경향신문 https://www.khan.co.kr/article/201403111659421 |
+| 태국 랑싯대 의대·치대 입시 (2016-05) | 카메라 안경과 스마트워치, 3명 적발, 시험 취소 | Al Jazeera https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam |
+| 베트남 고교 졸업시험 (2025-06) | 단추 크기 카메라와 무선 이어폰, 조력자가 ChatGPT로 답 생성, 감독관이 수상한 행동을 보고 검사 | Tuoi Tre https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm |
+| 업계 설명 (행동 신호) | "mumbling or talking to themselves", "repeatedly glancing up into their glasses" | VICTVS https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/ |
+| 업계 설명 (감지 항목) | "Subtle whispers", "Bone-conduction leaks", "Irregular gaze direction", "Gesture anomalies" | Talview https://www.talview.com/blog/meta-ai-glasses-exam-cheating |
+
+라벨 기준: 언론이 적발·체포·처분을 사건으로 보도했으면 `confirmed`(이투데이처럼 해외 사건을 국내 언론이 전한 경우 포함). 수법 세부가 수사 중이면 `investigating`. 개별 적발 없이 위험·고전 수법으로 거론되면 `mentioned`.
+
 ## 한계
 
 - 검색 도구로 에브리타임·디시·블로그 본문 직접 수집은 못 했다. 커뮤니티 층은 나무위키 정리와 기사가 인용한 글이 전부다. 필요하면 Chrome 자동화로 보강한다.

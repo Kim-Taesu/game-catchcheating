@@ -16,6 +16,13 @@ const INNOCENTS = [
   'think-chin', 'look-up', 'plain-glasses', 'yawn', 'pencil-spin', 'rub-eyes', 'analog-watch', 'plain-calculator',
   'sneeze', 'drink-water', 'scratch-head', 'stretch', 'erase', 'turn-back', 'nose-sniff',
 ]
+const LOOKALIKES: Record<string, string> = {
+  'smart-glasses-frame': 'plain-glasses',
+  'glasses-swap': 'plain-glasses',
+  smartwatch: 'analog-watch',
+  'earpiece-hidden': 'sneeze',
+  'earbud-swallow': 'sneeze',
+}
 const STATUSES = ['confirmed', 'investigating', 'mentioned', 'unverified']
 const BASIS = ['report', 'guideline', 'community', 'industry']
 const BANNED = ['냥이', '리트 만점']
@@ -38,12 +45,21 @@ describe('cases.json', () => {
     expect(new Set(cases.map((c) => c.id)).size).toBe(cases.length)
   })
 
-  it('every case has a known status and https sources unless unverified', () => {
+  it('every case has a known status and at least one https source (rumors cite the report that calls them unverified)', () => {
     for (const c of cases) {
       expect(STATUSES, c.id).toContain(c.status)
-      if (c.status === 'unverified') continue
       expect(c.sources.length, c.id).toBeGreaterThanOrEqual(1)
       for (const s of c.sources) expect(s.url, c.id).toMatch(/^https:\/\//)
+    }
+  })
+
+  it('keeps the calculator case under investigation (mechanism unconfirmed)', () => {
+    expect(cases.find((c) => c.id === 'calculator-mod')!.status).toBe('investigating')
+  })
+
+  it('industry-based tells disclose that they are not an observed catch', () => {
+    for (const c of cases.filter((x) => x.playable && x.tell!.basisKind === 'industry')) {
+      expect(c.tell!.basisNote ?? '', c.id).toContain('업계 설명')
     }
   })
 
@@ -71,9 +87,11 @@ describe('cases.json', () => {
     for (const c of cases.filter((x) => x.playable)) expect(c.tell!.swap === true, c.id).toBe(c.id === 'glasses-swap')
   })
 
-  it('lookalikes point at real innocents', () => {
+  it('has exactly the planned lookalike pairs, all pointing at real innocents', () => {
+    const actual = Object.fromEntries(cases.filter((x) => x.lookalike).map((c) => [c.id, c.lookalike]))
+    expect(actual).toEqual(LOOKALIKES)
     const innocentIds = new Set(innocents.map((i) => i.id))
-    for (const c of cases.filter((x) => x.lookalike)) expect(innocentIds.has(c.lookalike!), c.id).toBe(true)
+    for (const target of Object.values(actual)) expect(innocentIds.has(target!), target).toBe(true)
   })
 
   it('keeps summary, cue and detect short', () => {
@@ -90,6 +108,10 @@ describe('innocents.json', () => {
     }
     expect(innocents.filter((i) => i.behavior === 'repeat').length).toBeGreaterThanOrEqual(5)
     expect(innocents.filter((i) => i.behavior === 'oneoff').length).toBeGreaterThanOrEqual(5)
+  })
+
+  it('does not attribute its guidance to an official body', () => {
+    for (const i of innocents) for (const word of ['지침', '교육부', '교육청']) expect(i.why.includes(word), i.id).toBe(false)
   })
 })
 
