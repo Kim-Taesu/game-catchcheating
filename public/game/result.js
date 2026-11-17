@@ -1,0 +1,41 @@
+// Result titles and share values. Pure functions: shared by browser, Worker and tests.
+
+export const TITLE_TEXT = {
+  eagle: '매의 눈 감독관',
+  veteran: '베테랑 감독관',
+  suspicious: '의심 많은 감독관',
+  rookie: '신입 감독관',
+  sleepy: '졸고 있는 감독관',
+}
+
+/** First match wins. */
+export function titleFor(r) {
+  if (r.m === 0 && r.f === 0 && r.t <= 30) return 'eagle'
+  if (r.m <= 1 && r.f <= 1) return 'veteran'
+  if (r.f >= 3) return 'suspicious'
+  if (r.c >= 2) return 'rookie'
+  return 'sleepy'
+}
+
+export function shareQuery(r) {
+  return `c=${r.c}&m=${r.m}&f=${r.f}&t=${r.t}`
+}
+
+function readInt(params, key) {
+  const raw = params.get(key)
+  if (raw === null || !/^\d+$/.test(raw)) return null
+  const n = Number(raw)
+  return Number.isInteger(n) ? n : null
+}
+
+/** Returns a validated Result, or null when any value is missing or out of range. */
+export function parseShare(params) {
+  const c = readInt(params, 'c')
+  const m = readInt(params, 'm')
+  const f = readInt(params, 'f')
+  const t = readInt(params, 't')
+  if (c === null || m === null || f === null || t === null) return null
+  if (f > 3 || t > 60) return null
+  if (c + m !== 3 && c + m !== 4) return null
+  return { c, m, f, t }
+}
