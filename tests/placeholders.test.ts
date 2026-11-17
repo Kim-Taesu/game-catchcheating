@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import sharp from 'sharp'
+import { captionFor } from '../scripts/lib/caption.mjs'
 
 const root = new URL('../public/', import.meta.url)
 const p = (rel: string) => new URL(rel, root).pathname
@@ -14,6 +15,7 @@ const props = [
   'prop-smart-glasses', 'prop-earbud', 'prop-button-camera', 'prop-calculator-back', 'prop-id-card',
   'prop-bone-band', 'prop-smartwatch', 'prop-cheat-note', 'prop-phone-glow',
 ]
+const cases = readJson('data/cases.json') as unknown as { id: string; name: string; playable?: boolean; tell?: { action: string } }[]
 const tiers = ['eagle', 'veteran', 'suspicious', 'rookie', 'sleepy']
 
 async function size(file: string) {
@@ -49,5 +51,18 @@ describe('placeholder art', () => {
 
   it('og cards are 800x400', async () => {
     for (const t of tiers) expect(await size(`og/${t}.png`), t).toEqual([800, 400])
+  })
+
+  it('sprite captions never reveal case names', () => {
+    for (const c of cases.filter((x) => x.playable)) {
+      expect(captionFor(c, 0), c.id).toBe('')
+      expect(captionFor(c, 1), c.id).toBe(c.tell!.action)
+      expect(captionFor(c, 1), c.id).not.toBe(c.name)
+    }
+    const inn = readJson('data/innocents.json') as unknown as { name: string }[]
+    for (const i of inn) {
+      expect(captionFor(i, 0)).toBe('')
+      expect(captionFor(i, 1)).toBe(i.name)
+    }
   })
 })

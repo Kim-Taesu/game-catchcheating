@@ -5,6 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { esc, makeOg } from './make-og.mjs'
+import { captionFor } from './lib/caption.mjs'
 
 const pub = (rel) => fileURLToPath(new URL(`../public/${rel}`, import.meta.url))
 const readJson = (rel) => JSON.parse(readFileSync(pub(rel), 'utf8'))
@@ -25,16 +26,28 @@ function hue(id) {
   return h % 360
 }
 
-/** Caption lines, split in two when long, with font size fitted to 176px. */
-function caption(name) {
-  const chars = [...name]
-  const lines = chars.length > 9 ? [chars.slice(0, Math.ceil(chars.length / 2)).join(''), chars.slice(Math.ceil(chars.length / 2)).join('')] : [name]
+/** Wrap text into at most 3 lines (by words, hard-split if needed) and fit the font to 176px. */
+function caption(text) {
+  if (!text) return { lines: [], size: 0 }
+  const chars = [...text]
+  const per = Math.max(8, Math.ceil(chars.length / 3))
+  const words = text.split(' ')
+  let lines = []
+  let cur = ''
+  for (const w of words) {
+    if (cur && [...(cur + ' ' + w)].length > per) { lines.push(cur); cur = w } else cur = cur ? cur + ' ' + w : w
+  }
+  if (cur) lines.push(cur)
+  if (lines.length > 3 || lines.some((l) => [...l].length > per + 4)) {
+    lines = [0, 1, 2].map((i) => chars.slice(i * per, (i + 1) * per).join('')).filter(Boolean)
+  }
   const longest = Math.max(...lines.map((l) => [...l].length))
-  const size = Math.max(14, Math.min(24, Math.floor(176 / longest)))
+  const size = Math.max(13, Math.min(22, Math.floor(176 / longest)))
   return { lines, size }
 }
 
-function personSvg(id, name, pose) {
+function personSvg(id, entry, pose) {
+  const name = captionFor(entry, pose)
   const h = hue(id)
   const action = pose === 1
   const bg = action ? `hsl(${(h + 40) % 360} 85% 82%)` : `hsl(${h} 60% 88%)`
@@ -42,7 +55,7 @@ function personSvg(id, name, pose) {
   const dx = action ? 14 : 0
   const { lines, size } = caption(name)
   const text = lines
-    .map((l, i) => `<text x="96" y="${176 - (lines.length - 1 - i) * (size + 2)}" text-anchor="middle" font-family="${FONT}" font-size="${size}" font-weight="700" fill="#222">${esc(l)}</text>`)
+    .map((l, i) => `<text x="96" y="${180 - (lines.length - 1 - i) * (size + 2)}" text-anchor="middle" font-family="${FONT}" font-size="${size}" font-weight="700" fill="#222">${esc(l)}</text>`)
     .join('')
   const marker = action
     ? `<circle cx="160" cy="34" r="20" fill="#e5322d"/><text x="160" y="46" text-anchor="middle" font-family="${FONT}" font-size="32" font-weight="800" fill="#fff">!</text>`
@@ -51,10 +64,12 @@ function personSvg(id, name, pose) {
   const tilt = action ? `transform="rotate(8 ${96 + dx} 76)"` : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192">
 <rect x="4" y="4" width="184" height="184" rx="28" fill="${bg}" stroke="${action ? '#e5322d' : 'none'}" stroke-width="${action ? 4 : 0}"/>
+<g transform="translate(0 -18)">
 ${arm}
 <rect x="${96 + dx - 34}" y="100" width="68" height="48" rx="22" fill="${body}"/>
 <circle cx="${96 + dx}" cy="76" r="26" fill="#f6d2b0" ${tilt}/>
 <circle cx="${96 + dx - 9}" cy="74" r="3" fill="#333"/><circle cx="${96 + dx + 9}" cy="74" r="3" fill="#333"/>
+</g>
 ${marker}${text}
 </svg>`
 }
@@ -80,8 +95,8 @@ const classroomSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1152" heigh
 </svg>`
 
 const jobs = []
-for (const c of readJson('data/cases.json').filter((x) => x.playable)) jobs.push([c.id, c.name])
-for (const c of readJson('data/innocents.json')) jobs.push([c.id, c.name])
+for (const c of readJson('data/cases.json').filter((x) => x.playable)) jobs.push(c)
+for (const c of readJson('data/innocents.json')) jobs.push(c)
 
 let written = 0
 let skipped = 0
@@ -93,9 +108,9 @@ async function put(rel, svg) {
 }
 
 await mkdir(pub('px'), { recursive: true })
-for (const [id, name] of jobs) {
-  await put(`px/${id}-0.webp`, personSvg(id, name, 0))
-  await put(`px/${id}-1.webp`, personSvg(id, name, 1))
+for (const e of jobs) {
+  await put(`px/${e.id}-0.webp`, personSvg(e.id, e, 0))
+  await put(`px/${e.id}-1.webp`, personSvg(e.id, e, 1))
 }
 for (const [id, label, glyph] of PROPS) await put(`px/${id}.webp`, propSvg(id, label, glyph))
 await put('px/classroom.webp', classroomSvg)
