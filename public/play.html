@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>게임 - 치팅 파인더</title>
+    <meta name="description" content="60초 안에 수상한 행동을 반복하는 응시자를 찾아내는 시험장 미니게임." />
+    <link rel="stylesheet" href="/site.css" />
+    <link rel="stylesheet" href="/play.css" />
+  </head>
+  <body>
+    <main class="wrap play">
+      <a class="back" href="/">← 처음으로</a>
+      <div id="game"><p>불러오는 중…</p></div>
+      <section id="end" class="end card" hidden>
+        <h2>시험 종료</h2>
+        <p id="end-reason"></p>
+        <a class="btn btn-primary" href="/play">다시 하기</a>
+      </section>
+      <p class="disclaimer">뉴스 보도 기준 개요이며 따라 하기 안내가 아닙니다. 수사 중인 사건은 바뀔 수 있습니다.</p>
+    </main>
+    <script type="module">
+      import { startGame } from '/game/scene.js'
+
+      const REASON = {
+        clear: '수상한 응시자를 모두 찾았어요.',
+        timeout: '시간이 끝났어요.',
+        lives: '기회를 모두 사용했어요.',
+      }
+      const game = document.getElementById('game')
+      try {
+        const [cases, innocents] = await Promise.all([
+          fetch('/data/cases.json').then((r) => r.json()),
+          fetch('/data/innocents.json').then((r) => r.json()),
+        ])
+        const q = new URLSearchParams(location.search).get('seed')
+        const seed = q !== null && /^\d+$/.test(q) ? Number(q) : undefined
+        startGame(game, {
+          cases,
+          innocents,
+          seed,
+          onEnd() {
+            document.getElementById('end-reason').textContent = REASON[game.dataset.ended] ?? ''
+            document.getElementById('end').hidden = false
+          },
+        })
+      } catch {
+        game.textContent = '게임을 불러오지 못했어요. 새로고침해 주세요.'
+      }
+    </script>
+  </body>
+</html>
