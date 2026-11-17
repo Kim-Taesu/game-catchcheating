@@ -9,7 +9,7 @@
       { "country": "KR", "year": 2026, "label": "중·고교 내신 시험" },
       { "country": "JP", "year": 2024, "label": "와세다대 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
       { "country": "IN", "year": 2026, "label": "심바이오시스공대 시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
-      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험(카메라 안경)", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
     ],
     "summary": "카메라가 달린 AI 안경으로 문제를 찍어 답을 받는 수법. 2026년 국내 국가기술자격시험과 학교 시험에서 잇따라 적발됐다.",
     "cue": "평소 안경을 안 쓰던 응시자가 안경테를 자꾸 어색하게 만졌다. 안경테의 카메라 렌즈·표시등, 렌즈에 비친 초록 불빛도 단서였다.",
@@ -121,7 +121,7 @@
     "origins": [
       { "country": "KR", "year": 2013, "label": "토익·텝스 조직적 부정행위" },
       { "country": "KR", "year": 2026, "label": "국가자격시험 반입 금지 품목" },
-      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험(시계형 기기)", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
     ],
     "summary": "손목시계 모양의 기기로 정답을 받아 본 수법. 2013년 토익·텝스 조직 사건에서 고막 이어폰과 함께 쓰였다.",
     "cue": "2013년 사건에서는 시계형 기기로 답을 받았다. 업계에서는 반복되는 이상한 몸짓·시선을 신호로 본다.",

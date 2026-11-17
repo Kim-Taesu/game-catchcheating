@@ -132,8 +132,7 @@
 | 베트남 고교 졸업시험 (2025-06) | 단추 크기 카메라와 무선 이어폰, 조력자가 ChatGPT로 답 생성, 감독관이 수상한 행동을 보고 검사 | Tuoi Tre https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm |
 | 업계 설명 (행동 신호) | "mumbling or talking to themselves", "repeatedly glancing up into their glasses" | VICTVS https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/ |
 | 업계 설명 (감지 항목) | "Subtle whispers", "Bone-conduction leaks", "Irregular gaze direction", "Gesture anomalies" | Talview https://www.talview.com/blog/meta-ai-glasses-exam-cheating |
-
-| 이탈리아 운전면허 필기 (2023) | 당국이 사복 경찰을 시험장에 투입하는 등 단속을 강화 | 전자신문 https://www.etnews.com/20231115000253 |
+| 이탈리아 운전면허 필기 (2023) | 당국이 사복 경찰을 시험장에 투입하는 등 단속을 강화 (원문 문장 확인 2회: 컨트롤러·T5 재검토자) | 전자신문 https://www.etnews.com/20231115000253 |
 | 광주대동고 (고전 사례) | 쉬는 시간마다 커닝 페이퍼를 찢는 모습을 같은 반 친구들이 수상히 여겨 적발 | 나무위키 '부정행위' |
 | 곁눈질 대응 | 홀짝형 문제지 배치로 효과가 떨어짐 | 나무위키 '부정행위' |
 
