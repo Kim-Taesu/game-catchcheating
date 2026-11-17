@@ -31,6 +31,15 @@ test('도감: #id로 바로 열기', async ({ page }) => {
   await expect(page.locator('#d-title')).toBeVisible()
 })
 
+test('도감: 깨진 해시(#%E0)는 무시하고 목록 렌더', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  await page.goto('/dex#%E0')
+  await expect(page.locator('#grid .dcard')).toHaveCount(18)
+  await expect(page.locator('#detail')).toBeHidden()
+  expect(errors).toEqual([])
+})
+
 test('도감: localStorage가 예외를 던져도 목록 렌더', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(window, 'localStorage', {

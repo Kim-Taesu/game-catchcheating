@@ -153,7 +153,12 @@ function closeDetail(clearHash = true) {
 }
 
 function syncHash() {
-  const id = decodeURIComponent(location.hash.slice(1))
+  let id = ''
+  try {
+    id = decodeURIComponent(location.hash.slice(1))
+  } catch {
+    // Malformed hash (e.g. "#%E0"): ignore it and show the list.
+  }
   if (id) openDetail(id)
   else closeDetail(false)
 }

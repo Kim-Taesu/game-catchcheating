@@ -9,6 +9,7 @@ test('홈: 제목, 진입 링크, 면책, 가로 스크롤 없음', async ({ pag
   await expect(page.getByRole('link', { name: '게임 시작' })).toHaveAttribute('href', '/play')
   await expect(page.locator('.disclaimer')).toBeVisible()
   await expect(page.locator('.disclaimer')).toContainText('따라 하기 안내가 아닙니다')
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', '/og/eagle.png?v=1')
   const width = await page.evaluate(() => document.documentElement.scrollWidth)
   expect(width).toBeLessThanOrEqual(375)
 })

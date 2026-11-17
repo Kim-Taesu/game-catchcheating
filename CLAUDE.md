@@ -22,21 +22,22 @@
 ```
 wrangler.jsonc          Worker 설정. assets=./public, run_worker_first=["/r"], workers_dev=false
 playwright.config.ts    e2e 설정 (시스템 Chrome, :8788)
-src/worker.ts           `/r` 공유 랜딩 핸들러. c·m·f·t 검증, 서버가 칭호 재계산, 잘못된 값은 `/`로 이동
-src/share.ts            공유 링크·OG 태그 생성. `OG_VERSION`(OG 이미지 URL `?v=`)
+src/worker.ts           `/r` 라우팅만. 실제 처리는 src/share.ts
+src/share.ts            `/r` 값 검증(c·m·f·t, `parseShare`)·서버 칭호 재계산·OG 태그 생성, 잘못된 값은 `/`로 이동. `OG_VERSION`(OG 이미지 URL `?v=`)
 public/index.html       소개 + 도감/게임 진입
 public/dex.html, dex.js, dex-logic.js   도감 (목록·필터 3축·상세·발견 표시). 순수 로직은 dex-logic.js
 public/play.html, play.css              게임 화면
 public/site.css         공통 스타일
 public/data/cases.json      사건·수법 도감 데이터 (수법 12종 출전 + 도감 전용 6종 + 미검증 소문)
-public/data/innocents.json  평범한 응시자 15명 (id, name, behavior, why)
-public/game/round.js    판 구성: 수법 3~4 + 평범 5~6, 해외 사례 최소 1, 헷갈리는 쌍 배치
-public/game/engine.js   60초·기회 3·행동 포즈 타이밍·탭 판정·glasses-swap
-public/game/result.js   기록(c·m·f·t)과 칭호 계산
+public/data/innocents.json  평범한 응시자 15명 (id, name, behavior, action, why). `action`은 `tell.action`과 같은 "…한다" 문장
+public/game/round.js    판 구성: 수법 3~4 + 평범 5~6, 해외 사례 최소 1, 헷갈리는 쌍 배치, 좌석별 행동 포즈 시각(onsets·swapAtMs) 생성
+public/game/engine.js   60초·기회 3·포즈 판정(poseAt)·탭 판정·같은 좌석 재탭 무시·glasses-swap
+public/game/result.js   기록(c·m·f·t)과 칭호 계산, 결과 화면 시간 줄(endTimeLine)
 public/game/share.js    공유 문구·링크 (navigator.share → 클립보드 → 선택 가능 링크)
 public/game/storage.js  도감 발견 표시 저장 (localStorage)
-public/game/scene.js    3×3 좌석 렌더
-public/game/result-ui.js  결과 화면
+public/game/scene.js    3×3 좌석·HUD·상단 짧은 알림(toast). 끝나면 onEnd(result, recap)
+public/game/result-ui.js  결과 화면: 칭호·숫자·공유 + 목록 3개(만난 수법·오해한 응시자·놓친 수법)
+public/game/labels.js   상태·근거 라벨, 단일 행동 안내 문구 (scene·result-ui 공용)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 현재 임시본
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
@@ -53,7 +54,10 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 - 60초, 기회 3. 3×3 좌석 = 수법 응시자 3~4 + 평범한 응시자 5~6, 해외 `origins` 수법 최소 1
 - 수법 응시자는 약 5초(±1.5초) 간격으로 행동 포즈를 0.8초. 좌석별 시작은 무작위
 - 평범한 응시자: `oneoff`는 판당 1~2회, `repeat`는 약 8초 간격. `glasses-swap`은 18~22초에 포즈가 바뀌어 유지
-- 수법 응시자를 탭하면 적발, 평범한 응시자를 탭하면 기회 -1과 "단일 행동만으로 단정할 수 없다" 설명
+- 수법 응시자를 탭하면 적발, 평범한 응시자를 탭하면 기회 -1. 이미 오해로 판정된 좌석은 다시 탭해도 무시(기회 그대로, "확인함" 표시, `data-cleared`). `glasses-swap`을 교체 전에 탭하면 평범한 응시자와 똑같이 처리되고, 교체 전 재탭은 무시, 교체 후에는 적발 가능
+- 게임 중 안내는 HUD 자리에 뜨는 짧은 알림(toast)뿐이다. 좌석 격자를 절대 덮지 않고(높이 ≤72px), 2.5초 뒤 사라지고, 새 탭이 바꾸고, Esc로 닫힌다. 링크·긴 설명 없음. 문구: 적발 "적발! 수법 이름 · 상태 라벨", 평범 "정상 행동입니다 · 평범 이름", 교체 전 "정상 행동입니다 · 응시자 N". `#panel-live`(sr-only)가 같은 문구를 읽어 준다
+- 자세한 설명은 결과 화면(`#end`) 목록: "이번 판에서 만난 수법"(이름·상태·단서·근거 라벨·`/dex#id` 링크), "오해한 응시자"(이름·이유·"단일 행동만으로는 부정행위라고 단정할 수 없습니다.", 교체 전 탭은 "응시자 N — 이때는 아직 수상한 점이 보이지 않았어요"), "놓친 수법"(이름·링크). 시간 줄은 전원 적발 "걸린 시간 t초", 시간 종료 "시간 종료", 기회 소진은 없음
+- 정답 노출 금지: 적발 전 좌석의 글자·ARIA는 "응시자 N"뿐이고, 이미지 실패 대체 카드는 행동 문장(`tell.action` / 평범 `action`, 같은 문장 형식)만 보여 준다
 - 종료: 전원 적발 / 60초 / 기회 0. 기록 `c`(잡음) `m`(놓침) `f`(오해) `t`(초, 전원 적발 못 하면 60)
 - 공유 링크 `/r?c=&m=&f=&t=`: `f` 0~3, `c+m`은 3 또는 4, `t` 0~60. 서명 없음(랭킹이 없어 위조 이득 없음)
 
@@ -90,11 +94,12 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 현재 `public/px/`는 임시 에셋이다. 교체 전 공개 배포 금지.
 
 1. 사용자가 `docs/assets/image-prompts.md`의 시트 5종(수법시트1, 시트2, 시트3, 소품시트, 시험장 배경)을 `images/`(git 제외)에 넣는다
-2. 시트마다 `node scripts/slice-sheet.mjs <sheet.png> <pair|prop> <9 ids> <임시 디렉터리>`로 자른다 (임시 디렉터리에 먼저 낸다)
+2. 시트마다 `node scripts/slice-sheet.mjs <sheet.png> <pair|prop> <9 ids> <임시 디렉터리>`로 자른다 (임시 디렉터리에 먼저 낸다). 시험장 배경(`catch_시험장.png`)은 3×3 시트가 아니라서 따로 변환한다:
+   `node -e "require('sharp')('images/catch_시험장.png').resize(1152, 648, { fit: 'cover', kernel: 'nearest' }).webp({ lossless: true }).toFile('<임시 디렉터리>/classroom.webp')"` → 점검 후 `public/px/classroom.webp`
 3. 프롬프트 문서 §8 점검표로 결과를 확인한다: 같은 인물 두 포즈, 머리·책상 높이, 마젠타 배경, 단서가 티 나지 않는지, 평범 응시자에 장비 없음, 글자·워터마크 없음
 4. 통과한 파일을 `public/px/`로 복사한다. 실제 파일은 `make-placeholders.mjs`가 `--force` 없이는 덮어쓰지 않는다
 5. `node scripts/make-og.mjs`로 공유 카드를 다시 만든다
 6. OG 이미지가 바뀌면 `src/share.ts`의 `OG_VERSION`을 올린다 (카카오톡이 URL 기준으로 캐시)
 7. `npm test`, `npm run e2e` 통과 후 사용자 승인을 받고 배포
 
-슬라이서 알려진 한계: 마젠타 despill이 없고 webp가 손실 압축이다. 분홍 테두리와 번짐을 눈으로 확인한다.
+슬라이서는 픽셀 아트용이다: nearest-neighbour 축소, 무손실 webp, 마젠타 키(거리 ≤60) 뒤 despill(거리 ≤140인 테두리 픽셀의 R·B를 G 쪽으로 당기고 알파를 비례해 낮춤). 그래도 분홍 테두리가 남는지 눈으로 확인한다. `make-og.mjs`도 스프라이트를 raw로 디코드한 뒤 nearest로 줄인다(WebP shrink-on-load가 커널을 무시하므로).
