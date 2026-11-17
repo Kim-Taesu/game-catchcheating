@@ -16,3 +16,5 @@ export const statusLabel = (c) => STATUS_LABEL[c?.status]
 export const basisLine = (tell) =>
   `근거: ${BASIS_LABEL[tell.basisKind] ?? ''}${tell.basisNote ? ` (${tell.basisNote})` : ''}`
 export const SINGLE_ACTION_NOTE = '단일 행동만으로는 부정행위라고 단정할 수 없습니다.'
+/** Behavior sentence of a round entry: cheater case -> tell.action, innocent -> action. */
+export const actionOf = (entry) => entry?.tell?.action ?? entry?.action ?? ''

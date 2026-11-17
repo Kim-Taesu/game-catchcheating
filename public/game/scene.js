@@ -3,7 +3,8 @@
 import { buildRound, seededRng } from './round.js'
 import { createEngine, poseAt, tap, status, result } from './engine.js'
 import { markDiscovered, safeStorage } from './storage.js'
-import { statusLabel } from './labels.js'
+import { actionOf } from './labels.js'
+import { seatLabel, tapMessage } from './identity.js'
 
 function el(tag, props = {}, ...children) {
   const node = document.createElement(tag)
@@ -30,10 +31,9 @@ export function startGame(root, opts) {
   const plan = buildRound(opts.cases, opts.innocents, seededRng(seed))
   const caseById = new Map(opts.cases.map((c) => [c.id, c]))
   const innById = new Map(opts.innocents.map((i) => [i.id, i]))
-  const nameOf = (id) => (caseById.get(id) ?? innById.get(id))?.name ?? id
   // Behavior text shown on a seat in action pose: never reveals the case name.
   // Both are sentences in the same style, so the image-failure screen gives no hint either.
-  const behaviorOf = (s) => (s.kind === 'cheater' ? caseById.get(s.id)?.tell?.action : innById.get(s.id)?.action) ?? ''
+  const behaviorOf = (s) => actionOf(s.kind === 'cheater' ? caseById.get(s.id) : innById.get(s.id))
   const TOAST_MS = 2500
 
   const startMs = now()
@@ -53,7 +53,7 @@ export function startGame(root, opts) {
   const views = new Map()
   function paintFallback(v) {
     if (!v.fallback) return
-    const label = `응시자 ${v.s.seat + 1}`
+    const label = seatLabel(v.s.seat)
     v.fallback.textContent = v.pose === 1 ? `${label}\n${behaviorOf(v.s)}` : label
   }
   for (const s of plan.seats) {
@@ -62,7 +62,7 @@ export function startGame(root, opts) {
       'button',
       { type: 'button', class: 'seat', 'data-seat': String(s.seat), style: `--i:${s.seat}` },
       img,
-      el('span', { class: 'sr-only', text: `응시자 ${s.seat + 1}` }),
+      el('span', { class: 'sr-only', text: seatLabel(s.seat) }),
       el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '적발' }),
       el('span', { class: 'stamp stamp-cleared', 'aria-hidden': 'true', text: '확인함' }),
     )
@@ -82,6 +82,13 @@ export function startGame(root, opts) {
   const live = el('div', { class: 'sr-only', id: 'panel-live', role: 'status', 'aria-live': 'polite' })
 
   root.append(hud, grid, live)
+
+  // Warm the action poses so the first pose change never waits on the network.
+  for (const s of plan.seats) {
+    const pre = new Image()
+    pre.src = `/px/${s.id}-1.webp`
+    pre.decode().catch(() => {})
+  }
 
   // ---- toast ----
   let toastTimer = 0
@@ -152,24 +159,18 @@ export function startGame(root, opts) {
     const out = tap(engine, seatNo, now())
     const v = views.get(seatNo)
     const label = v.btn.querySelector('.sr-only')
+    const msg = tapMessage(out, caseById)
+    if (msg) label.textContent = msg.label
     if (out.kind === 'caught') {
-      const c = caseById.get(out.id)
       v.btn.removeAttribute('data-cleared')
       v.btn.setAttribute('data-caught', '')
-      label.textContent = `응시자 ${seatNo + 1} 적발: ${nameOf(out.id)}`
       markDiscovered(storage, out.id)
       recap.caught.push(out.id)
-      const st = statusLabel(c)
-      showToast(`적발! ${nameOf(out.id)}${st ? ` · ${st}` : ''}`)
     } else if (out.kind === 'innocent') {
-      const beforeSwap = out.reason === 'before-swap'
       v.btn.setAttribute('data-cleared', '')
-      label.textContent = `응시자 ${seatNo + 1} 확인함`
-      recap.misjudged.push({ seat: seatNo, id: out.id, beforeSwap })
-      // Same text for every non-catch tap (innocent or swap seat before its swap), so the toast
-      // never tells the swap seat apart. Names and reasons are on the result screen.
-      showToast(`정상 행동입니다 · 응시자 ${seatNo + 1}`)
+      recap.misjudged.push({ seat: seatNo, id: out.id, beforeSwap: out.reason === 'before-swap' })
     }
+    if (msg) showToast(msg.toast)
     render()
   }
 

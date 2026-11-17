@@ -2,6 +2,7 @@
 // (cases met, misjudged examinees, missed cases). All data goes in via textContent.
 import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
+import { beforeSwapLine } from './identity.js'
 import { SINGLE_ACTION_NOTE, basisLine, statusLabel } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '기회를 모두 사용했어요.' }
@@ -55,8 +56,7 @@ function recapSections(recap, cases, innocents) {
     const li = el('li', 'end-item')
     if (m.beforeSwap) {
       // Name the case only when it was caught later in the round.
-      const later = recap.caught.includes(m.id) ? ` (나중에 적발: ${caseName(m.id)})` : ''
-      li.append(el('p', 'end-item-title', `응시자 ${m.seat + 1} — 이때는 아직 수상한 점이 보이지 않았어요${later}`))
+      li.append(el('p', 'end-item-title', beforeSwapLine(m.seat, recap.caught.includes(m.id) ? caseName(m.id) : '')))
     } else {
       const inn = innById.get(m.id)
       li.append(el('p', 'end-item-title', inn?.name ?? m.id), el('p', '', inn?.why ?? ''))
