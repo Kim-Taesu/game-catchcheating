@@ -1,0 +1,9 @@
+{
+  "name": "catchcheating",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-11-01",
+  // /r 만 Worker가 직접 처리하고 나머지는 정적 파일.
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/r"] },
+  // 실제 에셋 교체 전에는 공개 배포하지 않는다 (설계 §6.8).
+  "workers_dev": false
+}
