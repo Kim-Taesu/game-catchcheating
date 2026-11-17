@@ -88,5 +88,16 @@
 .panel-close { width: 100%; margin-top: 4px; }
 .has-panel { padding-bottom: 42vh; }
 
-.end h2 { margin: 0 0 8px; }
-.end .btn { margin-top: 8px; }
+
+.end-label { margin: 0 0 4px; color: var(--muted); font-size: 0.875rem; }
+.end-title { font-size: 1.75rem; line-height: 1.25; outline: none; }
+.end-numbers { font-size: 1.125rem; font-weight: 700; margin: 0 0 4px; }
+.end-time, .end-hint { margin: 0 0 6px; color: var(--muted); }
+.end-actions { display: grid; gap: 8px; margin-top: 12px; }
+.end-actions .btn { margin-top: 0; width: 100%; min-height: 44px; text-align: center; }
+.end-status { min-height: 1.5em; margin: 8px 0 0; font-weight: 700; }
+.end-link { width: 100%; min-height: 44px; margin-top: 4px; padding: 0 8px; border: 2px solid var(--ink); border-radius: var(--radius); background: var(--paper); color: var(--ink); font: inherit; }
+
+/* After the round ends the last panel flows inline so it never covers the result buttons. */
+#game[data-ended] .panel { position: static; max-height: none; margin: 12px 0 0; box-shadow: none; max-width: none; }
+#game[data-ended].has-panel { padding-bottom: 0; }
