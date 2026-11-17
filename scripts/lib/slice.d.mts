@@ -8,3 +8,4 @@ export interface Rect {
 export function gridCells(width: number, height: number, cols: number, rows: number): Rect[]
 export function splitPair(cell: Rect): [Rect, Rect]
 export function keyMagenta(rgba: Uint8Array, tolerance?: number): Uint8Array
+export function despillMagenta(rgba: Uint8Array, keyTolerance?: number, spillTolerance?: number): Uint8Array

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import sharp from 'sharp'
 import { afterAll, describe, expect, it } from 'vitest'
-import { gridCells, keyMagenta, splitPair } from '../scripts/lib/slice.mjs'
+import { despillMagenta, gridCells, keyMagenta, splitPair } from '../scripts/lib/slice.mjs'
 
 const dir = mkdtempSync(join(tmpdir(), 'cf-slice-'))
 afterAll(() => rmSync(dir, { recursive: true, force: true }))
@@ -36,6 +36,47 @@ describe('keyMagenta', () => {
   })
 })
 
+describe('despillMagenta', () => {
+  const px = (r: number, g: number, b: number, a = 255) => new Uint8Array([r, g, b, a])
+
+  it('leaves keyed magenta and far-away colours unchanged', () => {
+    expect([...despillMagenta(px(255, 0, 255, 0))]).toEqual([255, 0, 255, 0])
+    expect([...despillMagenta(px(20, 120, 40))]).toEqual([20, 120, 40, 255])
+    expect([...despillMagenta(px(255, 255, 255))]).toEqual([255, 255, 255, 255])
+  })
+
+  it('pulls R and B of a fringe pixel toward G and lowers alpha proportionally', () => {
+    const src = px(200, 60, 200)
+    const out = despillMagenta(src)
+    expect(out[0]).toBeLessThan(200)
+    expect(out[0]).toBeGreaterThanOrEqual(60)
+    expect(out[2]).toBeLessThan(200)
+    expect(out[1]).toBe(60)
+    expect(out[3]).toBeLessThan(255)
+    expect(out[3]).toBeGreaterThan(0)
+    expect([...src]).toEqual([200, 60, 200, 255])
+  })
+
+  it('a pixel closer to magenta loses more than one further away', () => {
+    const near = despillMagenta(px(225, 40, 225))
+    const far = despillMagenta(px(180, 80, 180))
+    expect(near[3]).toBeLessThan(far[3])
+    expect(near[0] - near[1]).toBeLessThan(225 - 40)
+  })
+
+  it('does not touch pixels just outside the spill tolerance', () => {
+    // distance from #FF00FF > 140
+    const out = despillMagenta(px(150, 90, 150))
+    expect([...out]).toEqual([150, 90, 150, 255])
+  })
+
+  it('a fully keyed sheet has no pink fringe after key + despill', () => {
+    const out = despillMagenta(keyMagenta(new Uint8Array([255, 0, 255, 255, 230, 30, 230, 255])))
+    expect(out[3]).toBe(0)
+    expect(out[7]).toBe(0)
+  })
+})
+
 describe('slice-sheet CLI', () => {
   it('writes 18 transparent 192x192 webp files', async () => {
     const overlays: sharp.OverlayOptions[] = []
@@ -58,6 +99,9 @@ describe('slice-sheet CLI', () => {
       expect([meta.width, meta.height, meta.hasAlpha]).toEqual([192, 192, true])
       const { data } = await sharp(file).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
       expect(data[3]).toBe(0)
+      // Lossless + nearest: the flat figure colour survives exactly (no blending, no lossy shift).
+      const centre = (96 * 192 + 96) * 4
+      expect([data[centre], data[centre + 1], data[centre + 2], data[centre + 3]]).toEqual([20, 120, 40, 255])
     }
   })
 

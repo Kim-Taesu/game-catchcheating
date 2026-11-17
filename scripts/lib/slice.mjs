@@ -32,3 +32,26 @@ export function keyMagenta(rgba, tolerance = 60) {
   }
   return out
 }
+
+/**
+ * Magenta despill for the anti-aliased fringe the key leaves behind. Pixels farther than
+ * `keyTolerance` but within `spillTolerance` of #FF00FF get R and B pulled toward G and their
+ * alpha lowered, both in proportion to how close they are to magenta (t = 1 at the key edge,
+ * 0 at the spill edge, so the result is continuous). Fully transparent pixels are left alone.
+ * Returns a new RGBA array.
+ */
+export function despillMagenta(rgba, keyTolerance = 60, spillTolerance = 140) {
+  const out = new Uint8Array(rgba)
+  const span = spillTolerance - keyTolerance
+  for (let i = 0; i + 3 < out.length; i += 4) {
+    if (out[i + 3] === 0) continue
+    const d = Math.hypot(out[i] - 255, out[i + 1], out[i + 2] - 255)
+    if (d > spillTolerance) continue
+    const t = Math.min(1, (spillTolerance - d) / span)
+    const g = out[i + 1]
+    if (out[i] > g) out[i] = Math.round(out[i] - (out[i] - g) * t)
+    if (out[i + 2] > g) out[i + 2] = Math.round(out[i + 2] - (out[i + 2] - g) * t)
+    out[i + 3] = Math.round(out[i + 3] * (1 - t))
+  }
+  return out
+}

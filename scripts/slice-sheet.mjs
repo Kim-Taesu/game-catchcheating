@@ -2,7 +2,7 @@
 import { mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 import sharp from 'sharp'
-import { gridCells, keyMagenta, splitPair } from './lib/slice.mjs'
+import { despillMagenta, gridCells, keyMagenta, splitPair } from './lib/slice.mjs'
 
 const SIZE = 192
 
@@ -19,7 +19,8 @@ const ids = idArg.split(',').map((s) => s.trim())
 if (ids.length !== 9 || ids.some((s) => !s)) fail(`ids must be exactly 9, got ${ids.length}`)
 
 const { data, info } = await sharp(sheetPath).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
-const keyed = keyMagenta(new Uint8Array(data.buffer, data.byteOffset, data.length))
+// Key the magenta background, then despill the pink fringe around the figures.
+const keyed = despillMagenta(keyMagenta(new Uint8Array(data.buffer, data.byteOffset, data.length)))
 mkdirSync(outDir, { recursive: true })
 
 async function save(rect, file) {
@@ -29,8 +30,9 @@ async function save(rect, file) {
   const height = Math.min(rect.h, info.height - top)
   await sharp(Buffer.from(keyed), { raw: { width: info.width, height: info.height, channels: 4 } })
     .extract({ left, top, width, height })
-    .resize(SIZE, SIZE, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .webp()
+    // Pixel art: nearest-neighbour keeps hard edges, lossless webp keeps exact colours.
+    .resize(SIZE, SIZE, { fit: 'contain', kernel: 'nearest', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .webp({ lossless: true })
     .toFile(join(outDir, file))
 }
 
