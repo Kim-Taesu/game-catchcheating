@@ -1,23 +1,18 @@
 import { expect, test } from '@playwright/test'
-import fs from 'node:fs'
-// @ts-expect-error plain JS module without d.ts path mapping in e2e
-import { buildRound, seededRng } from '../public/game/round.js'
 // @ts-expect-error plain JS module
 import { TITLE_TEXT, titleFor } from '../public/game/result.js'
+import { cheatersOf, innocentsOf, planFor, seat, startRound } from './helpers'
 
 test.use({ viewport: { width: 375, height: 667 } })
 
-const cases = JSON.parse(fs.readFileSync('public/data/cases.json', 'utf8'))
-const innocents = JSON.parse(fs.readFileSync('public/data/innocents.json', 'utf8'))
 const SEED = 7
-const plan = buildRound(cases, innocents, seededRng(SEED))
-const cheaters = plan.seats.filter((s: { kind: string }) => s.kind === 'cheater') as { seat: number }[]
+const plan = planFor(SEED)
+const cheaters = cheatersOf(plan)
 const ORIGIN = 'http://127.0.0.1:8788'
 
 async function clearRound(page: import('@playwright/test').Page) {
-  await page.goto(`/play?seed=${SEED}`)
-  await expect(page.locator('[data-seat]')).toHaveCount(9)
-  for (const s of cheaters) await page.locator(`[data-seat="${s.seat}"]`).click()
+  await startRound(page, SEED)
+  for (const s of cheaters) await seat(page, s.seat).click()
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'clear')
 }
 const noShare = () => {
@@ -101,10 +96,9 @@ test('share·클립보드 모두 실패: 선택된 링크 입력창 표시', asy
 })
 
 test('기회 소진 종료: 기회 소진 표기, 시간 줄 없음, 놓친 수 표시', async ({ page }) => {
-  await page.goto(`/play?seed=${SEED}`)
-  await expect(page.locator('[data-seat]')).toHaveCount(9)
-  const inn = plan.seats.filter((s: { kind: string }) => s.kind === 'innocent') as { seat: number }[]
-  for (const s of inn.slice(0, 3)) await page.locator(`[data-seat="${s.seat}"]`).click()
+  await startRound(page, SEED)
+  const inn = innocentsOf(plan)
+  for (const s of inn.slice(0, 3)) await seat(page, s.seat).click()
   await expect(page.locator('#end')).toContainText('오해 3')
   await expect(page.locator('#end')).toContainText('기회를 모두 사용했어요')
   await expect(page.locator('#end')).not.toContainText('걸린 시간')
