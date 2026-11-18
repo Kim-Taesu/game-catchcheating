@@ -42,9 +42,9 @@ public/game/identity.js  정체를 숨기는 문구의 단일 출처: 좌석 라
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 현재 임시본
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
-scripts/                make-placeholders / slice-sheet / make-og, 공용 코드는 scripts/lib/ (caption, slice)
-tests/                  vitest: content*(콘텐츠 규칙), round·engine·result·share-text·dex·worker·slice·placeholders·smoke
-e2e/                    Playwright: home·dex·play·play-resilience·share
+scripts/                make-placeholders / slice-sheet / make-og, 공용 코드는 scripts/lib/ (caption, slice, esc, assets=PROP_IDS)
+tests/                  vitest: content*(콘텐츠 규칙), identity(정답 숨김 불변식)·round·engine·result·share-text·dex·worker·slice·placeholders·smoke
+e2e/                    Playwright: home·dex·play·play-resilience·share, 공용 도우미 helpers.ts(planFor·seat·startRound)
 docs/research/cheating-methods.md   조사 원문. 모든 주장·출처의 기준 (A~H절, G=행동 단서 근거)
 docs/assets/image-prompts.md        이미지 생성 프롬프트 v2 (시트 5종, 생성 후 점검 §8)
 images/                 사용자가 넣는 생성 원본 시트 (git 제외)
