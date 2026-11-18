@@ -56,6 +56,29 @@ test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림�
   await expect(page.locator('#game a')).toHaveCount(0)
 })
 
+test('잡힌 좌석: "잡힘" 표시, 행동 멈춤(포즈 0 유지), aria-disabled', async ({ page }) => {
+  await page.clock.install()
+  await startRound(page, SEED)
+  const target = cheaters.find((s) => s.id === 'phone-in-clothes')!
+  const sp = seat(page, target.seat)
+  await sp.click()
+  await expect(sp).toHaveAttribute('data-caught', '')
+  await expect(sp).toHaveAttribute('aria-disabled', 'true')
+  await expect(sp.locator('.stamp-caught')).toHaveText('잡힘')
+  // Several onsets pass (gaps are 5.5-8.5 s). Record every src the img ever gets, so a brief
+  // switch to the action pose between two checks cannot slip through.
+  await sp.locator('img.seat-img').evaluate((img) => {
+    const w = window as unknown as { __srcs: string[] }
+    w.__srcs = [img.getAttribute('src')!]
+    new MutationObserver(() => w.__srcs.push(img.getAttribute('src')!)).observe(img, { attributes: true, attributeFilter: ['src'] })
+  })
+  for (let i = 0; i < 40; i++) await page.clock.runFor(1000)
+  const srcs = await page.evaluate(() => (window as unknown as { __srcs: string[] }).__srcs)
+  expect(srcs.every((u) => u.endsWith(`/${target.id}-0.webp`))).toBe(true)
+  await expect(sp.locator('.stamp-caught')).toHaveText('잡힘')
+  await expect(sp).toHaveAttribute('aria-disabled', 'true')
+})
+
 test('Esc로 알림 닫기', async ({ page }) => {
   await startRound(page, SEED)
   await seat(page, cheaters[0].seat).click()

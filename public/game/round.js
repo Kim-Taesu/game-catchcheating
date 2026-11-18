@@ -1,7 +1,7 @@
 // Round builder. Pure functions: shared by browser and tests. All randomness comes from the injected rng.
 
 /** How long an action pose stays visible, in ms. */
-export const ACTION_MS = 2000
+export const ACTION_MS = 4000
 
 const SEATS = 9
 const ROUND_MS = 60000
@@ -64,7 +64,7 @@ function cheaterSeat(rng, c) {
   if (c.tell.swap === true) {
     return { kind: 'cheater', id: c.id, onsets: [], swapAtMs: randInt(rng, 18000, 22000) }
   }
-  return { kind: 'cheater', id: c.id, onsets: repeatingOnsets(rng, 6000, 3500, 6500) }
+  return { kind: 'cheater', id: c.id, onsets: repeatingOnsets(rng, 6000, 5500, 8500) }
 }
 
 function innocentSeat(rng, inn) {

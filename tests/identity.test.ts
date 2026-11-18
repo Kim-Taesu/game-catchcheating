@@ -55,7 +55,7 @@ describe('identity text', () => {
       expect(m.toast).toContain(c.name)
       const st = statusLabel(c)
       if (st) expect(m.toast).toContain(st)
-      expect(m.label).toBe(`응시자 3 적발: ${c.name}`)
+      expect(m.label).toBe(`응시자 3 잡힘: ${c.name}`)
     }
   })
 })

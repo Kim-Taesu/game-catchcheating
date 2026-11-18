@@ -6,7 +6,7 @@ import { statusLabel } from './labels.js'
 /** Seat text (also the sr-only label): idle, caught or cleared. `seatIndex` is 0-based. */
 export function seatLabel(seatIndex, state = 'idle', caseName = '') {
   const base = `응시자 ${seatIndex + 1}`
-  if (state === 'caught') return `${base} 적발: ${caseName}`
+  if (state === 'caught') return `${base} 잡힘: ${caseName}`
   if (state === 'cleared') return `${base} 확인함`
   return base
 }

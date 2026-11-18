@@ -63,7 +63,7 @@ export function startGame(root, opts) {
       { type: 'button', class: 'seat', 'data-seat': String(s.seat), style: `--i:${s.seat}` },
       img,
       el('span', { class: 'sr-only', text: seatLabel(s.seat) }),
-      el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '적발' }),
+      el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '잡힘' }),
       el('span', { class: 'stamp stamp-cleared', 'aria-hidden': 'true', text: '확인함' }),
     )
     const view = { s, btn, img, pose: 0, failed: false, fallback: null }
@@ -131,7 +131,8 @@ export function startGame(root, opts) {
     setHud(hudLives, 'lives', `기회 ${st.lives}`)
     setHud(hudCaught, 'caught', `수상한 응시자 ${st.total}명 중 ${st.caught}명 적발`)
     for (const v of views.values()) {
-      const pose = poseAt(v.s, t, startMs)
+      // A caught seat stays idle for good; the engine's poseAt stays pure.
+      const pose = v.btn.hasAttribute('data-caught') ? 0 : poseAt(v.s, t, startMs)
       if (pose !== v.pose) {
         v.pose = pose
         if (!v.failed) v.img.src = `/px/${v.s.id}-${pose}.webp`
@@ -164,6 +165,7 @@ export function startGame(root, opts) {
     if (out.kind === 'caught') {
       v.btn.removeAttribute('data-cleared')
       v.btn.setAttribute('data-caught', '')
+      v.btn.setAttribute('aria-disabled', 'true')
       markDiscovered(storage, out.id)
       recap.caught.push(out.id)
     } else if (out.kind === 'innocent') {

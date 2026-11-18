@@ -36,8 +36,8 @@ describe('poseAt', () => {
     expect(poseAt(s, START + 4999, START)).toBe(0)
     expect(poseAt(s, START + 5000, START)).toBe(1)
     expect(poseAt(s, START + 5000 + ACTION_MS - 1, START)).toBe(1)
-    expect(poseAt(s, START + 6999, START)).toBe(1)
-    expect(poseAt(s, START + 7000, START)).toBe(0)
+    expect(poseAt(s, START + 8999, START)).toBe(1)
+    expect(poseAt(s, START + 9000, START)).toBe(0)
     expect(poseAt(s, START + 10000, START)).toBe(1)
   })
   it('swap seat switches at swapAtMs and stays', () => {

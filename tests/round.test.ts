@@ -86,8 +86,8 @@ function gaps(xs: number[]): number[] {
 }
 
 describe('buildRound constraints', () => {
-  it('exports ACTION_MS = 2000 (long enough to read the pose)', () => {
-    expect(ACTION_MS).toBe(2000)
+  it('exports ACTION_MS = 4000 (long enough to read the pose)', () => {
+    expect(ACTION_MS).toBe(4000)
   })
 
   it('never overlaps two action poses of the same seat', () => {
@@ -138,7 +138,7 @@ describe('buildRound constraints', () => {
     expect(layouts.size).toBeGreaterThanOrEqual(2)
   })
 
-  it('cheater onsets are ascending, spaced 3500-6500ms, start 0-6000, end < 60000', () => {
+  it('cheater onsets are ascending, spaced 5500-8500ms, start 0-6000, end < 60000', () => {
     for (const r of rounds) {
       for (const s of r.seats.filter((x) => x.kind === 'cheater')) {
         if (caseById.get(s.id)!.tell?.swap) continue
@@ -147,8 +147,8 @@ describe('buildRound constraints', () => {
         expect(s.onsets[0]).toBeLessThanOrEqual(6000)
         expect(s.onsets[s.onsets.length - 1]).toBeLessThan(60000)
         for (const g of gaps(s.onsets)) {
-          expect(g).toBeGreaterThanOrEqual(3500)
-          expect(g).toBeLessThanOrEqual(6500)
+          expect(g).toBeGreaterThanOrEqual(5500)
+          expect(g).toBeLessThanOrEqual(8500)
         }
       }
     }
