@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **이후 변경됨 (2026-11-18, 로컬 플레이 후)**: 행동 포즈 0.8초 → 4초(수법 간격 약 7초±1.5초), 잡힌 좌석은 "잡힘" 표시·행동 멈춤, 기회 3 → 정상 응시자를 한 번 잘못 잡으면 즉시 종료(칭호표·공유 `f` 0~1 조정). 이 계획의 해당 수치는 역사 기록이며 현재 규칙은 CLAUDE.md와 설계 문서를 따른다.
+
 **Goal:** 필기시험 부정행위 사건 도감 + 3×3 시험장에서 반복 행동으로 수법 응시자를 찾는 미니게임 + 소맥식 결과 공유를 만든다. 에셋 교체 뒤에만 배포한다.
 
 **Architecture:** 바닐라 HTML/JS 정적 페이지(`public/`)와 작은 Cloudflare Worker(`src/`, `/r` 공유 랜딩만 직접 처리, 나머지는 assets binding). 게임 규칙은 DOM 없는 순수 ES 모듈(`public/game/*.js` + `.d.ts`)로 두고 브라우저·Worker·vitest가 공용으로 쓴다. 시각은 `public/px/<id>-0|1.webp`(기본·행동 포즈)로 교체 가능하게 하고, 에셋 전에는 스크립트가 만든 임시 그림을 쓴다.
