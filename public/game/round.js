@@ -1,7 +1,7 @@
 // Round builder. Pure functions: shared by browser and tests. All randomness comes from the injected rng.
 
 /** How long an action pose stays visible, in ms. */
-export const ACTION_MS = 800
+export const ACTION_MS = 2000
 
 const SEATS = 9
 const ROUND_MS = 60000

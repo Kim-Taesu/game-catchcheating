@@ -86,8 +86,16 @@ function gaps(xs: number[]): number[] {
 }
 
 describe('buildRound constraints', () => {
-  it('exports ACTION_MS = 800', () => {
-    expect(ACTION_MS).toBe(800)
+  it('exports ACTION_MS = 2000 (long enough to read the pose)', () => {
+    expect(ACTION_MS).toBe(2000)
+  })
+
+  it('never overlaps two action poses of the same seat', () => {
+    for (let seed = 1; seed <= 200; seed++) {
+      for (const s of buildRound(cases, innocents, seededRng(seed)).seats) {
+        for (let i = 1; i < s.onsets.length; i++) expect(s.onsets[i] - s.onsets[i - 1]).toBeGreaterThanOrEqual(ACTION_MS)
+      }
+    }
   })
 
   it('has 9 unique seats, 3 or 4 cheaters, unique ids, only eligible cases', () => {
