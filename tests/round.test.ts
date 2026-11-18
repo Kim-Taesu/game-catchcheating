@@ -154,6 +154,15 @@ describe('buildRound constraints', () => {
     }
   })
 
+  it('every non-swap seat acts within the first 12 s', () => {
+    for (const r of rounds) {
+      for (const s of r.seats.filter((x) => x.swapAtMs === undefined)) {
+        expect(s.onsets.length, s.id).toBeGreaterThan(0)
+        expect(s.onsets[0], s.id).toBeLessThanOrEqual(12000)
+      }
+    }
+  })
+
   it('innocent onsets follow their behavior', () => {
     let repeat = 0
     let oneoff = 0
@@ -172,11 +181,13 @@ describe('buildRound constraints', () => {
         } else {
           oneoff++
           expect([1, 2]).toContain(s.onsets.length)
-          for (const t of s.onsets) {
-            expect(t).toBeGreaterThanOrEqual(3000)
-            expect(t).toBeLessThanOrEqual(55000)
+          // first action early (2–12 s) so every examinee moves before a typical round ends
+          expect(s.onsets[0]).toBeGreaterThanOrEqual(2000)
+          expect(s.onsets[0]).toBeLessThanOrEqual(12000)
+          if (s.onsets.length === 2) {
+            expect(s.onsets[1] - s.onsets[0]).toBeGreaterThanOrEqual(8000)
+            expect(s.onsets[1] - s.onsets[0]).toBeLessThanOrEqual(20000)
           }
-          expect([...s.onsets].sort((a, b) => a - b)).toEqual(s.onsets)
         }
       }
     }

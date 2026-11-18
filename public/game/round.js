@@ -54,10 +54,12 @@ function repeatingOnsets(rng, firstMax, gapMin, gapMax) {
   return onsets
 }
 
+// One-off innocents act early (2–12 s) so nobody sits still for a whole round
+// that usually ends in 20–30 s; a second action (half the time) comes 8–20 s later.
 function oneoffOnsets(rng) {
-  if (rng() < 0.5) return [randInt(rng, 3000, 55000)]
-  const first = randInt(rng, 3000, 26000)
-  return [first, randInt(rng, first + 4000, 55000)]
+  const first = randInt(rng, 2000, 12000)
+  if (rng() < 0.5) return [first]
+  return [first, randInt(rng, first + 8000, first + 20000)]
 }
 
 function cheaterSeat(rng, c) {
