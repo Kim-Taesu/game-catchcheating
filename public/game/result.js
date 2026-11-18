@@ -11,15 +11,15 @@ export const TITLE_TEXT = {
 /** First match wins. */
 export function titleFor(r) {
   if (r.m === 0 && r.f === 0 && r.t <= 30) return 'eagle'
-  if (r.m <= 1 && r.f <= 1) return 'veteran'
-  if (r.f >= 3) return 'suspicious'
-  if (r.c >= 2) return 'rookie'
+  if (r.m <= 1 && r.f === 0) return 'veteran'
+  if (r.c >= 2 && r.f === 0) return 'rookie'
+  if (r.f >= 1) return 'suspicious'
   return 'sleepy'
 }
 
 /**
- * Time line on the result screen. Only a clear has an elapsed time; a lives-out ending has
- * no time line because the reason line already says the chances ran out.
+ * Time line on the result screen. Only a clear has an elapsed time; a wrong-tap ending has
+ * no time line because the reason line already says why the exam ended.
  * @param {'clear'|'timeout'|'lives'} [reason]
  */
 export function endTimeLine(r, reason) {
@@ -46,7 +46,7 @@ export function parseShare(params) {
   const f = readInt(params, 'f')
   const t = readInt(params, 't')
   if (c === null || m === null || f === null || t === null) return null
-  if (f > 3 || t > 60) return null
+  if (f > 1 || t > 60) return null
   if (c + m !== 3 && c + m !== 4) return null
   return { c, m, f, t }
 }

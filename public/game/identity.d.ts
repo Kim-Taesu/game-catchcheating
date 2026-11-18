@@ -1,5 +1,5 @@
 import type { TapOutcome } from './engine.js'
-export function seatLabel(seatIndex: number, state?: 'idle' | 'caught' | 'cleared', caseName?: string): string
+export function seatLabel(seatIndex: number, state?: 'idle' | 'caught', caseName?: string): string
 export function tapMessage(
   outcome: TapOutcome,
   caseById: Map<string, { name?: string; status?: string }>,

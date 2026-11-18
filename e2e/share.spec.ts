@@ -95,12 +95,13 @@ test('share·클립보드 모두 실패: 선택된 링크 입력창 표시', asy
   expect(sel).toBe(await input.inputValue())
 })
 
-test('기회 소진 종료: 기회 소진 표기, 시간 줄 없음, 놓친 수 표시', async ({ page }) => {
+test('오해 종료: 사유 표기, 시간 줄 없음, 놓친 수 표시', async ({ page }) => {
   await startRound(page, SEED)
   const inn = innocentsOf(plan)
-  for (const s of inn.slice(0, 3)) await seat(page, s.seat).click()
-  await expect(page.locator('#end')).toContainText('오해 3')
-  await expect(page.locator('#end')).toContainText('기회를 모두 사용했어요')
+  await seat(page, inn[0].seat).click()
+  await expect(page.locator('#end h2')).toHaveText('의심 많은 감독관')
+  await expect(page.locator('#end')).toContainText('오해 1')
+  await expect(page.locator('#end')).toContainText('정상 응시자를 잡아 시험이 끝났어요')
   await expect(page.locator('#end')).not.toContainText('걸린 시간')
   await expect(page.locator('#end')).not.toContainText('시간 종료')
   await expect(page.locator('#end .end-time')).toHaveCount(0)

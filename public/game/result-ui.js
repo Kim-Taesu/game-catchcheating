@@ -5,7 +5,7 @@ import { shareResult, shareText, shareUrl } from './share.js'
 import { beforeSwapLine } from './identity.js'
 import { SINGLE_ACTION_NOTE, basisLine, statusLabel } from './labels.js'
 
-const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '기회를 모두 사용했어요.' }
+const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '정상 응시자를 잡아 시험이 끝났어요' }
 
 function el(tag, cls, text) {
   const n = document.createElement(tag)
@@ -55,8 +55,8 @@ function recapSections(recap, cases, innocents) {
   const wrong = recap.misjudged.map((m) => {
     const li = el('li', 'end-item')
     if (m.beforeSwap) {
-      // Name the case only when it was caught later in the round.
-      li.append(el('p', 'end-item-title', beforeSwapLine(m.seat, recap.caught.includes(m.id) ? caseName(m.id) : '')))
+      // A wrong tap ends the round, so the case is never caught later: no case name here.
+      li.append(el('p', 'end-item-title', beforeSwapLine(m.seat)))
     } else {
       const inn = innById.get(m.id)
       li.append(el('p', 'end-item-title', inn?.name ?? m.id), el('p', '', inn?.why ?? ''))

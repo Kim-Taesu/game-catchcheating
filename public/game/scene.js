@@ -43,11 +43,10 @@ export function startGame(root, opts) {
   // ---- DOM ----
   root.textContent = ''
   const hudTime = el('span', { class: 'hud-item', id: 'hud-time' })
-  const hudLives = el('span', { class: 'hud-item', id: 'hud-lives' })
   const hudCaught = el('p', { class: 'hud-caught', id: 'hud-caught' })
   // The toast sits inside the HUD box, so it can never cover a seat. #panel-live announces it.
   const toast = el('p', { class: 'toast', id: 'toast', hidden: '', 'aria-hidden': 'true' })
-  const hud = el('div', { class: 'hud' }, el('p', { class: 'hud-row' }, hudTime, hudLives), hudCaught, toast)
+  const hud = el('div', { class: 'hud' }, el('p', { class: 'hud-row' }, hudTime), hudCaught, toast)
 
   const grid = el('div', { class: 'seats' })
   const views = new Map()
@@ -64,7 +63,6 @@ export function startGame(root, opts) {
       img,
       el('span', { class: 'sr-only', text: seatLabel(s.seat) }),
       el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '잡힘' }),
-      el('span', { class: 'stamp stamp-cleared', 'aria-hidden': 'true', text: '확인함' }),
     )
     const view = { s, btn, img, pose: 0, failed: false, fallback: null }
     img.addEventListener('error', () => {
@@ -128,7 +126,6 @@ export function startGame(root, opts) {
     const t = now()
     const st = status(engine, t)
     setHud(hudTime, 'time', `남은 시간 ${Math.ceil(st.remainingMs / 1000)}초`)
-    setHud(hudLives, 'lives', `기회 ${st.lives}`)
     setHud(hudCaught, 'caught', `수상한 응시자 ${st.total}명 중 ${st.caught}명 적발`)
     for (const v of views.values()) {
       // A caught seat stays idle for good; the engine's poseAt stays pure.
@@ -163,13 +160,11 @@ export function startGame(root, opts) {
     const msg = tapMessage(out, caseById)
     if (msg) label.textContent = msg.label
     if (out.kind === 'caught') {
-      v.btn.removeAttribute('data-cleared')
       v.btn.setAttribute('data-caught', '')
       v.btn.setAttribute('aria-disabled', 'true')
       markDiscovered(storage, out.id)
       recap.caught.push(out.id)
     } else if (out.kind === 'innocent') {
-      v.btn.setAttribute('data-cleared', '')
       recap.misjudged.push({ seat: seatNo, id: out.id, beforeSwap: out.reason === 'before-swap' })
     }
     if (msg) showToast(msg.toast)

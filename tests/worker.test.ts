@@ -24,8 +24,8 @@ describe('/r share landing', () => {
     expect(body).toContain('<title>')
   })
 
-  it('uses the suspicious image for c=3&m=1&f=3&t=60', async () => {
-    const body = await (await call('/r?c=3&m=1&f=3&t=60')).text()
+  it('uses the suspicious image for c=3&m=1&f=1&t=60', async () => {
+    const body = await (await call('/r?c=3&m=1&f=1&t=60')).text()
     expect(body).toContain('https://example.test/og/suspicious.png?v=1')
   })
 
@@ -41,6 +41,7 @@ describe('/r share landing', () => {
     [''],
     ['c=3&m=2&f=0&t=40'],
     ['c=4&m=0&f=4&t=28'],
+    ['c=3&m=1&f=2&t=60'],
     ['c=4&m=0&f=0&t=61'],
     ['c=3.5&m=0&f=0&t=28'],
     ['c=9&m=9&f=9&t=99'],

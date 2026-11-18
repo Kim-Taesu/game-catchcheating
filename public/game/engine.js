@@ -3,7 +3,7 @@
 import { ACTION_MS } from './round.js'
 
 export const DURATION_MS = 60000
-export const LIVES = 3
+export const LIVES = 1
 
 export function createEngine(plan, startMs) {
   return {
@@ -11,8 +11,6 @@ export function createEngine(plan, startMs) {
     startMs,
     lives: LIVES,
     caught: new Set(),
-    // Seats already judged innocent (or a swap seat tapped before its swap): re-taps are ignored.
-    cleared: new Set(),
     ended: null,
     clearAtMs: null,
   }
@@ -41,8 +39,6 @@ export function tap(e, seat, nowMs) {
 
   const isCheater = s.kind === 'cheater'
   const beforeSwap = isCheater && s.swapAtMs !== undefined && nowMs - e.startMs < s.swapAtMs
-  // A judged seat costs a life only once. A swap seat stays catchable after its swap.
-  if (e.cleared.has(seat) && (!isCheater || beforeSwap)) return { kind: 'ignored', seat, id: s.id }
   if (isCheater && !beforeSwap) {
     e.caught.add(seat)
     if (e.caught.size >= e.plan.cheaterCount) {
@@ -52,9 +48,9 @@ export function tap(e, seat, nowMs) {
     return { kind: 'caught', seat, id: s.id }
   }
 
-  e.cleared.add(seat)
   e.lives -= 1
   if (e.lives <= 0) e.ended = 'lives'
+  // Any non-catch tap (innocent or a swap seat before its swap) ends the round.
   const out = { kind: 'innocent', seat, id: s.id }
   if (beforeSwap) out.reason = 'before-swap'
   return out

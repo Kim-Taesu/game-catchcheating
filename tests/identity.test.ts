@@ -17,33 +17,31 @@ describe('identity text', () => {
     for (const o of outs) {
       const m = tapMessage(o, caseById)!
       expect(m.toast, o.id).toMatch(NON_CATCH)
-      expect(m.label, o.id).toBe(`응시자 ${o.seat + 1} 확인함`)
+      expect(m.label, o.id).toBe(`응시자 ${o.seat + 1}`)
     }
   })
   it('ignored taps produce nothing', () => {
     expect(tapMessage({ kind: 'ignored', seat: 0, id: 'x' }, caseById)).toBeNull()
   })
-  it('no non-catch or idle/cleared text contains any case name', () => {
+  it('no non-catch or idle text contains any case name', () => {
     for (const c of cases) {
       const texts = [
         tapMessage({ kind: 'innocent', seat: 3, id: c.id }, caseById)!.toast,
         tapMessage({ kind: 'innocent', seat: 3, id: c.id, reason: 'before-swap' }, caseById)!.toast,
         tapMessage({ kind: 'innocent', seat: 3, id: c.id }, caseById)!.label,
         seatLabel(3),
-        seatLabel(3, 'cleared'),
         beforeSwapLine(3),
       ]
       for (const t of texts) expect(t, c.id).not.toContain(c.name)
     }
   })
-  it('no non-catch or idle/cleared text contains any innocent name', () => {
+  it('no non-catch or idle text contains any innocent name', () => {
     for (const i of innocents) {
       const texts = [
         tapMessage({ kind: 'innocent', seat: 5, id: i.id }, caseById)!.toast,
         tapMessage({ kind: 'innocent', seat: 5, id: i.id }, caseById)!.label,
         tapMessage({ kind: 'innocent', seat: 5, id: i.id, reason: 'before-swap' }, caseById)!.toast,
         seatLabel(5),
-        seatLabel(5, 'cleared'),
         beforeSwapLine(5),
       ]
       for (const t of texts) expect(t, i.id).not.toContain(i.name)

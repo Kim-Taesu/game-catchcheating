@@ -25,7 +25,7 @@ const seatOf = (p: RoundPlan, n: number) => p.seats[n]
 describe('constants', () => {
   it('has spec values', () => {
     expect(DURATION_MS).toBe(60000)
-    expect(LIVES).toBe(3)
+    expect(LIVES).toBe(1)
   })
 })
 
@@ -68,23 +68,28 @@ describe('tap', () => {
     expect(r2.kind).toBe('ignored')
     const st = status(e, START + 6100)
     expect(st.caught).toBe(1)
-    expect(st.lives).toBe(3)
+    expect(st.lives).toBe(1)
   })
 
-  it('innocent tap costs a life; three end the game; later taps ignored', () => {
+  it('one innocent tap ends the game; later taps ignored', () => {
     const e = createEngine(plan(), START)
     expect(tap(e, 1, START + 1000)).toEqual({ kind: 'innocent', seat: 1, id: 'yawn' })
-    expect(status(e, START + 1000).lives).toBe(2)
-    tap(e, 3, START + 2000)
-    expect(status(e, START + 2000).ended).toBeNull()
-    tap(e, 5, START + 3000)
-    const st = status(e, START + 3000)
+    const st = status(e, START + 1000)
     expect(st.lives).toBe(0)
     expect(st.ended).toBe('lives')
     expect(tap(e, 0, START + 4000).kind).toBe('ignored')
+    expect(tap(e, 1, START + 4000).kind).toBe('ignored')
     expect(tap(e, 6, START + 4000).kind).toBe('ignored')
     expect(status(e, START + 4000).caught).toBe(0)
-    expect(status(e, START + 4000).lives).toBe(0)
+    expect(result(e, START + 4000)).toEqual({ c: 0, m: 3, f: 1, t: 60 })
+  })
+
+  it('an innocent tap after catching keeps the caught count', () => {
+    const e = createEngine(plan(), START)
+    tap(e, 0, START + 6000)
+    tap(e, 3, START + 7000)
+    expect(status(e, START + 7000).ended).toBe('lives')
+    expect(result(e, START + 7000)).toEqual({ c: 1, m: 2, f: 1, t: 60 })
   })
 
   it('catching everyone clears with elapsed seconds rounded up', () => {
@@ -92,11 +97,9 @@ describe('tap', () => {
     tap(e, 0, START + 2000)
     tap(e, 4, START + 5000)
     expect(status(e, START + 5000).ended).toBeNull()
-    tap(e, 2, START + 12300 + 0) // before swap -> innocent, not caught
-    expect(status(e, START + 12300).caught).toBe(2)
     tap(e, 2, START + 21000)
     expect(status(e, START + 21000).ended).toBe('clear')
-    expect(result(e, START + 21000)).toEqual({ c: 3, m: 0, f: 1, t: 21 })
+    expect(result(e, START + 21000)).toEqual({ c: 3, m: 0, f: 0, t: 21 })
   })
 
   it('clear at 12300ms gives t=13', () => {
@@ -123,7 +126,7 @@ describe('tap', () => {
   it('unknown seat is ignored', () => {
     const e = createEngine(plan(), START)
     expect(tap(e, 42, START + 1000).kind).toBe('ignored')
-    expect(status(e, START + 1000).lives).toBe(3)
+    expect(status(e, START + 1000).lives).toBe(1)
   })
 })
 
@@ -157,9 +160,7 @@ describe('timeout', () => {
   it('lives loss gives t=60', () => {
     const e = createEngine(plan(), START)
     tap(e, 1, START + 1000)
-    tap(e, 3, START + 1000)
-    tap(e, 5, START + 1000)
-    expect(result(e, START + 1000)).toEqual({ c: 0, m: 3, f: 3, t: 60 })
+    expect(result(e, START + 1000)).toEqual({ c: 0, m: 3, f: 1, t: 60 })
   })
 })
 
@@ -182,45 +183,20 @@ describe('Review Focus 2: derived from nowMs only', () => {
 })
 
 describe('Review Focus 3: swap seat before swap', () => {
-  it('early tap is innocent before-swap; later tap catches', () => {
+  it('early tap is a wrong tap (game over, not caught); same outcome shape as any innocent', () => {
     const e = createEngine(plan(), START)
     const r = tap(e, 2, START + 10000)
     expect(r).toEqual({ kind: 'innocent', seat: 2, id: 'glasses-swap', reason: 'before-swap' })
     const st = status(e, START + 10000)
-    expect(st.lives).toBe(2)
+    expect(st.ended).toBe('lives')
     expect(st.caught).toBe(0)
-    const r2 = tap(e, 2, START + 21000)
-    expect(r2.kind).toBe('caught')
-    expect(status(e, START + 21000).caught).toBe(1)
+    expect(tap(e, 2, START + 21000).kind).toBe('ignored')
+    expect(result(e, START + 21000)).toEqual({ c: 0, m: 3, f: 1, t: 60 })
   })
 
-  it('a second before-swap tap is ignored, and the seat can still be caught after the swap', () => {
+  it('after the swap the seat is catchable', () => {
     const e = createEngine(plan(), START)
-    expect(tap(e, 2, START + 5000).kind).toBe('innocent')
-    expect(tap(e, 2, START + 9000)).toEqual({ kind: 'ignored', seat: 2, id: 'glasses-swap' })
-    expect(status(e, START + 9000).lives).toBe(2)
     expect(tap(e, 2, START + 21000).kind).toBe('caught')
-    expect(status(e, START + 21000).lives).toBe(2)
-  })
-})
-
-describe('re-tapping a judged-innocent seat (I-2)', () => {
-  it('costs a life only once', () => {
-    const e = createEngine(plan(), START)
-    expect(tap(e, 1, START + 1000).kind).toBe('innocent')
-    expect(tap(e, 1, START + 2000)).toEqual({ kind: 'ignored', seat: 1, id: 'yawn' })
-    expect(tap(e, 1, START + 3000).kind).toBe('ignored')
-    const st = status(e, START + 3000)
-    expect(st.lives).toBe(2)
-    expect(st.ended).toBeNull()
-    expect(result(e, START + 3000).f).toBe(1)
-  })
-
-  it('other innocent seats still cost a life', () => {
-    const e = createEngine(plan(), START)
-    tap(e, 1, START + 1000)
-    tap(e, 1, START + 1100)
-    expect(tap(e, 3, START + 1200).kind).toBe('innocent')
-    expect(status(e, START + 1200).lives).toBe(1)
+    expect(status(e, START + 21000)).toMatchObject({ caught: 1, lives: 1, ended: null })
   })
 })

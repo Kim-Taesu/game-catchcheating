@@ -66,9 +66,6 @@
 .seat[data-caught] .stamp-caught { display: block; }
 .seat[data-caught] { border-color: #b3261e; }
 .seat[data-caught] .seat-img, .seat[data-caught] .seat-fallback { filter: grayscale(1); opacity: 0.55; }
-/* Judged innocent: small neutral stamp; the seat stays tappable but re-taps are ignored. */
-.stamp-cleared { inset: 4px auto auto 4px; padding: 0 4px; border-width: 1px; border-color: var(--muted); color: var(--muted); font-weight: 700; font-size: 0.6875rem; transform: none; }
-.seat[data-cleared]:not([data-caught]) .stamp-cleared { display: block; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @media (prefers-reduced-motion: reduce) { .seat-img { animation: none; } }
 
