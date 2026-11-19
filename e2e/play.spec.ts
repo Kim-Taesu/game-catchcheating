@@ -23,16 +23,22 @@ test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
   expect(width).toBeLessThanOrEqual(375)
 })
 
-test('행동 포즈 이미지 9장이 로드 직후 미리 요청된다', async ({ page }) => {
-  const urls = new Set<string>()
-  page.on('request', (r) => {
-    const m = new URL(r.url()).pathname.match(/^\/px\/.+-1\.webp$/)
-    if (m) urls.add(m[0])
-  })
+test('두 포즈 이미지 18장이 2초 안에 모두 존재하고 로드된다', async ({ page }) => {
   await startRound(page, SEED)
-  const expected = [...new Set(p7.seats.map((s) => `/px/${s.id}-1.webp`))]
-  expect(expected).toHaveLength(9)
-  await expect.poll(() => expected.every((u) => urls.has(u)), { timeout: 2000 }).toBe(true)
+  await expect(page.locator('[data-seat] img')).toHaveCount(18)
+  await expect
+    .poll(
+      () => page.evaluate(() => [...document.querySelectorAll<HTMLImageElement>('[data-seat] img')].every((i) => i.complete && i.naturalWidth > 0)),
+      { timeout: 2000 },
+    )
+    .toBe(true)
+  for (const s of p7.seats) {
+    const imgs = seat(page, s.seat).locator('img')
+    await expect(imgs.nth(0)).toHaveAttribute('src', `/px/${s.id}-0.webp`)
+    await expect(imgs.nth(1)).toHaveAttribute('src', `/px/${s.id}-1.webp`)
+    await expect(imgs.nth(0)).toHaveAttribute('alt', '')
+    await expect(imgs.nth(1)).toHaveAttribute('alt', '')
+  }
 })
 
 const caseName = (id: string) => cases.find((c: { id: string }) => c.id === id).name as string
@@ -64,16 +70,19 @@ test('잡힌 좌석: "잡힘" 표시, 행동 멈춤(포즈 0 유지), aria-disab
   await expect(sp).toHaveAttribute('data-caught', '')
   await expect(sp).toHaveAttribute('aria-disabled', 'true')
   await expect(sp.locator('.stamp-caught')).toHaveText('잡힘')
-  // Several onsets pass (gaps are 5.5-8.5 s). Record every src the img ever gets, so a brief
-  // switch to the action pose between two checks cannot slip through.
-  await sp.locator('img.seat-img').evaluate((img) => {
-    const w = window as unknown as { __srcs: string[] }
-    w.__srcs = [img.getAttribute('src')!]
-    new MutationObserver(() => w.__srcs.push(img.getAttribute('src')!)).observe(img, { attributes: true, attributeFilter: ['src'] })
+  // Several onsets pass (gaps are 5.5-8.5 s). Record every state of the action image's class, so a
+  // brief switch to the action pose between two checks cannot slip through.
+  const action = sp.locator('img.seat-img-1')
+  await action.evaluate((img) => {
+    const w = window as unknown as { __on: boolean[] }
+    w.__on = [img.classList.contains('is-on')]
+    new MutationObserver(() => w.__on.push(img.classList.contains('is-on'))).observe(img, { attributes: true, attributeFilter: ['class'] })
   })
   for (let i = 0; i < 40; i++) await page.clock.runFor(1000)
-  const srcs = await page.evaluate(() => (window as unknown as { __srcs: string[] }).__srcs)
-  expect(srcs.every((u) => u.endsWith(`/${target.id}-0.webp`))).toBe(true)
+  const on = await page.evaluate(() => (window as unknown as { __on: boolean[] }).__on)
+  expect(on.every((v) => v === false)).toBe(true)
+  await expect(action).toHaveCSS('opacity', '0')
+  await expect(sp.locator('img.seat-img-0')).toHaveClass(/is-on/)
   await expect(sp.locator('.stamp-caught')).toHaveText('잡힘')
   await expect(sp).toHaveAttribute('aria-disabled', 'true')
 })

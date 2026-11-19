@@ -35,7 +35,10 @@
 }
 .seat:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .seat:active { background: rgba(255, 250, 240, 0.85); }
-.seat-img { width: 100%; height: 100%; object-fit: contain; animation: bob 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * -0.3s); }
+.seat-art { display: grid; width: 100%; height: 100%; animation: bob 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * -0.3s); }
+/* Both poses are stacked in one cell; the pose change is a 0.25 s crossfade of opacity. */
+.seat-img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 250ms ease; }
+.seat-img.is-on { opacity: 1; }
 .seat-fallback {
   display: grid;
   place-items: center;
@@ -65,9 +68,11 @@
 }
 .seat[data-caught] .stamp-caught { display: block; }
 .seat[data-caught] { border-color: #b3261e; }
-.seat[data-caught] .seat-img, .seat[data-caught] .seat-fallback { filter: grayscale(1); opacity: 0.55; }
+.seat[data-caught] .seat-art, .seat[data-caught] .seat-fallback { filter: grayscale(1); opacity: 0.55; }
+/* A caught seat never shows the action pose: hidden at once, no fade. */
+.seat[data-caught] .seat-img-1 { opacity: 0; transition: none; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
-@media (prefers-reduced-motion: reduce) { .seat-img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .seat-art { animation: none; } .seat-img { transition: none; } }
 
 /* Compact tap feedback over the HUD box only (inset: 0 inside .hud), never over the seats. */
 .toast {

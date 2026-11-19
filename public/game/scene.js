@@ -56,21 +56,28 @@ export function startGame(root, opts) {
     v.fallback.textContent = v.pose === 1 ? `${label}\n${behaviorOf(v.s)}` : label
   }
   for (const s of plan.seats) {
-    const img = el('img', { class: 'px seat-img', src: `/px/${s.id}-0.webp`, alt: '' })
+    // Both poses stay in the DOM and load once; a pose change only toggles which one is opaque
+    // (CSS crossfade). alt="" keeps them out of the accessibility tree.
+    const img0 = el('img', { class: 'px seat-img seat-img-0 is-on', src: `/px/${s.id}-0.webp`, alt: '' })
+    const img1 = el('img', { class: 'px seat-img seat-img-1', src: `/px/${s.id}-1.webp`, alt: '' })
+    const art = el('span', { class: 'seat-art' }, img0, img1)
     const btn = el(
       'button',
       { type: 'button', class: 'seat', 'data-seat': String(s.seat), style: `--i:${s.seat}` },
-      img,
+      art,
       el('span', { class: 'sr-only', text: seatLabel(s.seat) }),
       el('span', { class: 'stamp stamp-caught', 'aria-hidden': 'true', text: '잡힘' }),
     )
-    const view = { s, btn, img, pose: 0, failed: false, fallback: null }
-    img.addEventListener('error', () => {
+    const view = { s, btn, img0, img1, pose: 0, failed: false, fallback: null }
+    const onError = () => {
+      if (view.failed) return
       view.failed = true
       view.fallback = el('span', { class: 'seat-fallback' })
-      img.replaceWith(view.fallback)
+      art.replaceWith(view.fallback)
       paintFallback(view)
-    })
+    }
+    img0.addEventListener('error', onError)
+    img1.addEventListener('error', onError)
     btn.addEventListener('click', () => onTap(s.seat))
     views.set(s.seat, view)
     grid.append(btn)
@@ -80,13 +87,6 @@ export function startGame(root, opts) {
   const live = el('div', { class: 'sr-only', id: 'panel-live', role: 'status', 'aria-live': 'polite' })
 
   root.append(hud, grid, live)
-
-  // Warm the action poses so the first pose change never waits on the network.
-  for (const s of plan.seats) {
-    const pre = new Image()
-    pre.src = `/px/${s.id}-1.webp`
-    pre.decode().catch(() => {})
-  }
 
   // ---- toast ----
   let toastTimer = 0
@@ -132,8 +132,10 @@ export function startGame(root, opts) {
       const pose = v.btn.hasAttribute('data-caught') ? 0 : poseAt(v.s, t, startMs)
       if (pose !== v.pose) {
         v.pose = pose
-        if (!v.failed) v.img.src = `/px/${v.s.id}-${pose}.webp`
-        else paintFallback(v)
+        if (!v.failed) {
+          v.img0.classList.toggle('is-on', pose === 0)
+          v.img1.classList.toggle('is-on', pose === 1)
+        } else paintFallback(v)
       }
     }
     if (st.ended !== null && !finished) {
