@@ -15,12 +15,12 @@
 | `node scripts/make-placeholders.mjs [--force]` | `public/px/` 임시 스프라이트·배경·소품과 `public/og/` 임시 카드 생성. 실제 파일은 `--force` 없이는 덮어쓰지 않는다 |
 | `node scripts/slice-sheet.mjs <sheet.png> <pair\|prop> <9 ids> <outDir>` | 생성 이미지 시트(3×3)를 칸별 webp로 자른다 |
 | `node scripts/make-og.mjs` | 칭호별 공유 카드 `public/og/<tier>.png` (800×400) 생성 |
-| `wrangler deploy` | 배포. 위 게이트 승인 전에는 실행 금지. `workers_dev`는 현재 `false`. 서브도메인 후보 `cheatfinder.ktslab.xyz` |
+| `npx wrangler deploy` | 배포. 공개 주소 `https://cheatfinder.ktslab.xyz` (Worker custom domain, `workers_dev`·`preview_urls`는 `false`). 머지해도 자동 배포되지 않는다(CI·Workers Builds 없음). 배포는 사용자 승인 후 `main`에서 실행 |
 
 ## Layout
 
 ```
-wrangler.jsonc          Worker 설정. assets=./public, run_worker_first=["/r"], workers_dev=false
+wrangler.jsonc          Worker 설정. assets=./public, run_worker_first=["/r"], custom domain cheatfinder.ktslab.xyz, workers_dev=false
 playwright.config.ts    e2e 설정 (시스템 Chrome, :8788)
 src/worker.ts           `/r` 라우팅만. 실제 처리는 src/share.ts
 src/share.ts            `/r` 값 검증(c·m·f·t, `parseShare`)·서버 칭호 재계산·OG 태그 생성, 잘못된 값은 `/`로 이동. `OG_VERSION`(OG 이미지 URL `?v=`)
