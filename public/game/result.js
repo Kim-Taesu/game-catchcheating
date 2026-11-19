@@ -52,3 +52,8 @@ export function parseShare(params) {
   if (c + m < MIN_CHEATERS || c + m > MAX_CHEATERS) return null
   return { c, m, f, t }
 }
+
+/** Result-screen reward: 1억 per caught cheater ("💰 포상금 5억!"); nobody caught -> "💸 포상금 0억". */
+export function rewardLine(r) {
+  return r.c > 0 ? `💰 포상금 ${r.c}억!` : '💸 포상금 0억'
+}

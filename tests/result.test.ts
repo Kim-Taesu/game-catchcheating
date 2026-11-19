@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { TITLE_TEXT, endTimeLine, parseShare, shareQuery, titleFor } from '../public/game/result.js'
+import { TITLE_TEXT, endTimeLine, parseShare, rewardLine, shareQuery, titleFor } from '../public/game/result.js'
 
 describe('titleFor', () => {
   it('eagle needs m=0, f=0, t<=30', () => {
@@ -78,5 +78,16 @@ describe('endTimeLine (M-4)', () => {
   it('without a reason falls back to the numbers', () => {
     expect(endTimeLine({ c: 3, m: 0, f: 0, t: 12 })).toBe('걸린 시간 12초')
     expect(endTimeLine({ c: 1, m: 2, f: 1, t: 60 })).toBeNull()
+  })
+})
+
+describe('rewardLine', () => {
+  it('pays 1억 per caught cheater', () => {
+    expect(rewardLine({ c: 5, m: 0, f: 0, t: 28 })).toBe('💰 포상금 5억!')
+    expect(rewardLine({ c: 1, m: 6, f: 1, t: 60 })).toBe('💰 포상금 1억!')
+    expect(rewardLine({ c: 8, m: 0, f: 0, t: 30 })).toBe('💰 포상금 8억!')
+  })
+  it('catching nobody earns nothing', () => {
+    expect(rewardLine({ c: 0, m: 5, f: 1, t: 60 })).toBe('💸 포상금 0억')
   })
 })

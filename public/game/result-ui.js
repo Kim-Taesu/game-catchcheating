@@ -1,6 +1,6 @@
 // Result screen: title, numbers, the round's 3x3 seats labelled with their outcome (a tap opens
 // the explanation), and the share button with fallbacks. All text goes in via textContent.
-import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
+import { TITLE_TEXT, endTimeLine, rewardLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
 import { BEFORE_SWAP_NOTE, basisLine, originFlags, originLine, statusLabel } from './labels.js'
 
@@ -162,6 +162,7 @@ export function showResult(root, r, deps = {}) {
   const h = el('h2', 'end-title', TITLE_TEXT[tier])
   h.tabIndex = -1
   root.append(h)
+  root.append(el('p', `end-reward${r.c > 0 ? '' : ' is-zero'}`, rewardLine(r)))
   root.append(el('p', 'end-numbers', `잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}`))
   const timeLine = endTimeLine(r, deps.reason)
   if (timeLine) root.append(el('p', 'end-time', timeLine))

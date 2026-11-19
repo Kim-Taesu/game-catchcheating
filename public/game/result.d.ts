@@ -6,3 +6,4 @@ export function titleFor(r: Result): Tier
 export function endTimeLine(r: Result, reason?: 'clear' | 'timeout' | 'lives'): string | null
 export function shareQuery(r: Result): string
 export function parseShare(params: URLSearchParams): Result | null
+export function rewardLine(r: Result): string

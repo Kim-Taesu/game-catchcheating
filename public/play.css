@@ -262,3 +262,8 @@
 /* Magnifier on every result seat: "tap me for the explanation". */
 .rseat-zoom { align-self: start; justify-self: end; display: grid; place-items: center; width: 26px; height: 26px; margin: 2px; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper); font-size: 0.8125rem; line-height: 1; box-shadow: 0 2px 0 var(--ink); }
 .rseat:hover .rseat-zoom, .rseat:focus-visible .rseat-zoom { background: var(--accent); }
+/* Reward line under the title: 1억 per caught cheater. */
+.end-reward { margin: 0 0 2px; font-size: 1.5rem; font-weight: 900; color: #a15c00; animation: reward-pop 0.5s ease-out; }
+.end-reward.is-zero { color: var(--muted); }
+@keyframes reward-pop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .end-reward { animation: none; } }
