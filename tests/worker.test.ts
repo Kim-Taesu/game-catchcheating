@@ -12,7 +12,7 @@ describe('/r share landing', () => {
     expect(res.status).toBe(200)
     expect(res.headers.get('content-type')).toContain('text/html')
     const body = await res.text()
-    expect(body).toContain('<meta property="og:title" content="잡은 6 · 놓친 0 · 오해 0">')
+    expect(body).toContain('<meta property="og:title" content="💰 포상금 6억! 잡은 6 · 놓친 0 · 오해 0">')
     expect(body).toMatch(
       new RegExp(`<meta property="og:description" content="[^"]*${TITLE_TEXT.eagle}`),
     )

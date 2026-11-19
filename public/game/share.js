@@ -1,12 +1,13 @@
 // Share link/text and the share-or-copy flow. Pure + injectable for tests.
-import { TITLE_TEXT, shareQuery, titleFor } from './result.js'
+import { TITLE_TEXT, rewardLine, shareQuery, titleFor } from './result.js'
 
 export function shareUrl(origin, r) {
   return `${origin}/r?${shareQuery(r)}`
 }
 
 export function shareText(r, url) {
-  return `치팅 파인더 — ${TITLE_TEXT[titleFor(r)]}! 잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}\n${url}`
+  // Same reward line as the result screen; numbers on their own line, the link last.
+  return `치팅 파인더 — ${TITLE_TEXT[titleFor(r)]}! ${rewardLine(r)}\n잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}\n${url}`
 }
 
 /**
