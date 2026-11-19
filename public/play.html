@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>게임 - 치팅 파인더</title>
     <meta name="description" content="60초 안에 수상한 행동을 반복하는 응시자를 찾아내는 시험장 미니게임." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="/site.css" />
     <link rel="stylesheet" href="/play.css" />
   </head>
@@ -18,8 +20,11 @@
     <script type="module">
       import { startGame } from '/game/scene.js'
       import { showResult } from '/game/result-ui.js'
+      import { createPlayTracker } from '/game/hub.js'
 
       const game = document.getElementById('game')
+      // Hub metrics: one request when the round starts (enter + play_start), one at the result.
+      const tracker = createPlayTracker()
       try {
         const [cases, innocents] = await Promise.all([
           fetch('/data/cases.json').then((r) => r.json()),
@@ -37,8 +42,10 @@
             // The result grid takes the play grid's place, so the result fits one screen.
             game.hidden = true
             showResult(endEl, result, { reason: game.dataset.ended, recap, cases, innocents })
+            tracker.end()
           },
         })
+        tracker.start()
       } catch {
         game.textContent = '게임을 불러오지 못했어요. 새로고침해 주세요.'
       }

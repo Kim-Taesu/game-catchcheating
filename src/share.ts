@@ -22,6 +22,7 @@ export function renderShare(r: Result, origin: string): string {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${BRAND} - ${title}</title>
+<link rel="icon" type="image/png" href="/favicon.png">
 <meta property="og:site_name" content="${BRAND}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle}">

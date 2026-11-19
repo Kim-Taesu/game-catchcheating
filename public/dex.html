@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>도감 - 치팅 파인더</title>
     <meta name="description" content="실제로 보도된 시험 부정행위 수법 도감. 확인됨·수사 중·거론됨·미검증 소문을 구분하고 출처를 함께 보여 줍니다." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="/site.css" />
     <style>
       h1 { margin: 0 0 4px; font-size: 1.75rem; letter-spacing: -0.02em; }
@@ -104,5 +106,9 @@
     </div>
 
     <script type="module" src="/dex.js"></script>
+    <script type="module">
+      import { sendHubEvents } from '/game/hub.js'
+      sendHubEvents([{ type: 'enter' }])
+    </script>
   </body>
 </html>

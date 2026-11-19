@@ -13,3 +13,21 @@ test('홈: 제목, 진입 링크, 면책, 가로 스크롤 없음', async ({ pag
   const width = await page.evaluate(() => document.documentElement.scrollWidth)
   expect(width).toBeLessThanOrEqual(375)
 })
+
+test('탭 아이콘이 있고, 로컬에서는 허브(ktslab.xyz)로 아무 요청도 보내지 않는다', async ({ page }) => {
+  const hubCalls: string[] = []
+  page.on('request', (r) => {
+    if (new URL(r.url()).hostname.endsWith('ktslab.xyz')) hubCalls.push(r.url())
+  })
+  for (const path of ['/', '/dex', '/play?seed=7']) {
+    await page.goto(path)
+    const href = await page.locator('link[rel="icon"]').getAttribute('href')
+    expect(href, path).toBe('/favicon.png')
+  }
+  await expect(page.locator('[data-seat]')).toHaveCount(9)
+  const icon = await page.request.get('/favicon.png')
+  expect(icon.status()).toBe(200)
+  expect(icon.headers()['content-type']).toContain('image/png')
+  await page.waitForTimeout(300)
+  expect(hubCalls).toEqual([])
+})

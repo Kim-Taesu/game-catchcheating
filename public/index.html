@@ -9,6 +9,8 @@
     <meta property="og:description" content="이런 수법도 있구나, 이렇게 알아챌 수 있구나. 부정행위 수법 도감과 시험장 미니게임." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og/eagle.png?v=2" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="/site.css" />
     <style>
       .hero { text-align: center; }
@@ -37,5 +39,9 @@
       </section>
       <p class="disclaimer">뉴스 보도 기준 개요이며 따라 하기 안내가 아닙니다. 수사 중인 사건은 바뀔 수 있습니다.</p>
     </main>
+      <script type="module">
+      import { sendHubEvents } from '/game/hub.js'
+      sendHubEvents([{ type: 'enter' }])
+    </script>
   </body>
 </html>
