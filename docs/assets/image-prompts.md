@@ -1,4 +1,4 @@
-# 이미지 생성 프롬프트 (도트풍 에셋) — v4: 부드러운 고해상도 도트, 칸마다 포즈 2개, 소품시트2 추가
+# 이미지 생성 프롬프트 (도트풍 에셋) — v5: 부드러운 고해상도 도트, 칸마다 포즈 2개, 시트4(새 수법 3종) 추가
 
 기준 품질: subwayrun의 `public/px`·`public/avatars` (윤곽선·명암이 있는 도트풍 일러스트, 캐릭터 64~96px 표시).
 원본은 `images/`에 둔다 (git 제외). 자르기는 `scripts/slice-sheet.mjs`가 한다 (명령은 §10).
@@ -7,6 +7,10 @@
 모든 그림은 만화적인 일러스트이며 장비의 작동 방식·제작법은 담지 않는다. 눈에 띄는 **외형·행동 단서**만 그린다.
 
 ## 0. 이번 버전에서 바뀐 것
+
+**v4 → v5 (2026-11-19, 게임 출전 12종 → 15종)**
+- **새 시트: 시트4** (§4-2, `images/catch_시트4.png`). 도감 전용이던 신발 속 통신기기·가발 속 카메라·가슴 카메라를 게임에 넣기 위한 응시자 3명, 이들과 헷갈리는 평범한 응시자 2명(연필 줍기·머리 넘기기), 그리고 §8-2에서 다시 그리면 좋다고 한 4칸.
+- 판당 부정행위자가 3~4명에서 **5~8명**으로 늘었다. 평범한 응시자는 판마다 1~4명.
 
 **v3 → v4 (2026-11-19, 실제 시트 5장 반영 후)**
 - **새 시트: 소품시트2** (§5-2, `images/catch_소품시트2.png`). 도감에 추가된 사건 9건(신발·가발·지우개 속 기기, 문자, 인터넷 질문, 쪽지, 화장실, 사전 유출 등)의 아이콘. 지금은 이어폰·쪽지 아이콘을 여러 사건이 같이 쓰고 있다.
@@ -105,6 +109,54 @@ watermark, no UI. Clean edges, no blur, no noise.
 | 8 | `turn-back` | writing | turning the head back toward the clock on the wall at the back of the room (not toward neighbors) |
 | 9 | `nose-sniff` | writing | rubbing the nose and sniffling, a cold |
 
+## 4-2. 시트 4 — 새 수법 3명 + 새 평범 2명 + 다시 그리기 4명 (파일: `images/catch_시트4.png`)
+
+공통 스타일 블록(§1) 뒤에 아래 칸 설명을 붙인다. 6~9번은 기존 칸을 **다시 그린 것**이다. 기존보다 나을 때만 교체하고, 아니면 버린다(자를 때 임시 디렉터리로 먼저 낸다).
+
+| 칸 | id | 기본(IDLE) | 행동(ACTION) | 근거 |
+| --- | --- | --- | --- | --- |
+| 1 | `shoe-device` | a tiny white earbud barely visible deep in one ear, nervous face, writing | head tilted down glancing under the desk toward the feet, one arm reaching down below the desk edge | 보도(인도 2021: 수상한 행동, 귀 속 이어폰, 신발 속 기기) · 발 쪽을 보는 포즈는 연출 |
+| 2 | `wig-device` | wearing an unnaturally thick, slightly crooked brown wig covering both ears, tense face, writing | one hand pressing the wig down over one ear, eyes darting nervously to the side | 보도(스페인 2023: 티 나는 가발, 초조한 행동) · 가발을 누르는 포즈는 연출 |
+| 3 | `camera-ai-watch` | a tiny round pin camera like a shirt button on the chest pocket, a black smartwatch on the left wrist, writing | shoulders hunched and chest leaned slightly forward so the shirt pocket is close over the exam paper, eyes down (a small lean only, desk and arms stay in place) | 보도(스페인 2025: 가슴을 화면 가까이 붙임) |
+| 4 | `pick-up-pencil` (평범) | writing, an empty desk spot where the pencil was | head tilted down, one arm reaching below the desk edge, a yellow pencil visible in the fingers | 평범 (신발 속 기기와 헷갈리는 짝) |
+| 5 | `fix-hair` (평범) | long natural hair, a strand falling over the face, writing | one hand tucking the strand of hair behind the ear, calm face, eyes on the paper | 평범 (가발과 헷갈리는 짝) |
+| 6 | `ear-bandage` (다시) | wearing a cap and a white bandage taped over one ear, writing | touching the bandage with one hand while glancing toward the front of the room; body and shoulders stay exactly in place, only the head turns and one hand rises | 보도 |
+| 7 | `earbud-swallow` (다시) | nervous face, looking at the paper, lips pressed | one hand over the mouth, cheeks puffed, wide panicked eyes, as if swallowing something; same body size and position as the idle pose | 보도 |
+| 8 | `earpiece-hidden` (다시) | wearing a knit beanie pulled over both ears, a tiny edge of a white earbud barely visible, eyes on the paper | lips clearly moving with a tiny murmur mark, eyes drifting to the side, head still | 보도 + 업계 설명 |
+| 9 | `turn-back` (다시, 평범) | writing | head turned back over the shoulder toward the back wall, chin up, clearly looking behind, not sideways | 평범 |
+
+붙여 넣을 칸 설명 (공통 스타일 블록 뒤에):
+
+```
+Cell 1: IDLE a nervous examinee with a tiny white earbud barely visible deep in one ear,
+writing. ACTION head tilted down glancing under the desk toward the feet, one arm
+reaching down below the desk edge.
+Cell 2: IDLE an examinee wearing an unnaturally thick, slightly crooked brown wig covering
+both ears, tense face, writing. ACTION one hand pressing the wig down over one ear, eyes
+darting nervously to the side.
+Cell 3: IDLE an examinee with a tiny round pin camera like a shirt button on the chest
+pocket and a black smartwatch on the left wrist, writing. ACTION shoulders hunched and
+chest leaned slightly forward so the shirt pocket is close over the exam paper, eyes
+down; a small lean only, desk and arms stay in place.
+Cell 4: IDLE an ordinary examinee writing. ACTION head tilted down, one arm reaching below
+the desk edge, a yellow pencil visible in the fingers, picking up a dropped pencil.
+Cell 5: IDLE an ordinary examinee with long natural hair, a strand falling over the face,
+writing. ACTION one hand tucking the strand behind the ear, calm face, eyes on the paper.
+Cell 6: IDLE an examinee wearing a cap and a white bandage taped over one ear, writing.
+ACTION touching the bandage with one hand while glancing toward the front of the room;
+body and shoulders stay exactly in place, only the head turns and one hand rises.
+Cell 7: IDLE a nervous examinee looking at the paper, lips pressed. ACTION one hand over
+the mouth, cheeks puffed, wide panicked eyes, as if swallowing something; same body size
+and position as the idle pose.
+Cell 8: IDLE an examinee wearing a knit beanie pulled over both ears, a tiny edge of a
+white earbud barely visible, eyes on the paper. ACTION lips clearly moving with a tiny
+murmur mark, eyes drifting to the side, head still.
+Cell 9: IDLE an ordinary examinee writing. ACTION head turned back over the shoulder
+toward the back wall, chin up, clearly looking behind, not sideways.
+```
+
+평범한 응시자 4·5번에는 이어폰·표시등·특이한 가발이 없어야 한다. 6~9번은 기존 인물과 얼굴이 달라도 된다(칸 안의 두 포즈만 같으면 된다).
+
 ## 5. 소품 시트 (사람 없음, 정사각형)
 
 ### 5-0. 소품 스타일 블록 (소품시트·소품시트2 프롬프트 맨 앞에 붙인다)
@@ -124,7 +176,7 @@ no noise. Objects must not use magenta or purple colors.
 
 칸 순서는 왼쪽→오른쪽, 위→아래. 블록 뒤에 `Cell 1: …, Cell 2: …` 식으로 칸 설명을 이어 붙인다.
 
-### 5-1. 시트 4 — 단서 소품 (파일: `images/catch_소품시트.png`, 완료)
+### 5-1. 소품시트 1 (파일: `images/catch_소품시트.png`, 완료)
 
 사건 카드 팝업·도감 아이콘용.
 
@@ -140,7 +192,7 @@ no noise. Objects must not use magenta or purple colors.
 | 8 | `prop-cheat-note` | a tiny folded paper note covered with handwriting | 소매 쪽지, 팔뚝 필기 (도감 전용) |
 | 9 | `prop-phone-glow` | a smartphone glowing inside a half-open bag | 가방 속 폰 (도감 전용) |
 
-### 5-2. 시트 6 — 단서 소품 2 (파일: `images/catch_소품시트2.png`, 완료)
+### 5-2. 소품시트 2 (파일: `images/catch_소품시트2.png`, 완료)
 
 도감에 추가된 사건 9건용. 장비는 **겉모습만** 그린다(내부 구조·배선·조립 방법 없음). 화면에는 읽을 수 있는 글자 대신 빛나는 줄·점만 그린다.
 
@@ -228,8 +280,9 @@ no desks, no people. No text, no letters, no numbers, no watermark.
 | 시트3 | 9 평범 | 18프레임 |
 | 소품시트 | 9 | 9 (완료) |
 | 소품시트2 | 9 | 9 (완료) |
+| 시트4 | 3 수법 + 2 평범 + 4 다시 | 18프레임 (**새로 생성**) |
 | 시험장 | 1 | 1 |
-| 합계 | 시트 6장 | 응시자 54프레임 + 소품 18 + 배경 1 |
+| 합계 | 시트 7장 | 응시자 64프레임(+다시 그린 8) + 소품 18 + 배경 1 |
 
 ## 10. 자르기 명령 (`images/`에 넣은 뒤)
 
@@ -239,6 +292,7 @@ no desks, no people. No text, no letters, no numbers, no watermark.
 node scripts/slice-sheet.mjs images/catch_수법시트1.png pair smart-glasses-frame,glasses-lens-heat,earpiece-hidden,bone-conduction,smartwatch,phone-in-clothes,glasses-swap,earbud-swallow,ear-bandage <임시>
 node scripts/slice-sheet.mjs images/catch_시트2.png pair signal-fingers,peek,cheat-sheet-sleeve,think-chin,look-up,plain-glasses,yawn,pencil-spin,rub-eyes <임시>
 node scripts/slice-sheet.mjs images/catch_시트3.png pair analog-watch,plain-calculator,sneeze,drink-water,scratch-head,stretch,erase,turn-back,nose-sniff <임시>
+node scripts/slice-sheet.mjs images/catch_시트4.png pair shoe-device,wig-device,camera-ai-watch,pick-up-pencil,fix-hair,ear-bandage,earbud-swallow,earpiece-hidden,turn-back <임시>
 node scripts/slice-sheet.mjs images/catch_소품시트.png prop prop-smart-glasses,prop-earbud,prop-button-camera,prop-calculator-back,prop-id-card,prop-bone-band,prop-smartwatch,prop-cheat-note,prop-phone-glow <임시>
 node scripts/slice-sheet.mjs images/catch_소품시트2.png prop prop-bt-slipper,prop-wig,prop-camera-watch,prop-eraser-screen,prop-flip-phone,prop-qa-phone,prop-paper-plane,prop-restroom-note,prop-exam-envelope <임시>
 ```

@@ -112,6 +112,9 @@
 | 손가락 신호 | 특정 동작·필기구 방향 | 커뮤니티 정리 | 나무위키 '부정행위' |
 | 곁눈질 | 머리를 자주 돌림 | 커뮤니티 정리 | 나무위키 '부정행위' |
 | 소매 쪽지 | 소맷단 확인, 쉬는 시간마다 쪽지를 찢음 | 지침 + 커뮤니티 | 대전교육청 수능 감독 강화(단추·옷깃·소매 확인) SBS https://news.sbs.co.kr/english/article.do?news_id=N1008849407 (2026-11-17), 나무위키(광주대동고 사례) |
+| 신발 속 통신기기 | 수상한 행동 → 귀 속 이어폰 발견 → 신발 속 기기 자백. 발 쪽을 보는 포즈는 연출 | 보도(수법·외형) | Free Press Journal https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics (인도 2021) |
+| 가발 속 카메라·이어폰 | 티 나는 가발, 초조한 행동, 너무 일찍 끝냄. 가발을 누르는 포즈는 연출 | 보도 | Murcia Today https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html (스페인 2023) |
+| 가슴 카메라 | 시험 내내 가슴을 화면 가까이 붙임, 초조하고 부자연스러운 태도 | 보도 | Orain https://orain.eus/en/current-events/society-and-social-news-now/2025/11/04/surprised-in-bilbao-with-technological-devices-hidden-in-the-driving-exam/ (스페인 빌바오 2025, 셔츠 구멍 속 휴대폰). 한국 대학 2026은 수법만 보도 |
 | (공통 단서) | 지나가다 전자음을 들음, 렌즈에 비친 홀로그램 | 보도 | SBS https://news.sbs.co.kr/english/article.do?news_id=N1008847527 (가스기능사 2026-06-29) |
 
 **행동 단서 근거 없음 (도감 전용, 게임 제외)**: 단추 카메라, 개조 계산기, 팔뚝 필기, 물병 라벨, 가방 속 폰, 위조 신분증. 사건 자체는 보도된 것도 있다(가방 속 폰·대리응시·단추 카메라는 `confirmed`). 없는 것은 "반복되는 의심 행동"의 근거다. 세무사 사건에서는 감독위원 4명이 "특이사항 없음"이라고 했다. 행동으로 알아채기 어려운 수법이라는 사실 자체가 교훈이다.
