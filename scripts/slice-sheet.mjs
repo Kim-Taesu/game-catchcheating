@@ -35,8 +35,8 @@ async function save(rect, file) {
   await base
     .clone()
     .extract({ left, top, width, height })
-    // Pixel art: nearest-neighbour keeps hard edges, lossless webp keeps exact colours.
-    .resize(SIZE, SIZE, { fit: 'contain', kernel: 'nearest', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    // Soft hi-bit art: lanczos3 keeps it smooth (nearest would stair-step); lossless webp avoids lossy shifts.
+    .resize(SIZE, SIZE, { fit: 'contain', kernel: 'lanczos3', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .webp({ lossless: true })
     .toFile(join(outDir, file))
 }

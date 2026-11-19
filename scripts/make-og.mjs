@@ -48,11 +48,11 @@ export async function makeOg() {
     const gap = 20
     const total = files.length * w + (files.length - 1) * gap
     for (let i = 0; i < files.length; i++) {
-      // Decode to raw first: WebP shrink-on-load would otherwise smooth the pixel art and
-      // bypass the nearest-neighbour kernel.
+      // Decode to raw first: WebP shrink-on-load would otherwise bypass the chosen
+      // kernel.
       const { data, info } = await sharp(files[i]).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
       const input = await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
-        .resize(w, w, { kernel: 'nearest' })
+        .resize(w, w, { kernel: 'lanczos3' })
         .png()
         .toBuffer()
       layers.push({ input, left: Math.round(400 - total / 2 + i * (w + gap)), top: 230 })

@@ -99,7 +99,7 @@ describe('slice-sheet CLI', () => {
       expect([meta.width, meta.height, meta.hasAlpha]).toEqual([192, 192, true])
       const { data } = await sharp(file).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
       expect(data[3]).toBe(0)
-      // Lossless + nearest: the flat figure colour survives exactly (no blending, no lossy shift).
+      // Lossless lanczos3: the flat interior of the figure keeps its colour (no lossy shift).
       const centre = (96 * 192 + 96) * 4
       expect([data[centre], data[centre + 1], data[centre + 2], data[centre + 3]]).toEqual([20, 120, 40, 255])
     }

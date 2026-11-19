@@ -54,6 +54,7 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 
 - 60초, 기회 없음(오해 1번이면 즉시 종료). 3×3 좌석 = 수법 응시자 3~4 + 평범한 응시자 5~6, 해외 `origins` 수법 최소 1
 - 수법 응시자는 약 7초(±1.5초) 간격으로 행동 포즈를 4초(겹치지 않음). 좌석별 시작은 무작위
+- 포즈 전환은 기본·행동 두 이미지를 겹쳐 두고 0.25초 크로스페이드(opacity 250ms). `prefers-reduced-motion: reduce`면 즉시 전환. 두 이미지는 `alt=""`, 한 번만 로드
 - 잡힌 좌석은 "잡힘" 도장·흐리게 표시, 접근성 라벨 "응시자 N 잡힘: 이름", `aria-disabled`, 이후 행동 포즈를 멈춤(항상 기본 포즈). 멈춤은 scene render에서 처리하고 `engine.poseAt`은 순수하게 둔다
 - 평범한 응시자: `oneoff`는 판당 1~2회(첫 행동 2~12초, 두 번째는 8~20초 뒤), `repeat`는 약 8초 간격. `glasses-swap`은 18~22초에 포즈가 바뀌어 유지
 - 수법 응시자를 탭하면 적발, 평범한 응시자를 탭하면 그 즉시 종료(`ended: 'lives'`, `f=1`). `glasses-swap`을 교체 전에 탭해도 평범한 응시자와 똑같이 종료되고(다르게 반응하면 정체가 드러남), 교체 후에는 적발 가능. 적발한 좌석 재탭은 무시
@@ -97,11 +98,11 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 
 1. 사용자가 `docs/assets/image-prompts.md`의 시트 5종(수법시트1, 시트2, 시트3, 소품시트, 시험장 배경)을 `images/`(git 제외)에 넣는다
 2. 시트마다 `node scripts/slice-sheet.mjs <sheet.png> <pair|prop> <9 ids> <임시 디렉터리>`로 자른다 (임시 디렉터리에 먼저 낸다). 시험장 배경(`catch_시험장.png`)은 3×3 시트가 아니라서 따로 변환한다:
-   `node -e "require('sharp')('images/catch_시험장.png').resize(1152, 648, { fit: 'cover', kernel: 'nearest' }).webp({ lossless: true }).toFile('<임시 디렉터리>/classroom.webp')"` → 점검 후 `public/px/classroom.webp`
+   `node -e "require('sharp')('images/catch_시험장.png').resize(1152, 648, { fit: 'cover', kernel: 'lanczos3' }).webp({ lossless: true }).toFile('<임시 디렉터리>/classroom.webp')"` → 점검 후 `public/px/classroom.webp`
 3. 프롬프트 문서 §8 점검표로 결과를 확인한다: 같은 인물 두 포즈, 머리·책상 높이, 마젠타 배경, 단서가 티 나지 않는지, 평범 응시자에 장비 없음, 글자·워터마크 없음
 4. 통과한 파일을 `public/px/`로 복사한다. 실제 파일은 `make-placeholders.mjs`가 `--force` 없이는 덮어쓰지 않는다
 5. `node scripts/make-og.mjs`로 공유 카드를 다시 만든다
 6. OG 이미지가 바뀌면 `src/share.ts`의 `OG_VERSION`을 올린다 (카카오톡이 URL 기준으로 캐시)
 7. `npm test`, `npm run e2e` 통과 후 사용자 승인을 받고 배포
 
-슬라이서는 픽셀 아트용이다: nearest-neighbour 축소, 무손실 webp, 마젠타 키(거리 ≤60) 뒤 despill(거리 ≤140인 테두리 픽셀의 R·B를 G 쪽으로 당기고 알파를 비례해 낮춤). 그래도 분홍 테두리가 남는지 눈으로 확인한다. `make-og.mjs`도 스프라이트를 raw로 디코드한 뒤 nearest로 줄인다(WebP shrink-on-load가 커널을 무시하므로).
+슬라이서는 부드러운 hi-bit 그림용이다: 192×192로 lanczos3 축소(부드러운 hi-bit 그림을 nearest로 줄이면 계단이 생김), 무손실 webp, 마젠타 키(거리 ≤60) 뒤 despill(거리 ≤140인 테두리 픽셀의 R·B를 G 쪽으로 당기고 알파를 비례해 낮춤). 그래도 분홍 테두리가 남는지 눈으로 확인한다. `make-og.mjs`도 스프라이트를 raw로 디코드한 뒤 lanczos3로 줄인다(WebP shrink-on-load가 커널을 무시하므로).
