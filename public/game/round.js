@@ -75,13 +75,17 @@ function innocentSeat(rng, inn) {
   return { kind: 'innocent', id: inn.id, onsets }
 }
 
+/** Cheaters per round. At most 8 so every round keeps at least one innocent (no all-cheater rounds). */
+export const MIN_CHEATERS = 5
+export const MAX_CHEATERS = 8
+
 /**
- * Build one round: 9 seats = 3 or 4 cheaters + innocents.
+ * Build one round: 9 seats = 5 to 8 cheaters + innocents.
  * Deterministic given `rng`. Throws if the data cannot fill a round.
  */
 export function buildRound(cases, innocents, rng) {
   const eligible = cases.filter(isEligible)
-  const cheaterCount = rng() < 0.5 ? 3 : 4
+  const cheaterCount = randInt(rng, MIN_CHEATERS, MAX_CHEATERS)
   if (eligible.length < cheaterCount) {
     throw new Error(`need at least ${cheaterCount} playable cases, got ${eligible.length}`)
   }

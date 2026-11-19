@@ -34,30 +34,33 @@ describe('TITLE_TEXT', () => {
 
 describe('parseShare', () => {
   it('parses valid params', () => {
-    expect(parseShare(new URLSearchParams('c=3&m=1&f=0&t=40'))).toEqual({ c: 3, m: 1, f: 0, t: 40 })
+    expect(parseShare(new URLSearchParams('c=6&m=1&f=0&t=40'))).toEqual({ c: 6, m: 1, f: 0, t: 40 })
+  })
+  it('accepts every round size from 5 to 8 cheaters (c+m)', () => {
+    for (const [c, m] of [[5, 0], [3, 3], [7, 0], [0, 8]]) expect(parseShare(new URLSearchParams(`c=${c}&m=${m}&f=0&t=60`)), `${c}+${m}`).not.toBeNull()
   })
   it.each([
     'c=abc&m=1&f=0&t=40',
-    'c=3&m=1&f=0',
-    'c=3&m=2&f=0&t=40',
-    'c=2&m=0&f=0&t=40',
-    'c=3&m=1&f=2&t=40',
-    'c=3&m=1&f=4&t=40',
-    'c=3&m=1&f=0&t=61',
-    'c=3&m=1&f=0&t=-1',
+    'c=6&m=1&f=0',
+    'c=3&m=1&f=0&t=40',
+    'c=6&m=3&f=0&t=40',
+    'c=6&m=1&f=2&t=40',
+    'c=6&m=1&f=4&t=40',
+    'c=6&m=1&f=0&t=61',
+    'c=6&m=1&f=0&t=-1',
     'c=3.5&m=0.5&f=0&t=40',
     'c=&m=1&f=0&t=40',
-    'c=3&m=1&f=0&t=1e1',
+    'c=6&m=1&f=0&t=1e1',
   ])('rejects %s', (q) => {
     expect(parseShare(new URLSearchParams(q))).toBeNull()
   })
   it('accepts f=1 and f=0', () => {
-    expect(parseShare(new URLSearchParams('c=3&m=1&f=1&t=60'))).toEqual({ c: 3, m: 1, f: 1, t: 60 })
-    expect(parseShare(new URLSearchParams('c=3&m=1&f=0&t=60'))).not.toBeNull()
+    expect(parseShare(new URLSearchParams('c=6&m=1&f=1&t=60'))).toEqual({ c: 6, m: 1, f: 1, t: 60 })
+    expect(parseShare(new URLSearchParams('c=6&m=1&f=0&t=60'))).not.toBeNull()
   })
   it('round-trips shareQuery', () => {
-    const r = { c: 4, m: 0, f: 0, t: 28 }
-    expect(shareQuery(r)).toBe('c=4&m=0&f=0&t=28')
+    const r = { c: 6, m: 0, f: 0, t: 28 }
+    expect(shareQuery(r)).toBe('c=6&m=0&f=0&t=28')
     expect(parseShare(new URLSearchParams(shareQuery(r)))).toEqual(r)
   })
 })

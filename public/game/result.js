@@ -1,4 +1,5 @@
 // Result titles and share values. Pure functions: shared by browser, Worker and tests.
+import { MAX_CHEATERS, MIN_CHEATERS } from './round.js'
 
 export const TITLE_TEXT = {
   eagle: '매의 눈 감독관',
@@ -47,6 +48,7 @@ export function parseShare(params) {
   const t = readInt(params, 't')
   if (c === null || m === null || f === null || t === null) return null
   if (f > 1 || t > 60) return null
-  if (c + m !== 3 && c + m !== 4) return null
+  // A round has MIN_CHEATERS..MAX_CHEATERS cheaters, so caught + missed must be in that range.
+  if (c + m < MIN_CHEATERS || c + m > MAX_CHEATERS) return null
   return { c, m, f, t }
 }

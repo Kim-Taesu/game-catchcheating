@@ -3,7 +3,7 @@ import { cases, cheatersOf, innocents, innocentsOf, planFor, seat, startRound } 
 
 test.use({ viewport: { width: 375, height: 667 } })
 
-// seed 7: 3 cheaters, none with a swap -> deterministic without a mocked clock.
+// seed 7: 5 cheaters, none with a swap -> deterministic without a mocked clock.
 const SEED = 7
 const p7 = planFor(SEED)
 // Result screen: the same 3x3 seats, each labelled with its outcome; a tap opens the detail dialog.
@@ -19,7 +19,7 @@ test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
     expect(box!.width).toBeGreaterThanOrEqual(44)
     expect(box!.height).toBeGreaterThanOrEqual(44)
   }
-  await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 0명 적발')
+  await expect(page.locator('#game')).toContainText(`수상한 응시자 ${cheaters.length}명 중 0명 적발`)
   await expect(page.locator('#game')).toContainText('남은 시간')
   await expect(page.locator('#game')).not.toContainText('기회')
   const width = await page.evaluate(() => document.documentElement.scrollWidth)
@@ -79,7 +79,7 @@ test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림�
   const stored = await page.evaluate(() => localStorage.getItem('cf:discovered'))
   expect(JSON.parse(stored!)).toContain('phone-in-clothes')
   await expect(seat(page, target.seat)).toHaveAttribute('data-caught', '')
-  await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 1명 적발')
+  await expect(page.locator('#game')).toContainText(`수상한 응시자 ${cheaters.length}명 중 1명 적발`)
   // The running game has no link that would navigate away.
   await expect(page.locator('#game a')).toHaveCount(0)
 })
@@ -257,7 +257,7 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   await page.clock.fastForward(10000)
   // Programmatic taps after the end (and on caught seats) change nothing.
   await page.evaluate(() => document.querySelectorAll<HTMLButtonElement>('[data-seat]').forEach((b) => b.click()))
-  await expect(page.locator('#game')).toContainText('수상한 응시자 3명 중 3명 적발')
+  await expect(page.locator('#game')).toContainText(`수상한 응시자 ${cheaters.length}명 중 ${cheaters.length}명 적발`)
   await expect(page.locator('#toast')).toBeHidden()
   // onEnd ran exactly once (showResult rebuilds the DOM, so only the counter can tell).
   await page.waitForTimeout(300)

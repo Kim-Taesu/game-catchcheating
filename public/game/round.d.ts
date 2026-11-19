@@ -51,6 +51,8 @@ export type SeatPlan = {
 export type RoundPlan = { seats: SeatPlan[]; cheaterCount: 3 | 4 }
 
 export const ACTION_MS: number
+export const MIN_CHEATERS: number
+export const MAX_CHEATERS: number
 export function seededRng(seed: number): () => number
 export function buildRound(
   cases: CaseEntry[],

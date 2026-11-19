@@ -59,6 +59,10 @@ const cases: CaseEntry[] = [
   playable('earpiece'),
   playable('sleeve'),
   playable('swap', {}, true),
+  playable('shoe'),
+  playable('wig'),
+  playable('chest'),
+  playable('peek'),
   notPlayable('hidden-camera'),
   playable('rumor', { status: 'unverified' }),
 ]
@@ -98,11 +102,11 @@ describe('buildRound constraints', () => {
     }
   })
 
-  it('has 9 unique seats, 3 or 4 cheaters, unique ids, only eligible cases', () => {
+  it('has 9 unique seats, 5 to 8 cheaters, unique ids, only eligible cases', () => {
     for (const r of rounds) {
       expect(r.seats).toHaveLength(9)
       expect(r.seats.map((s) => s.seat).sort((a, b) => a - b)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8])
-      expect([3, 4]).toContain(r.cheaterCount)
+      expect([5, 6, 7, 8]).toContain(r.cheaterCount)
       const cheaters = r.seats.filter((s) => s.kind === 'cheater')
       expect(cheaters).toHaveLength(r.cheaterCount)
       expect(new Set(r.seats.map((s) => s.id)).size).toBe(9)
@@ -211,16 +215,23 @@ describe('buildRound constraints', () => {
     expect(seen).toBeGreaterThan(0)
   })
 
-  it('seats the lookalike innocent whenever its case is chosen', () => {
+  it('uses every cheater count from 5 to 8 and always keeps at least one innocent', () => {
+    const counts = new Set(rounds.map((r) => r.cheaterCount))
+    expect([...counts].sort()).toEqual([5, 6, 7, 8])
+    for (const r of rounds) expect(r.seats.filter((s) => s.kind === 'innocent').length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('seats the lookalike innocents first: all of them when they fit, otherwise only lookalikes', () => {
     let checked = 0
     for (const r of rounds) {
-      const ids = new Set(r.seats.map((s) => s.id))
-      for (const s of r.seats.filter((x) => x.kind === 'cheater')) {
-        const look = caseById.get(s.id)!.lookalike
-        if (!look) continue
-        checked++
-        expect(ids.has(look)).toBe(true)
-      }
+      const innocentIds = r.seats.filter((s) => s.kind === 'innocent').map((s) => s.id)
+      const required = new Set(
+        r.seats.filter((x) => x.kind === 'cheater').flatMap((x) => caseById.get(x.id)!.lookalike ?? []),
+      )
+      if (required.size === 0) continue
+      checked++
+      if (required.size <= innocentIds.length) for (const id of required) expect(innocentIds).toContain(id)
+      else for (const id of innocentIds) expect(required.has(id)).toBe(true)
     }
     expect(checked).toBeGreaterThan(0)
   })
