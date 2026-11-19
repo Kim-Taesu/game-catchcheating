@@ -1,7 +1,7 @@
 import { TITLE_TEXT, parseShare, titleFor, type Result } from '../public/game/result.js'
 
 /** Bump when the og/*.png images change so crawlers refetch them. */
-export const OG_VERSION = '1'
+export const OG_VERSION = '2'
 
 const BRAND = '치팅 파인더'
 

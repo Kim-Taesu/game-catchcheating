@@ -17,7 +17,7 @@ describe('/r share landing', () => {
       new RegExp(`<meta property="og:description" content="[^"]*${TITLE_TEXT.eagle}`),
     )
     expect(body).toContain(
-      '<meta property="og:image" content="https://example.test/og/eagle.png?v=1">',
+      '<meta property="og:image" content="https://example.test/og/eagle.png?v=2">',
     )
     expect(body).toContain('<meta property="og:type" content="website">')
     expect(body).toContain('<meta name="twitter:card" content="summary_large_image">')
@@ -26,12 +26,12 @@ describe('/r share landing', () => {
 
   it('uses the suspicious image for c=3&m=1&f=1&t=60', async () => {
     const body = await (await call('/r?c=3&m=1&f=1&t=60')).text()
-    expect(body).toContain('https://example.test/og/suspicious.png?v=1')
+    expect(body).toContain('https://example.test/og/suspicious.png?v=2')
   })
 
   it('ignores a client supplied title', async () => {
     const body = await (await call('/r?c=4&m=0&f=0&t=28&title=sleepy')).text()
-    expect(body).toContain('/og/eagle.png?v=1')
+    expect(body).toContain('/og/eagle.png?v=2')
     expect(body).not.toContain('sleepy')
   })
 
