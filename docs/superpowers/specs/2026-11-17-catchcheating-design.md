@@ -93,13 +93,13 @@ visibility  "low"                       // 행동으로 알아채기 어려운 �
 `status` 라벨: `confirmed` 확인됨 / `investigating` 수사 중·일부 추정 / `mentioned` 거론됨 / `unverified` 미검증 소문(게임 제외, 도감 별도 코너).
 `tell.basisKind`: `report`(보도) / `guideline`(감독 지침) / `community`(커뮤니티 정리) / `industry`(업계 설명, 독립 검증 아님). **`playable=true`이면 basisKind와 출처가 반드시 있다 (콘텐츠 테스트로 강제).** 근거가 수법에만 있고 행동 포즈는 연출인 경우(`phone-in-clothes`)는 `basisKind: "report"` + `basisNote: "수법은 보도, 행동 포즈는 연출"`로 화면에 그대로 표시한다.
 
-`public/data/innocents.json` — 평범한 응시자 15명: `id`, `name`, `behavior`("oneoff" | "repeat"), `why`(의심스러워 보일 수 있는 이유와 왜 정상인지).
+`public/data/innocents.json` — 평범한 응시자 15명(2026-11-19에 17명: 연필 줍기·머리카락 넘기기 추가): `id`, `name`, `behavior`("oneoff" | "repeat"), `why`(의심스러워 보일 수 있는 이유와 왜 정상인지).
 
 해외 사례는 기존 수법의 `origins`에 여러 나라로 붙인다 (예: AI 스마트안경 → 한국·일본·인도·대만). 새 수법이 나오면 에셋 시트를 추가 요청한다. "해외 포함" 판 구성 제약은 `origins`에 한국이 아닌 나라가 있는 수법을 뜻한다.
 
 ### 6.2 게임 규칙
 
-**출전 수법 12종** (근거 있음): `smart-glasses-frame`, `glasses-lens-heat`, `earpiece-hidden`, `bone-conduction`, `smartwatch`, `phone-in-clothes`, `glasses-swap`, `earbud-swallow`, `ear-bandage`, `signal-fingers`, `peek`, `cheat-sheet-sleeve`. 행동은 [조사 G절](../../research/cheating-methods.md)·[이미지 프롬프트](../../assets/image-prompts.md)의 표를 따른다.
+**출전 수법 12종** (근거 있음, 2026-11-19에 `shoe-device`·`wig-device`·`camera-ai-watch`를 더해 15종): `smart-glasses-frame`, `glasses-lens-heat`, `earpiece-hidden`, `bone-conduction`, `smartwatch`, `phone-in-clothes`, `glasses-swap`, `earbud-swallow`, `ear-bandage`, `signal-fingers`, `peek`, `cheat-sheet-sleeve`. 행동은 [조사 G절](../../research/cheating-methods.md)·[이미지 프롬프트](../../assets/image-prompts.md)의 표를 따른다.
 **도감 전용 6종**: 단추 카메라, 개조 계산기, 팔뚝 필기, 물병 라벨, 가방 속 폰, 위조 신분증. (2026-11-19 추가 조사로 15종: 신발 속 통신기기, 가발 속 카메라·이어폰, 카메라→AI→스마트워치, 지우개·스카프 속 수신 화면, 문자로 답 돌리기, 시험 중 인터넷에 문제 올리기, 벽 타고 쪽지 건네기, 쉬는 시간 화장실 답 전달, 시험지·답안 사전 유출. 조사 I절)
 
 **한 판**

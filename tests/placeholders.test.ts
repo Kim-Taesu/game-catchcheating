@@ -22,14 +22,14 @@ async function size(file: string) {
 }
 
 describe('placeholder art', () => {
-  it('has 27 people', () => expect(ids).toHaveLength(27))
+  it('has 32 people', () => expect(ids).toHaveLength(32))
 
   it('prop ids are unique, and every dex icon points at one of them', () => {
     expect(new Set(props).size).toBe(props.length)
     const dexSrc = readFileSync(p('dex.js'), 'utf8')
     const block = dexSrc.slice(dexSrc.indexOf('const PROP = {'), dexSrc.indexOf('}', dexSrc.indexOf('const PROP = {')))
     const used = [...block.matchAll(/:\s*'(prop-[a-z-]+)'/g)].map((m) => m[1])
-    expect(used.length).toBe(15)
+    expect(used.length).toBe(12)
     for (const id of used) expect(props, id).toContain(id)
   })
 

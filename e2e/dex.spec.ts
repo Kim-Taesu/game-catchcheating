@@ -1,11 +1,14 @@
+import { readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
+
+const PLAYABLE = (JSON.parse(readFileSync('public/data/cases.json', 'utf8')) as { playable?: boolean }[]).filter((c) => c.playable).length
 
 test.use({ viewport: { width: 375, height: 667 } })
 
 test('도감: 27장(미검증 제외), 해외 필터 감소', async ({ page }) => {
   await page.goto('/dex')
   await expect(page.locator('#grid .dcard')).toHaveCount(27)
-  await expect(page.locator('#progress')).toHaveText('0 / 12')
+  await expect(page.locator('#progress')).toHaveText(`0 / ${PLAYABLE}`)
   await page.selectOption('#f-region', 'world')
   const n = await page.locator('#grid .dcard').count()
   expect(n).toBeGreaterThan(0)
@@ -53,7 +56,7 @@ test('도감: localStorage가 예외를 던져도 목록 렌더', async ({ page 
 test('도감: 발견 표시 반영', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('cf:discovered', JSON.stringify(['peek'])))
   await page.goto('/dex')
-  await expect(page.locator('#progress')).toHaveText('1 / 12')
+  await expect(page.locator('#progress')).toHaveText(`1 / ${PLAYABLE}`)
 })
 
 test('도감: 미검증 코너는 접혀 있고 열면 3건', async ({ page }) => {

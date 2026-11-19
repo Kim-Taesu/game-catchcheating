@@ -28,8 +28,8 @@ public/index.html       소개 + 도감/게임 진입
 public/dex.html, dex.js, dex-logic.js   도감 (목록·필터 3축·상세·발견 표시). 순수 로직은 dex-logic.js
 public/play.html, play.css              게임 화면
 public/site.css         공통 스타일
-public/data/cases.json      사건·수법 도감 데이터 (수법 12종 출전 + 도감 전용 15종 + 미검증 소문 3건). 분류 device·collab·classic·proxy·leak
-public/data/innocents.json  평범한 응시자 15명 (id, name, behavior, action, why, vs). `action`은 `tell.action`과 같은 "…한다" 문장, `why`는 정상인 구체적 이유, `vs`는 비슷한 부정행위 단서와 겉으로 보이는 차이
+public/data/cases.json      사건·수법 도감 데이터 (수법 15종 출전 + 도감 전용 12종 + 미검증 소문 3건). 분류 device·collab·classic·proxy·leak
+public/data/innocents.json  평범한 응시자 17명 (id, name, behavior, action, why, vs). `action`은 `tell.action`과 같은 "…한다" 문장, `why`는 정상인 구체적 이유, `vs`는 비슷한 부정행위 단서와 겉으로 보이는 차이
 public/game/round.js    판 구성: 수법 5~8(`MIN_CHEATERS`·`MAX_CHEATERS`) + 평범 1~4, 해외 사례 최소 1, 헷갈리는 쌍 배치, 좌석별 행동 포즈 시각(onsets·swapAtMs) 생성
 public/game/engine.js   60초·오해 1번이면 종료(`LIVES=1`)·포즈 판정(poseAt)·탭 판정·적발 좌석 재탭 무시·glasses-swap
 public/game/result.js   기록(c·m·f·t)과 칭호 계산, 결과 화면 시간 줄(endTimeLine)

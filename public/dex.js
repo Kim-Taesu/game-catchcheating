@@ -12,9 +12,6 @@ const PROP = {
   'disguised-item': 'prop-cheat-note',
   'phone-in-bag': 'prop-phone-glow',
   'proxy-id': 'prop-id-card',
-  'shoe-device': 'prop-bt-slipper',
-  'wig-device': 'prop-wig',
-  'camera-ai-watch': 'prop-camera-watch',
   'eraser-receiver': 'prop-eraser-screen',
   'sms-relay': 'prop-flip-phone',
   'online-ask': 'prop-qa-phone',
@@ -22,7 +19,6 @@ const PROP = {
   'restroom-relay': 'prop-restroom-note',
   'insider-leak': 'prop-exam-envelope',
 }
-const PLAYABLE_TOTAL = 12
 
 function el(tag, props = {}, kids = []) {
   const n = document.createElement(tag)
@@ -82,7 +78,8 @@ function render() {
   grid.replaceChildren(...list.map(card))
   $('empty').hidden = list.length > 0
   const n = cases.filter((c) => c.playable && discovered.has(c.id)).length
-  $('progress').textContent = `${n} / ${PLAYABLE_TOTAL}`
+  // Total comes from the data, so adding a playable case needs no code change.
+  $('progress').textContent = `${n} / ${cases.filter((c) => c.playable).length}`
 }
 
 function renderRumors() {

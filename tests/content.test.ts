@@ -9,15 +9,16 @@ const innocents = read<Innocent[]>('../public/data/innocents.json')
 const PLAYABLE = [
   'smart-glasses-frame', 'glasses-lens-heat', 'earpiece-hidden', 'bone-conduction', 'smartwatch', 'phone-in-clothes',
   'glasses-swap', 'earbud-swallow', 'ear-bandage', 'signal-fingers', 'peek', 'cheat-sheet-sleeve',
+  'shoe-device', 'wig-device', 'camera-ai-watch',
 ]
 const DEX_ONLY = [
   'button-camera', 'calculator-mod', 'body-writing', 'disguised-item', 'phone-in-bag', 'proxy-id',
-  'shoe-device', 'wig-device', 'camera-ai-watch', 'eraser-receiver', 'sms-relay', 'online-ask', 'outside-help', 'restroom-relay', 'insider-leak',
+  'eraser-receiver', 'sms-relay', 'online-ask', 'outside-help', 'restroom-relay', 'insider-leak',
 ]
 const RUMORS = ['rumor-forum-confession', 'rumor-video-comment', 'rumor-broker-telegram']
 const INNOCENTS = [
   'think-chin', 'look-up', 'plain-glasses', 'yawn', 'pencil-spin', 'rub-eyes', 'analog-watch', 'plain-calculator',
-  'sneeze', 'drink-water', 'scratch-head', 'stretch', 'erase', 'turn-back', 'nose-sniff',
+  'sneeze', 'drink-water', 'scratch-head', 'stretch', 'erase', 'turn-back', 'nose-sniff', 'pick-up-pencil', 'fix-hair',
 ]
 const LOOKALIKES: Record<string, string> = {
   'smart-glasses-frame': 'plain-glasses',
@@ -25,6 +26,8 @@ const LOOKALIKES: Record<string, string> = {
   smartwatch: 'analog-watch',
   'earpiece-hidden': 'sneeze',
   'earbud-swallow': 'sneeze',
+  'shoe-device': 'pick-up-pencil',
+  'wig-device': 'fix-hair',
 }
 const STATUSES = ['confirmed', 'investigating', 'mentioned', 'unverified']
 const BASIS = ['report', 'guideline', 'community', 'industry']
@@ -41,7 +44,7 @@ function strings(value: unknown): string[] {
 }
 
 describe('cases.json', () => {
-  it('has the exact id sets: 12 playable, 6 dex-only, 3 rumors', () => {
+  it('has the exact id sets: 15 playable, 12 dex-only, 3 rumors', () => {
     expect(ids(cases.filter((c) => c.playable))).toEqual([...PLAYABLE].sort())
     expect(ids(cases.filter((c) => !c.playable && c.status !== 'unverified'))).toEqual([...DEX_ONLY].sort())
     expect(ids(cases.filter((c) => c.status === 'unverified'))).toEqual([...RUMORS].sort())
@@ -103,7 +106,7 @@ describe('cases.json', () => {
 })
 
 describe('innocents.json', () => {
-  it('has the 15 ids with a behavior and a reason', () => {
+  it('has the 17 ids with a behavior and a reason', () => {
     expect(ids(innocents)).toEqual([...INNOCENTS].sort())
     for (const i of innocents) {
       expect(['oneoff', 'repeat'], i.id).toContain(i.behavior)

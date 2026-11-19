@@ -10,6 +10,8 @@ const p7 = planFor(SEED)
 const rseat = (page: Page, n: number) => page.locator(`#end-grid [data-result-seat="${n}"]`)
 const detail = (page: Page) => page.locator('#end-detail')
 const cheaters = cheatersOf(p7)
+// A confirmed case in this round (toast shows "· 확인됨"); not tied to one case id.
+const confirmedSeat = cheaters.find((s) => cases.find((c: { id: string; status: string }) => c.id === s.id).status === 'confirmed')!
 const innos = innocentsOf(p7)
 
 test('좌석 9개, 터치 크기, HUD', async ({ page }) => {
@@ -47,7 +49,7 @@ test('두 포즈 이미지 18장이 2초 안에 모두 존재하고 로드된다
 test('행동 포즈 중에 잡으면 행동 이미지는 즉시 투명, 기본 이미지는 불투명', async ({ page }) => {
   await page.clock.install()
   await startRound(page, SEED)
-  const target = cheaters.find((s) => s.id === 'phone-in-clothes')! as unknown as { seat: number; onsets: number[] }
+  const target = confirmedSeat as unknown as { seat: number; onsets: number[] }
   const sp = seat(page, target.seat)
   await page.clock.runFor(target.onsets[0] + 1000)
   const action = sp.locator('img.seat-img-1')
@@ -69,15 +71,15 @@ const WRONG_REASON = '정상 응시자를 잡아 시험이 끝났어요'
 
 test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림에 링크 없음', async ({ page }) => {
   await startRound(page, SEED)
-  const target = cheaters.find((s) => s.id === 'phone-in-clothes')!
+  const target = confirmedSeat
   await seat(page, target.seat).click()
   const toast = page.locator('#toast')
   await expect(toast).toBeVisible()
-  await expect(toast).toHaveText(`적발! ${caseName('phone-in-clothes')} · 확인됨`)
+  await expect(toast).toHaveText(`적발! ${caseName(confirmedSeat.id)} · 확인됨`)
   await expect(toast.locator('a')).toHaveCount(0)
-  await expect(page.locator('#panel-live')).toHaveText(`적발! ${caseName('phone-in-clothes')} · 확인됨`)
+  await expect(page.locator('#panel-live')).toHaveText(`적발! ${caseName(confirmedSeat.id)} · 확인됨`)
   const stored = await page.evaluate(() => localStorage.getItem('cf:discovered'))
-  expect(JSON.parse(stored!)).toContain('phone-in-clothes')
+  expect(JSON.parse(stored!)).toContain(confirmedSeat.id)
   await expect(seat(page, target.seat)).toHaveAttribute('data-caught', '')
   await expect(page.locator('#game')).toContainText(`수상한 응시자 ${cheaters.length}명 중 1명 적발`)
   // The running game has no link that would navigate away.
@@ -87,7 +89,7 @@ test('수법 좌석 탭: 상단 짧은 알림, 발견 저장, 적발 +1, 알림�
 test('잡힌 좌석: "잡힘" 표시, 행동 멈춤(포즈 0 유지), aria-disabled', async ({ page }) => {
   await page.clock.install()
   await startRound(page, SEED)
-  const target = cheaters.find((s) => s.id === 'phone-in-clothes')!
+  const target = confirmedSeat
   const sp = seat(page, target.seat)
   await sp.click()
   await expect(sp).toHaveAttribute('data-caught', '')
