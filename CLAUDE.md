@@ -40,7 +40,7 @@ public/game/result-ui.js  결과 화면: 칭호·숫자 + 판 그대로의 3×3 
 public/game/labels.js   상태·근거 라벨, 행동 문장, 교체 전 오해 안내 (scene·result-ui 공용)
 public/game/identity.js  게임 중 정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
-public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 실제 에셋(소품시트2 9개는 아직 없음)
+public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 실제 에셋 (응시자 54, 소품 18, 배경 1)
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
 scripts/                make-placeholders / slice-sheet / make-og, 공용 코드는 scripts/lib/ (caption, slice, esc, assets=PROP_IDS)
 tests/                  vitest: content*(콘텐츠 규칙), identity(정답 숨김 불변식)·round·engine·result·share-text·dex·worker·slice·placeholders·smoke
@@ -96,7 +96,7 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 
 ## 에셋 교체 절차
 
-`public/px/`는 실제 에셋(2026-11-19 교체)이다. 소품시트2 아이콘 9개만 아직 없고, 해당 사건은 기존 소품 아이콘을 빌려 쓴다.
+`public/px/`는 실제 에셋(2026-11-19 교체, 소품시트2 포함)이다. 새 소품을 추가하면 `PROP_IDS`와 `public/dex.js`의 `PROP` 표를 함께 고친다(테스트가 중복 id와 없는 아이콘을 잡는다).
 
 1. 사용자가 `docs/assets/image-prompts.md`의 시트(수법시트1, 시트2, 시트3, 소품시트, 소품시트2, 시험장 배경)를 `images/`(git 제외)에 넣는다. 소품시트2를 넣으면 `PROP_IDS`와 `public/dex.js`의 `PROP` 표도 새 아이콘으로 바꾼다
 2. 시트마다 `node scripts/slice-sheet.mjs <sheet.png> <pair|prop> <9 ids> <임시 디렉터리>`로 자른다 (임시 디렉터리에 먼저 낸다). 시험장 배경(`catch_시험장.png`)은 3×3 시트가 아니라서 따로 변환한다:

@@ -140,7 +140,7 @@ no noise. Objects must not use magenta or purple colors.
 | 8 | `prop-cheat-note` | a tiny folded paper note covered with handwriting | 소매 쪽지, 팔뚝 필기 (도감 전용) |
 | 9 | `prop-phone-glow` | a smartphone glowing inside a half-open bag | 가방 속 폰 (도감 전용) |
 
-### 5-2. 시트 6 — 단서 소품 2 (파일: `images/catch_소품시트2.png`, **새로 생성**)
+### 5-2. 시트 6 — 단서 소품 2 (파일: `images/catch_소품시트2.png`, 완료)
 
 도감에 추가된 사건 9건용. 장비는 **겉모습만** 그린다(내부 구조·배선·조립 방법 없음). 화면에는 읽을 수 있는 글자 대신 빛나는 줄·점만 그린다.
 
@@ -227,7 +227,7 @@ no desks, no people. No text, no letters, no numbers, no watermark.
 | 시트2 | 3 수법 + 6 평범 | 18프레임 |
 | 시트3 | 9 평범 | 18프레임 |
 | 소품시트 | 9 | 9 (완료) |
-| 소품시트2 | 9 | 9 (**새로 생성**) |
+| 소품시트2 | 9 | 9 (완료) |
 | 시험장 | 1 | 1 |
 | 합계 | 시트 6장 | 응시자 54프레임 + 소품 18 + 배경 1 |
 
@@ -243,4 +243,4 @@ node scripts/slice-sheet.mjs images/catch_소품시트.png prop prop-smart-glass
 node scripts/slice-sheet.mjs images/catch_소품시트2.png prop prop-bt-slipper,prop-wig,prop-camera-watch,prop-eraser-screen,prop-flip-phone,prop-qa-phone,prop-paper-plane,prop-restroom-note,prop-exam-envelope <임시>
 ```
 
-소품시트2를 넣으면 코드도 바꾼다: `scripts/lib/assets.mjs`의 `PROP_IDS`에 9개 추가, `public/dex.js`의 `PROP` 표에서 사건 9건을 새 아이콘으로 연결.
+소품을 새로 추가하면 코드도 바꾼다: `scripts/lib/assets.mjs`의 `PROP_IDS`, `public/dex.js`의 `PROP` 표 (소품시트2는 연결 완료).

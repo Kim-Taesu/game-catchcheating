@@ -20,6 +20,11 @@ const PROP_LOOK = {
   'prop-id-card': ['위조 신분증', '🪪'], 'prop-bone-band': ['뼈 전도', '〰'],
   'prop-smartwatch': ['스마트워치', '⌚'], 'prop-cheat-note': ['쪽지', '📝'],
   'prop-phone-glow': ['가방 속 폰', '📱'],
+  'prop-bt-slipper': ['신발 속 기기', '🩴'], 'prop-wig': ['가발', '💇'],
+  'prop-camera-watch': ['카메라와 워치', '⌚'], 'prop-eraser-screen': ['지우개 화면', '▣'],
+  'prop-flip-phone': ['폴더폰', '📱'], 'prop-qa-phone': ['질문 화면', '💬'],
+  'prop-paper-plane': ['종이비행기', '✈'], 'prop-restroom-note': ['화장실 쪽지', '📝'],
+  'prop-exam-envelope': ['시험지 봉투', '✉'],
 }
 
 function hue(id) {
