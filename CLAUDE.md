@@ -39,6 +39,8 @@ public/game/scene.js    3×3 좌석·HUD·남은 시간 막대·상단 짧은 �
 public/game/result-ui.js  결과 화면: 칭호·숫자 + 판 그대로의 3×3 결과 좌석(잡음·놓침·오해·정상) + 좌석 설명 창(dialog) + 공유
 public/game/labels.js   상태·근거 라벨, 행동 문장, 교체 전 오해 안내 (scene·result-ui 공용)
 public/game/identity.js  게임 중 정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage)
+public/game/hub.js      허브 지표(`POST https://ktslab.xyz/event`, sendBeacon). `cheatfinder.ktslab.xyz`에서만 보낸다(로컬·e2e는 0건, e2e가 확인). 홈·도감은 `enter`, 게임은 판 시작에 `enter`+`play_start`를 요청 하나로(쿠키 전 동시 요청은 방문자 2명), 결과 화면에 `play_end`(ms). 허브 카드·`/ops`·`/dashboard`가 이 값을 쓴다
+public/favicon.png, apple-touch-icon.png  탭·홈 화면 아이콘 (스마트안경 소품)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 실제 에셋 (응시자 54, 소품 18, 배경 1)
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
