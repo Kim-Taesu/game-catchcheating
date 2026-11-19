@@ -152,6 +152,38 @@
 
 라벨 기준: 언론이 적발·체포·처분을 사건으로 보도했으면 `confirmed`(이투데이처럼 해외 사건을 국내 언론이 전한 경우 포함). 수법 세부가 수사 중이면 `investigating`. 개별 적발 없이 위험·고전 수법으로 거론되면 `mentioned`.
 
+## I. 추가 조사 (2026-11-19, 도감 전용 9건 + 대리응시 해외 2건)
+
+사용자 요청 "더 다양한 국내·해외 사례". 모두 언론의 적발·체포·처분 보도가 있어 `confirmed`, 게임용 그림이 없어 도감 전용(`visibility: low`). 개인 이름·학교 이름은 쓰지 않는다(고교 유출 사건은 "고교 정기고사"로만 표기).
+
+| id | 수법 | 사례 | 어떻게 드러났나 | 출처 |
+| --- | --- | --- | --- | --- |
+| shoe-device | 슬리퍼 밑창에 휴대폰·블루투스 장치, 귀 속 초소형 이어폰 | 인도 라자스탄 교사자격시험(REET) 2021-09-26. 한 조직이 25켤레 제작 | 감독관이 수상한 행동을 보고 귀 속 이어폰 발견 → 응시자가 신발 속 장치 자백. 주 정부는 당일 여러 지역 인터넷·모바일 12시간 차단 | Free Press Journal https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics , Sentinel Assam https://www.sentinelassam.com/more-news/national-news/five-held-in-rajasthan-for-cheating-in-exam-with-bluetooth-chappals-556611 |
+| wig-device | 귀를 덮는 가발 속 초소형 카메라·마이크, 밖의 공범이 답을 불러 줌 | 스페인 과달라하라 운전면허 필기, 2023-05 보도 | 스페인어를 거의 못 하는데 훨씬 일찍 끝냄, 티 나는 가발. 6개월 재응시 금지 | Murcia Today https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html |
+| camera-ai-watch | 가슴께 카메라로 문제 전송 → 친구가 AI로 풀이 → 스마트워치로 답 수신 | 한국 대학 중간고사, 2026-10 보도 | 만점 뒤 교수가 감독 아래 같은 문제를 다시 풀게 함 → 못 풀고 자백. 0점·F, 학과가 카메라·시계 반입 금지와 안경 검사 도입 | Korea JoongAng Daily https://www.koreajoongangdaily.com/korea/ai-cheating-tests-korean-universities-as-school-struggle-to-keep-up/12931532 |
+| eraser-receiver | 작은 액정 달린 수신기를 지우개·실크 스카프에 숨김, 초소형 이어폰 | 중국 베이징 대학원 입학시험(2016-12 시행), 6명 징역 20개월~4년 | 시험 당일 33명을 도운 6명 체포(적발 경위는 기사에 없음) | Mothership https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves |
+| sms-relay | 잘하는 응시자가 숨긴 휴대폰으로 답 전송 → 밖의 도우미가 다른 응시자에게 재전송 | 2005학년도 수능(2004-11-17). 전국 374명 입건, 226명 시험 무효 | 광주에서 먼저 드러남 → 경찰이 수능 당일 숫자 문자를 통신사에서 받아 추려 냄 | 한국교육신문 https://hangyo.com/mobile/article.html?no=9804 , 주간경향 https://weekly.khan.co.kr/article/8735 |
+| online-ask | 시험 중 숨긴 휴대폰으로 문제를 질문 사이트·온라인 과외 서비스에 보내 풀이 받음 | 일본 교토대 등 입시 2011-02(Yahoo 지식 Q&A), 대학입학공통테스트 2022-01(소매 속 스마트폰 촬영) | 2011: 시험 중 문제·답이 올라옴, 경찰이 접속 기록 요청. 2022: 풀이를 부탁받은 대학생이 신고, 성적 무효, 이듬해 전자기기 규정 강화 | Phys.org https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp , 데일리스포츠 https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml |
+| outside-help | 가족·지인이 시험장 건물 벽을 타고 올라가 창문으로 쪽지 전달 | 인도 비하르주 10학년 시험 2015-03. 약 600명 퇴학, 수백 명 체포 | 영상 보도. 경찰 뇌물 의혹 | NPR https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal , CBS https://www.cbsnews.com/news/indian-parents-scale-school-wall-to-help-students-cheat-on-exams |
+| restroom-relay | 듣기평가 뒤 화장실 가는 시간에 변기·라디에이터 뒤 숨긴 휴대폰·쪽지로 답 전달, 건당 300만~500만 원 | 토익, 2021-07~2022-10 범행, 2023-08 서울경찰청 발표(브로커+의뢰인 20명, 23차례) | 시험 주관사 제보로 수사 | 쿠키뉴스 https://www.kukinews.com/article/view/kuk202308030111 , 파이낸셜뉴스 https://www.fnnews.com/news/202308030903031907 |
+| insider-leak | 관리하는 쪽에서 문제·답이 새어 나감 (새 분류 `leak`) | 고교 정기고사 답안 유출 2018(교사인 아버지 징역 3년 확정 2020-03), 대학 수시 논술 2024-10(감독관 착각으로 1시간 일찍 배부, 시험지 사진 온라인 유출, 법원은 시험 효력 인정) | 2018: 의혹 제기 후 수사. 2024: 온라인 사진 | YTN https://www.ytn.co.kr/_ln/0103_202003121918269376 , YTN https://www.ytn.co.kr/_ln/0103_202410141919523364 , 법률신문 https://www.lawtimes.co.kr/news/articleViewAmp.html?idxno=203463 |
+| proxy-id (해외 추가) | 대리시험 | 미국 롱아일랜드 SAT·ACT 2011(SAT는 점수 급등을 표시해 취소 → ACT로 우회), 중국 가오카오 2014(지문 필름, 이후 손가락 정맥 인식 도입) | — | CBS New York https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal , Inverse https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints |
+
+### I-2. 감지·대응 사례 (추가)
+
+- 중국: 무선 신호를 잡는 드론·차량, 얼굴 인식, 금속탐지기 (CBS https://www.cbsnews.com/news/china-drones-catch-students-cheating-gaokao-college-entrance-exam ). 2025 가오카오 기간 알리바바·텐센트 등 AI 앱이 시험 시간에 사진 인식·풀이 기능 중단 (Fortune https://fortune.com/asia/2025/06/09/alibaba-tencent-freeze-ai-tools-gaokao-china-exam/ ). 2026년에도 같은 조치 보도는 단일 출처라 쓰지 않음
+- 알제리·이라크(2018~), 시리아(2015~): 국가 시험 기간 인터넷 전면 차단. 효과 없고 인권 침해라는 비판(#NoExamShutdown) (Al Jazeera https://www.aljazeera.com/news/2018/6/21/algeria-and-iraq-shut-down-internet-to-prevent-exam-cheating )
+- 영국 Ofqual: GCSE·A레벨 학생 부정행위 처분 중 휴대폰·통신기기 위반이 가장 많음(2024년 약 41%). 처분은 감점이 가장 흔함 (Ofqual 블로그 https://ofqual.blog.gov.uk/2023/04/18/mobile-phones-in-exams-what-malpractice-stats-show-us/ ). 정확한 연도별 수치는 공식 통계로 재확인 필요
+
+### I-3. 찾았지만 넣지 않은 것
+
+- 나이지리아 UV 펜(책상에 보이지 않는 잉크로 쓰고 UV 펜으로 읽음, 2025): 원문 403으로 확인 못 함
+- 스페인 말라가 펜 몸통에 새긴 메모: 일화성 보도, 적발·처분 정보 없음
+- 2026 중국 초소형 카메라→외부 풀이→이어폰: 단일 출처
+- 2015 인도 비하르는 "부모" 대신 "가족·지인"으로 표기(기사마다 다름)
+
+모든 새 출처 URL은 2026-11-19에 HTTP 200 확인 (403이 난 Japan Times·한국경제·SCMP·Washington Times·Olive Press는 같은 내용의 200 출처로 바꿈).
+
 ## 한계
 
 - 검색 도구로 에브리타임·디시·블로그 본문 직접 수집은 못 했다. 커뮤니티 층은 나무위키 정리와 기사가 인용한 글이 전부다. 필요하면 Chrome 자동화로 보강한다.

@@ -3,8 +3,8 @@ import { safeStorage, loadDiscovered } from '/game/storage.js'
 import { BASIS_LABEL, STATUS_LABEL } from '/game/labels.js'
 
 const STATUS = { ...STATUS_LABEL, unverified: '미검증 소문' }
-const GROUP = { device: '전자기기', collab: '협력', classic: '고전', proxy: '대리응시' }
-const COUNTRY = { KR: '한국', JP: '일본', IN: '인도', TH: '태국', TW: '대만', IT: '이탈리아', TR: '튀르키예', VN: '베트남' }
+const GROUP = { device: '전자기기', collab: '협력', classic: '고전', proxy: '대리응시', leak: '사전 유출' }
+const COUNTRY = { KR: '한국', JP: '일본', IN: '인도', TH: '태국', TW: '대만', IT: '이탈리아', TR: '튀르키예', VN: '베트남', CN: '중국', US: '미국', ES: '스페인' }
 const PROP = {
   'button-camera': 'prop-button-camera',
   'calculator-mod': 'prop-calculator-back',
@@ -12,6 +12,15 @@ const PROP = {
   'disguised-item': 'prop-cheat-note',
   'phone-in-bag': 'prop-phone-glow',
   'proxy-id': 'prop-id-card',
+  'shoe-device': 'prop-earbud',
+  'wig-device': 'prop-earbud',
+  'camera-ai-watch': 'prop-smartwatch',
+  'eraser-receiver': 'prop-earbud',
+  'sms-relay': 'prop-phone-glow',
+  'online-ask': 'prop-phone-glow',
+  'outside-help': 'prop-cheat-note',
+  'restroom-relay': 'prop-cheat-note',
+  'insider-leak': 'prop-cheat-note',
 }
 const PLAYABLE_TOTAL = 12
 

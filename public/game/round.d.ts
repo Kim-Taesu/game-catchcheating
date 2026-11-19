@@ -1,7 +1,7 @@
 export type Origin = { country: string; year: number; label: string; sourceUrl?: string }
 export type Source = { title: string; url: string }
 export type CaseStatus = 'confirmed' | 'investigating' | 'mentioned' | 'unverified'
-export type CaseGroup = 'device' | 'collab' | 'classic' | 'proxy'
+export type CaseGroup = 'device' | 'collab' | 'classic' | 'proxy' | 'leak'
 export type BasisKind = 'report' | 'guideline' | 'community' | 'industry'
 
 export type Tell = {
@@ -34,7 +34,10 @@ export type Innocent = {
   behavior: 'oneoff' | 'repeat'
   /** Action-pose sentence, same style as `Tell.action` (ends in "다"). */
   action: string
+  /** Why it is normal, concretely. */
   why: string
+  /** How it differs from the look-alike cheating tell (result-screen detail). */
+  vs?: string
 }
 
 export type SeatPlan = {

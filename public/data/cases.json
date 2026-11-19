@@ -417,15 +417,183 @@
     "group": "proxy",
     "origins": [
       { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" },
-      { "country": "KR", "year": 2014, "label": "TOPIK 대리시험" }
+      { "country": "KR", "year": 2014, "label": "TOPIK 대리시험" },
+      { "country": "US", "year": 2011, "label": "롱아일랜드 SAT·ACT 대리시험", "sourceUrl": "https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal" },
+      { "country": "CN", "year": 2014, "label": "가오카오 지문 필름 대리시험", "sourceUrl": "https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints" }
     ],
     "summary": "의뢰자 인적사항에 닮은 대리 응시자의 사진을 합성한 신분증으로 대신 시험을 봤다. 2026년 113명이 입건됐다.",
     "cue": "신분증 사진과 얼굴을 맨눈으로 대조하는 허점을 노렸다. 2014년에는 응시자가 신분증 번호를 잘못 적어 들켰다.",
-    "detect": "경찰은 생체인식 본인 확인과 금속탐지기 도입을 요청했다.",
+    "detect": "경찰은 생체인식 본인 확인을 요청했다. 미국 SAT는 점수가 갑자기 크게 오르면 표시해 취소했고, 중국은 지문 필름을 막으려 손가락 정맥 인식을 들였다.",
     "status": "confirmed",
     "sources": [
       { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" },
-      { "title": "경향신문: TOPIK 대리시험 적발 (2014)", "url": "https://www.khan.co.kr/article/201403111659421" }
+      { "title": "경향신문: TOPIK 대리시험 적발 (2014)", "url": "https://www.khan.co.kr/article/201403111659421" },
+      { "title": "CBS New York: 롱아일랜드 SAT·ACT 대리시험 수사 (2011)", "url": "https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal" },
+      { "title": "Inverse: 가오카오 대리시험 지문 필름과 대응 (2018)", "url": "https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "shoe-device",
+    "name": "신발 속 통신기기",
+    "group": "device",
+    "origins": [
+      { "country": "IN", "year": 2021, "label": "라자스탄 교사자격시험(REET)", "sourceUrl": "https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics" }
+    ],
+    "summary": "슬리퍼 밑창에 휴대폰·블루투스 장치를 숨기고, 귀 속 초소형 이어폰으로 밖에서 불러 주는 답을 들었다. 한 조직이 이런 슬리퍼 25켤레를 만들었다.",
+    "cue": "시험장 감독관이 수상한 행동을 보고 귀 속 이어폰을 찾아냈고, 응시자가 신발 속 장치를 털어놨다. 다른 지역에서도 같은 슬리퍼가 나왔다.",
+    "detect": "주 정부는 시험 당일 여러 지역의 인터넷과 모바일 서비스를 12시간 끊었다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Free Press Journal: REET 블루투스 슬리퍼 부정행위 (2021)", "url": "https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics" },
+      { "title": "Sentinel Assam: 블루투스 슬리퍼로 부정행위 5명 체포 (2021)", "url": "https://www.sentinelassam.com/more-news/national-news/five-held-in-rajasthan-for-cheating-in-exam-with-bluetooth-chappals-556611" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "wig-device",
+    "name": "가발 속 카메라·이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "ES", "year": 2023, "label": "과달라하라 운전면허 필기", "sourceUrl": "https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html" }
+    ],
+    "summary": "귀를 덮는 가발 속에 초소형 카메라나 마이크를 숨기고, 밖의 공범이 문제를 보고 답을 불러 줬다.",
+    "cue": "스페인어를 거의 못 하는데 다른 응시자보다 훨씬 일찍 끝냈고, 가발이 한눈에 티가 났다.",
+    "detect": "형사처벌은 피했지만 6개월간 필기시험 재응시가 금지됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Murcia Today: 가발 속 장비로 운전면허 필기 부정행위 (2023)", "url": "https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "camera-ai-watch",
+    "name": "카메라로 보내고 AI 답을 시계로 받기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "대학 중간고사" }
+    ],
+    "summary": "가슴께에 숨긴 카메라로 문제를 친구에게 보내고, 친구가 AI로 푼 답을 스마트워치로 받았다.",
+    "cue": "만점을 받자 교수가 같은 문제를 감독 아래 다시 풀게 했고, 제대로 풀지 못하다 자백했다.",
+    "detect": "시험 0점과 과목 F. 학과는 기말고사부터 카메라·시계 반입을 막고 안경도 검사하기로 했다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Korea JoongAng Daily: AI cheating tests Korean universities (2026)", "url": "https://www.koreajoongangdaily.com/korea/ai-cheating-tests-korean-universities-as-school-struggle-to-keep-up/12931532" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "eraser-receiver",
+    "name": "지우개·스카프 속 수신 화면",
+    "group": "device",
+    "origins": [
+      { "country": "CN", "year": 2016, "label": "베이징 대학원 입학시험", "sourceUrl": "https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves" }
+    ],
+    "summary": "작은 액정이 달린 수신기를 지우개와 실크 스카프에 숨기고, 초소형 이어폰도 함께 써서 밖에서 보낸 답을 받았다. 6명이 징역형을 받았다.",
+    "cue": "경찰은 시험 당일 33명의 부정행위를 도운 6명을 체포했다.",
+    "detect": "중국은 무선 신호를 잡는 드론·차량, 얼굴 인식, 금속탐지기를 쓴다. 2025년엔 AI 앱들이 시험 시간 동안 사진 풀이 기능을 멈췄다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Mothership: 지우개·스카프 속 화면으로 부정행위, 6명 징역형 (2018)", "url": "https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves" },
+      { "title": "CBS News: China uses drones to catch exam cheaters", "url": "https://www.cbsnews.com/news/china-drones-catch-students-cheating-gaokao-college-entrance-exam" },
+      { "title": "Fortune: Alibaba, Tencent freeze AI tools during gaokao (2025)", "url": "https://fortune.com/asia/2025/06/09/alibaba-tencent-freeze-ai-tools-gaokao-china-exam/" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "sms-relay",
+    "name": "문자로 답 돌리기",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2004, "label": "2005학년도 수능" }
+    ],
+    "summary": "잘하는 응시자가 숨긴 휴대폰으로 답을 보내면, 밖의 도우미가 다른 응시자들에게 다시 보냈다. 전국에서 374명이 입건됐다.",
+    "cue": "광주에서 먼저 드러났고, 경찰이 수능 당일 오간 숫자 문자를 통신사에서 받아 추려 내며 수사가 전국으로 넓어졌다.",
+    "detect": "226명이 시험 무효 처분을 받았다. 시험장에 휴대폰을 들이지 못하게 막는 것이 기본이 됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국교육신문: 수능 부정 수사 마무리 374명 입건 (2004)", "url": "https://hangyo.com/mobile/article.html?no=9804" },
+      { "title": "주간경향: 수능 부정 수사 (2004)", "url": "https://weekly.khan.co.kr/article/8735" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "online-ask",
+    "name": "시험 중 인터넷에 문제 올리기",
+    "group": "collab",
+    "origins": [
+      { "country": "JP", "year": 2011, "label": "교토대 입시", "sourceUrl": "https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp" },
+      { "country": "JP", "year": 2022, "label": "대학입학공통테스트", "sourceUrl": "https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml" }
+    ],
+    "summary": "숨긴 휴대폰으로 문제를 질문 사이트나 온라인 과외 서비스에 보내 풀이를 받았다. 2022년엔 소매에 숨긴 폰으로 문제를 찍었다.",
+    "cue": "2011년엔 시험 중에 문제가 올라오고 답이 달려 드러났고, 경찰이 사이트 접속 기록으로 추적했다. 2022년엔 풀이를 부탁받은 대학생이 시험 문제임을 알아채고 신고했다.",
+    "detect": "2022년 응시자는 해당 시험 성적이 무효가 됐고, 이듬해부터 전자기기 취급 규정이 강화됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Phys.org: 교토대 입시 문제 인터넷 게시 수사 (2011)", "url": "https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp" },
+      { "title": "데일리스포츠: 공통테스트 유출, 소매에 숨긴 스마트폰으로 촬영 (2022)", "url": "https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "outside-help",
+    "name": "벽 타고 쪽지 건네기",
+    "group": "collab",
+    "origins": [
+      { "country": "IN", "year": 2015, "label": "비하르주 10학년 시험", "sourceUrl": "https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal" }
+    ],
+    "summary": "가족과 지인들이 시험장 건물 벽을 타고 올라가 창문으로 쪽지를 건넸다.",
+    "cue": "대낮에 벌어진 장면이 영상으로 보도됐다.",
+    "detect": "약 600명이 퇴학 처리되고 수백 명이 체포됐다. 경찰이 돈을 받고 출입을 눈감아 줬다는 의혹도 나왔다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "NPR: Police in India arrest hundreds in cheating scandal (2015)", "url": "https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal" },
+      { "title": "CBS News: Indian parents scale school wall to help students cheat (2015)", "url": "https://www.cbsnews.com/news/indian-parents-scale-school-wall-to-help-students-cheat-on-exams" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "restroom-relay",
+    "name": "쉬는 시간 화장실 답 전달",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2023, "label": "토익 대리 답안 조직" }
+    ],
+    "summary": "듣기평가가 끝난 뒤 화장실 가는 시간에, 변기·라디에이터 뒤에 숨겨 둔 휴대폰이나 쪽지로 답을 건넸다. 건당 300만~500만 원을 받았다.",
+    "cue": "시험 주관사의 제보로 수사가 시작돼 23차례의 부정행위가 드러났다.",
+    "detect": "화장실 가는 시간처럼 감독이 느슨한 순간이 빈틈이 됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "쿠키뉴스: 토익 화장실 답안 전달 조직 검거 (2023)", "url": "https://www.kukinews.com/article/view/kuk202308030111" },
+      { "title": "파이낸셜뉴스: 토익 부정행위 브로커 검거 (2023)", "url": "https://www.fnnews.com/news/202308030903031907" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "insider-leak",
+    "name": "시험지·답안 사전 유출",
+    "group": "leak",
+    "origins": [
+      { "country": "KR", "year": 2018, "label": "고교 정기고사 답안 유출" },
+      { "country": "KR", "year": 2024, "label": "대학 수시 논술" }
+    ],
+    "summary": "관리하는 쪽에서 문제나 답이 새어 나갔다. 교사가 자녀에게 정기고사 답안을 넘겼고(징역 3년 확정), 감독관 착각으로 논술 시험지가 1시간 일찍 배부됐다.",
+    "cue": "2018년엔 의혹 제기 뒤 수사로 드러났다. 2024년엔 시험지 사진이 온라인에 올라오며 알려졌다.",
+    "detect": "응시자 행동으로는 알 수 없다. 출제·보관·배부 절차를 관리해야 막을 수 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "YTN: 시험문제 유출 고교 전 교무부장 징역 3년 확정 (2020)", "url": "https://www.ytn.co.kr/_ln/0103_202003121918269376" },
+      { "title": "YTN: 논술 시험지 사진 온라인 유출 (2024)", "url": "https://www.ytn.co.kr/_ln/0103_202410141919523364" },
+      { "title": "법률신문: 서울고법, 논술시험 효력 인정 (2024)", "url": "https://www.lawtimes.co.kr/news/articleViewAmp.html?idxno=203463" }
     ],
     "playable": false,
     "visibility": "low"

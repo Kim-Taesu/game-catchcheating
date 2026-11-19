@@ -2,14 +2,14 @@ import { expect, test } from '@playwright/test'
 
 test.use({ viewport: { width: 375, height: 667 } })
 
-test('도감: 18장(미검증 제외), 해외 필터 감소', async ({ page }) => {
+test('도감: 27장(미검증 제외), 해외 필터 감소', async ({ page }) => {
   await page.goto('/dex')
-  await expect(page.locator('#grid .dcard')).toHaveCount(18)
+  await expect(page.locator('#grid .dcard')).toHaveCount(27)
   await expect(page.locator('#progress')).toHaveText('0 / 12')
   await page.selectOption('#f-region', 'world')
   const n = await page.locator('#grid .dcard').count()
   expect(n).toBeGreaterThan(0)
-  expect(n).toBeLessThan(18)
+  expect(n).toBeLessThan(27)
   const width = await page.evaluate(() => document.documentElement.scrollWidth)
   expect(width).toBeLessThanOrEqual(375)
 })
@@ -35,7 +35,7 @@ test('도감: 깨진 해시(#%E0)는 무시하고 목록 렌더', async ({ page 
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   await page.goto('/dex#%E0')
-  await expect(page.locator('#grid .dcard')).toHaveCount(18)
+  await expect(page.locator('#grid .dcard')).toHaveCount(27)
   await expect(page.locator('#detail')).toBeHidden()
   expect(errors).toEqual([])
 })
@@ -47,7 +47,7 @@ test('도감: localStorage가 예외를 던져도 목록 렌더', async ({ page 
     })
   })
   await page.goto('/dex')
-  await expect(page.locator('#grid .dcard')).toHaveCount(18)
+  await expect(page.locator('#grid .dcard')).toHaveCount(27)
 })
 
 test('도감: 발견 표시 반영', async ({ page }) => {
@@ -58,7 +58,7 @@ test('도감: 발견 표시 반영', async ({ page }) => {
 
 test('도감: 미검증 코너는 접혀 있고 열면 3건', async ({ page }) => {
   await page.goto('/dex')
-  await expect(page.locator('#grid .dcard')).toHaveCount(18)
+  await expect(page.locator('#grid .dcard')).toHaveCount(27)
   await expect(page.locator('#rumor-grid')).toBeHidden()
   await page.locator('#rumor summary').click()
   await expect(page.locator('#rumor-grid .dcard')).toHaveCount(3)

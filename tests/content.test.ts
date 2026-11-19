@@ -10,7 +10,10 @@ const PLAYABLE = [
   'smart-glasses-frame', 'glasses-lens-heat', 'earpiece-hidden', 'bone-conduction', 'smartwatch', 'phone-in-clothes',
   'glasses-swap', 'earbud-swallow', 'ear-bandage', 'signal-fingers', 'peek', 'cheat-sheet-sleeve',
 ]
-const DEX_ONLY = ['button-camera', 'calculator-mod', 'body-writing', 'disguised-item', 'phone-in-bag', 'proxy-id']
+const DEX_ONLY = [
+  'button-camera', 'calculator-mod', 'body-writing', 'disguised-item', 'phone-in-bag', 'proxy-id',
+  'shoe-device', 'wig-device', 'camera-ai-watch', 'eraser-receiver', 'sms-relay', 'online-ask', 'outside-help', 'restroom-relay', 'insider-leak',
+]
 const RUMORS = ['rumor-forum-confession', 'rumor-video-comment', 'rumor-broker-telegram']
 const INNOCENTS = [
   'think-chin', 'look-up', 'plain-glasses', 'yawn', 'pencil-spin', 'rub-eyes', 'analog-watch', 'plain-calculator',
@@ -119,7 +122,18 @@ describe('innocents.json', () => {
   })
 
   it('does not attribute its guidance to an official body', () => {
-    for (const i of innocents) for (const word of ['지침', '교육부', '교육청']) expect(i.why.includes(word), i.id).toBe(false)
+    for (const i of innocents)
+      for (const word of ['지침', '교육부', '교육청']) for (const t of [i.why, i.vs ?? '']) expect(t.includes(word), i.id).toBe(false)
+  })
+
+  it('explains concretely: a reason and how it differs from a look-alike tell, both short', () => {
+    for (const i of innocents) {
+      const vs = i.vs ?? ''
+      expect(vs.trim(), i.id).not.toBe('')
+      for (const t of [i.why, vs]) expect(t.length, i.id).toBeLessThanOrEqual(120)
+      // The old generic line said nothing about this examinee ("…만으로는 단정할 수 없어요").
+      for (const t of [i.why, vs]) expect(t.includes('단정할 수 없'), i.id).toBe(false)
+    }
   })
 })
 

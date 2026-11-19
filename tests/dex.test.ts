@@ -22,7 +22,7 @@ const throwing = {
 describe('filterCases', () => {
   it('기본 필터는 unverified 제외 전부', () => {
     const r = filterCases(all, base)
-    expect(r.length).toBe(18)
+    expect(r.length).toBe(27)
     expect(r.some((c) => c.status === 'unverified')).toBe(false)
   })
   it('status unverified는 미검증만', () => {
@@ -33,7 +33,7 @@ describe('filterCases', () => {
   it('region world는 해외 origin 사건만, kr는 KR origin 사건', () => {
     const w = filterCases(all, { ...base, region: 'world' })
     expect(w.length).toBeGreaterThan(0)
-    expect(w.length).toBeLessThan(18)
+    expect(w.length).toBeLessThan(27)
     expect(w.every((c) => c.origins.some((o) => o.country !== 'KR'))).toBe(true)
     const k = filterCases(all, { ...base, region: 'kr' })
     expect(k.every((c) => c.origins.some((o) => o.country === 'KR'))).toBe(true)
