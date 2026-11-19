@@ -39,7 +39,8 @@ public/game/scene.js    3×3 좌석·HUD·남은 시간 막대·상단 짧은 �
 public/game/result-ui.js  결과 화면: 칭호·숫자 + 판 그대로의 3×3 결과 좌석(잡음·놓침·오해·정상) + 좌석 설명 창(dialog) + 공유
 public/game/labels.js   상태·근거 라벨, 행동 문장, 교체 전 오해 안내 (scene·result-ui 공용)
 public/game/identity.js  게임 중 정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage)
-public/game/hub.js      허브 지표(`POST https://ktslab.xyz/event`, sendBeacon). `cheatfinder.ktslab.xyz`에서만 보낸다(로컬·e2e는 0건, e2e가 확인). 홈·도감은 `enter`, 게임은 판 시작에 `enter`+`play_start`를 요청 하나로(쿠키 전 동시 요청은 방문자 2명), 결과 화면에 `play_end`(ms). 허브 카드·`/ops`·`/dashboard`가 이 값을 쓴다
+public/game/intro.js    게임 전 안내 3장(다음 → 다음 → 게임 시작). 숫자는 `MIN_CHEATERS`·`MAX_CHEATERS`·`DURATION_MS`에서 가져온다
+public/game/hub.js      허브 지표(`POST https://ktslab.xyz/event`, sendBeacon). `cheatfinder.ktslab.xyz`에서만 보낸다(로컬·e2e는 0건, e2e가 확인). 홈·도감·게임 안내는 페이지를 열 때 `enter`, "게임 시작"에 `play_start`, 결과 화면에 `play_end`(ms). 안내 없이 바로 시작하는 "다시 하기"는 `enter`+`play_start`를 요청 하나로 묶는다(쿠키 발급 전 동시 요청은 방문자 2명). 허브 카드·`/ops`·`/dashboard`가 이 값을 쓴다
 public/favicon.png, apple-touch-icon.png  탭·홈 화면 아이콘 (스마트안경 소품)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 실제 에셋 (응시자 54, 소품 18, 배경 1)
@@ -54,6 +55,7 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 
 ## 게임 규칙 요약
 
+- `/play`를 열면 안내 3장(감독관 역할·반복 행동 단서·탭 규칙)이 먼저 나오고 "게임 시작"을 눌러야 판과 60초가 시작된다. 결과 화면 "다시 하기"(`/play?again=1`)는 안내를 건너뛴다. e2e `startRound`는 안내를 눌러 넘긴다
 - 60초, 기회 없음(오해 1번이면 즉시 종료). 3×3 좌석 = 수법 응시자 5~8(균등 무작위) + 평범한 응시자 1~4, 해외 `origins` 수법 최소 1. 최대 8은 평범한 응시자를 늘 1명 이상 남기기 위해서다(안티목표). 헷갈리는 평범 응시자는 자리가 있는 만큼 먼저 넣는다
 - 수법 응시자는 약 7초(±1.5초) 간격으로 행동 포즈를 4초(겹치지 않음). 좌석별 시작은 무작위
 - 포즈 전환은 기본·행동 두 이미지를 겹쳐 두고 행동 이미지만 기본 이미지 위에서 0.25초 페이드(opacity 250ms, 기본 이미지는 늘 불투명). `prefers-reduced-motion: reduce`면 즉시 전환. 두 이미지는 `alt=""`, 한 번만 로드

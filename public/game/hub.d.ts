@@ -9,4 +9,4 @@ export function sendHubEvents(
 export function createPlayTracker(
   send?: (events: HubEvent[]) => void,
   now?: () => number,
-): { start(): void; end(): void }
+): { enter(): void; start(): void; end(): void }

@@ -32,7 +32,7 @@ test('종료 화면: 칭호, 숫자, 버튼 3개, 면책, 포커스', async ({ p
   await expect(end).toContainText(`잡은 ${cheaters.length} · 놓친 0 · 오해 0`)
   await expect(end).toContainText('걸린 시간')
   await expect(end.getByRole('button', { name: '공유하기' })).toBeVisible()
-  await expect(end.getByRole('link', { name: '다시 하기' })).toHaveAttribute('href', '/play')
+  await expect(end.getByRole('link', { name: '다시 하기' })).toHaveAttribute('href', '/play?again=1')
   await expect(end.getByRole('link', { name: '도감 보기' })).toHaveAttribute('href', '/dex')
   await expect(page.locator('.disclaimer')).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375)

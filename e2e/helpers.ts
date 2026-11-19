@@ -17,7 +17,12 @@ export const innocentsOf = (plan: Plan) => plan.seats.filter((s) => s.kind === '
 
 export const seat = (page: Page, n: number) => page.locator(`[data-seat="${n}"]`)
 
+/** Open a seeded round and go through the how-to-play intro (다음 → 다음 → 게임 시작). */
 export async function startRound(page: Page, seed: number) {
   await page.goto(`/play?seed=${seed}`)
+  const intro = page.locator('#intro')
+  await intro.getByRole('button', { name: '다음' }).click()
+  await intro.getByRole('button', { name: '다음' }).click()
+  await intro.getByRole('button', { name: '게임 시작' }).click()
   await expect(page.locator('[data-seat]')).toHaveCount(9)
 }

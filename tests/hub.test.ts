@@ -34,19 +34,26 @@ describe('hub metrics', () => {
     expect(sendHubEvents([{ type: 'enter' }], { host: GAME_HOST, beacon: boom })).toBe(false)
   })
 
-  it('a round sends enter + play_start in ONE request, then play_end with the elapsed ms, once each', () => {
+  it('with the how-to-play intro: enter on page load, play_start at "게임 시작", play_end at the result, once each', () => {
     const calls: unknown[][] = []
     let t = 1000
     const tr = createPlayTracker((e) => void calls.push(e), () => t)
+    tr.enter()
+    tr.enter()
+    t = 4000
     tr.start()
     tr.start()
-    t = 4500
+    t = 7500
     tr.end()
     tr.end()
-    expect(calls).toEqual([
-      [{ type: 'enter' }, { type: 'play_start' }],
-      [{ type: 'play_end', ms: 3500 }],
-    ])
+    expect(calls).toEqual([[{ type: 'enter' }], [{ type: 'play_start' }], [{ type: 'play_end', ms: 3500 }]])
+  })
+
+  it('replay without the intro: enter + play_start go in ONE request (two before the hub cookie = two visitors)', () => {
+    const calls: unknown[][] = []
+    const tr = createPlayTracker((e) => void calls.push(e), () => 0)
+    tr.start()
+    expect(calls).toEqual([[{ type: 'enter' }, { type: 'play_start' }]])
   })
 
   it('end before start sends nothing; a throwing sender does not break the game', () => {

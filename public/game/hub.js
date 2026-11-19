@@ -24,8 +24,13 @@ export function sendHubEvents(events, opts = {}) {
   }
 }
 
-/** One round = page load (the game starts at once) to the result screen. */
+/**
+ * One page = enter once, then one round: play_start at the start, play_end at the result.
+ * enter() is sent on page load when the how-to-play intro is shown (the user's taps leave time for
+ * the hub cookie). Without it (replay), start() sends enter + play_start in one request.
+ */
 export function createPlayTracker(send = sendHubEvents, now = Date.now) {
+  let entered = false
   let startedAt = null
   const safe = (events) => {
     try {
@@ -35,10 +40,17 @@ export function createPlayTracker(send = sendHubEvents, now = Date.now) {
     }
   }
   return {
+    enter() {
+      if (entered) return
+      entered = true
+      safe([{ type: 'enter' }])
+    },
     start() {
       if (startedAt !== null) return
       startedAt = now()
-      safe([{ type: 'enter' }, { type: 'play_start' }])
+      const events = entered ? [{ type: 'play_start' }] : [{ type: 'enter' }, { type: 'play_start' }]
+      entered = true
+      safe(events)
     },
     end() {
       if (startedAt === null) return

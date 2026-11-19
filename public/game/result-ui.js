@@ -184,7 +184,8 @@ export function showResult(root, r, deps = {}) {
   })
 
   const again = el('a', 'btn', '다시 하기')
-  again.href = '/play'
+  // Skips the how-to-play intro: the player has just seen it.
+  again.href = '/play?again=1'
   const dex = el('a', 'btn', '도감 보기')
   dex.href = '/dex'
   const actions = el('div', 'end-actions')
