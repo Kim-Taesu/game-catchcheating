@@ -1,4 +1,4 @@
-# 이미지 생성 프롬프트 (도트풍 에셋) — v2: 칸마다 포즈 2개
+# 이미지 생성 프롬프트 (도트풍 에셋) — v3: 부드러운 고해상도 도트, 칸마다 포즈 2개
 
 기준 품질: subwayrun의 `public/px`·`public/avatars` (윤곽선·명암이 있는 도트풍 일러스트, 캐릭터 64~96px 표시).
 원본은 `images/`에 둔다 (git 제외). 시트를 자르고 투명 배경 webp로 바꾸는 스크립트는 에셋이 오면 만든다.
@@ -6,7 +6,14 @@
 수법·사건의 근거는 [docs/research/cheating-methods.md](../research/cheating-methods.md)의 id와 "행동 단서 근거" 절을 따른다.
 모든 그림은 만화적인 일러스트이며 장비의 작동 방식·제작법은 담지 않는다. 눈에 띄는 **외형·행동 단서**만 그린다.
 
-## 0. 이번 버전에서 바뀐 것 (v1 → v2)
+## 0. 이번 버전에서 바뀐 것
+
+**v2 → v3 (2026-11-19, 로컬 확인 후 "딱딱 끊기지 않고 자연스럽고 부드럽게")**
+- 화풍: 각진 16-bit 도트(검은 1px 윤곽선, 선명한 픽셀) → **부드러운 고해상도 도트**(hi-bit, 부드러운 명암·그라데이션, 색 있는 윤곽선, 부드러운 조명).
+- 두 포즈는 **한 동작의 앞뒤**처럼 그린다. 몸의 위치는 그대로, 머리·눈·한쪽 팔만 움직인다. 게임은 두 그림을 0.25초 동안 서서히 겹쳐 바꾸므로(크로스페이드), 몸 위치가 다르면 인물이 흔들려 보인다.
+- 게임 표시 크기로 줄일 때는 부드러운 축소(lanczos)를 쓴다(자르기 도구가 처리).
+
+**v1 → v2**
 
 - 단서는 **행동**이다. 그래서 한 응시자를 **두 포즈**(기본 / 행동)로 그린다. 게임에서 5초쯤 간격으로 행동 포즈로 바뀌었다 돌아온다.
 - 게임에 나오는 수법은 근거가 확인된 **12종**. 나머지 6종(단추 카메라·개조 계산기·팔뚝 필기·물병 라벨·가방 속 폰·위조 신분증)은 응시자 이미지가 필요 없고 **소품 시트**만 쓴다.
@@ -19,6 +26,8 @@
 | 시트 크기 | **가로 2:1** 직사각형, 가능하면 2400×1200 이상 |
 | 시트 구성 | **3×3 격자**. 칸은 가로로 긴 2:1 직사각형 9개, 크기 동일 |
 | 칸 안 구성 | **같은 인물을 두 번**: 왼쪽 = 기본 포즈(IDLE), 오른쪽 = 행동 포즈(ACTION). 옷·머리·얼굴·책상·소품 모두 같고 포즈만 다름 |
+| 포즈 관계 | 행동 포즈는 기본 포즈에서 **이어지는 작은 동작**. 몸·어깨·책상 위치는 그대로, 머리·눈·한쪽 팔만 움직임 (게임이 두 그림을 서서히 겹쳐 바꾸기 때문) |
+| 화풍 | 부드러운 고해상도 도트(hi-bit). 부드러운 명암·그라데이션, 색 있는 윤곽선. 각진 16-bit·검은 1px 윤곽선은 피한다 |
 | 배경 | 전체가 **단색 마젠타 #FF00FF** (그림자·그라데이션·바닥 없음). 옷·소품에 마젠타·보라 계열 금지 |
 | 시점 | 정면, 책상에 앉은 **상반신 + 책상 윗면**. 두 포즈 모두 같은 배율·같은 위치(머리와 책상 높이가 일치) |
 | 여백 | 각 포즈 사방 8% 이상 여백, 칸 밖으로 안 넘침 |
@@ -28,17 +37,20 @@
 ### 공통 스타일 블록 (모든 프롬프트 맨 앞에 붙인다)
 
 ```
-Pixel art game sprite sheet, 16-bit era look with clean 1px dark outlines,
-soft cel shading, slightly chibi proportions (big head, small body), cheerful and
+High-resolution pixel art game sprite sheet (hi-bit pixel art), soft cel shading with
+gentle gradients, colored anti-aliased outlines instead of hard black lines, soft warm
+lighting, smooth natural look, slightly chibi proportions (big head, small body), cheerful and
 friendly mood, Korean exam takers (teens to adults, varied hair, skin tones, genders),
 each character seated at a school desk seen from the front, upper body plus desk top
 visible, a white exam paper and pencil on every desk. The sheet is a strict 3x3 grid of
 equal wide cells (each cell twice as wide as tall). Every cell contains the SAME character
 drawn twice side by side: LEFT = idle pose, RIGHT = action pose; identical face, hair,
-clothes, desk and props in both, only the pose differs, same scale and same vertical
-position. Flat solid magenta (#FF00FF) background everywhere, no floor, no shadows on the
+clothes, desk and props in both, same scale and same vertical position. The action pose
+is a small, natural continuation of the idle pose, like the next frame of one smooth
+motion: the body, shoulders and desk stay exactly in place; only the head, the eyes or
+one arm moves. Flat solid magenta (#FF00FF) background everywhere, no floor, no shadows on the
 background, no grid lines, no borders, no text, no letters, no numbers, no arrows, no
-watermark, no UI. Crisp pixel edges, no blur.
+watermark, no UI. Clean edges, no blur, no noise.
 ```
 
 ## 2. 시트 1 — 수법 응시자 (파일: `images/catch_수법시트1.png`)
@@ -82,7 +94,7 @@ watermark, no UI. Crisp pixel edges, no blur.
 | 3 | `sneeze` | writing | sneezing into a tissue held in front of the nose and mouth |
 | 4 | `drink-water` | writing, a plain clear water bottle with a plain label on the desk | drinking from the water bottle |
 | 5 | `scratch-head` | writing | scratching the back of the head, puzzled |
-| 6 | `stretch` | writing | stretching both arms up, shoulders back |
+| 6 | `stretch` | writing | stretching both arms up, body stays in place |
 | 7 | `erase` | writing | erasing something on the paper with an eraser, brushing crumbs off |
 | 8 | `turn-back` | writing | turning the head back toward the clock on the wall at the back of the room (not toward neighbors) |
 | 9 | `nose-sniff` | writing | rubbing the nose and sniffling, a cold |
@@ -108,7 +120,8 @@ watermark, no UI. Crisp pixel edges, no blur.
 가로 16:9 (1152×648 이상). 응시자·책상은 그리지 않는다 (코드로 3×3 자리에 올린다).
 
 ```
-Pixel art game background, 16-bit era look with clean outlines and soft shading.
+High-resolution pixel art game background (hi-bit pixel art), soft shading with gentle
+gradients, colored outlines, soft warm daylight.
 A bright Korean school exam classroom seen from the front: a green blackboard with
 a plain wall clock on the upper wall, white wall with a small notice board, warm
 wooden floor with subtle tile lines, large windows letting in soft daylight on the
@@ -124,7 +137,7 @@ no desks, no people. No text, no letters, no numbers, no watermark.
 ## 8. 생성 후 점검 (사람이 보고 판단)
 
 - 격자가 균등한가, 칸마다 **같은 인물이 두 번**(왼쪽 기본·오른쪽 행동) 나오는가. 얼굴이 달라지면 그 시트를 재생성하거나 해당 칸만 다시 생성
-- 두 포즈의 머리·책상 높이가 맞는가 (어긋나면 번갈아 보일 때 인물이 튄다)
+- 두 포즈의 몸·어깨·책상 위치가 같고 머리·눈·한쪽 팔만 다른가 (게임이 0.25초 동안 겹쳐 바꾸므로, 몸이 움직이면 인물이 흔들려 보인다)
 - 배경이 완전한 마젠타 단색인가
 - 단서가 **보이긴 하지만 한눈에 티 나지는 않는가**
 - 평범 응시자에게 장비·표시등·이어폰·붕대가 섞이지 않았는가
