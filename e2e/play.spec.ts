@@ -288,6 +288,13 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   await expect(d).toContainText(`응시자 ${cheaters[0].seat + 1} · ${caseName(cheaters[0].id)}`)
   await expect(d).toContainText('근거:')
   await expect(d.locator(`a[href="/dex#${cheaters[0].id}"]`)).toHaveText('도감에서 자세히')
+  // Reported countries as flags, plus one "🇰🇷 한국 2026 · …" line per origin.
+  const c0 = cases.find((c: { id: string }) => c.id === cheaters[0].id)
+  const flag = (code: string) => String.fromCodePoint(...[...code].map((ch) => 0x1f1e6 + ch.charCodeAt(0) - 65))
+  const flags = [...new Set(c0.origins.map((o: { country: string }) => o.country))].map((x) => flag(x as string)).join('')
+  await expect(d.locator('.detail-flags')).toHaveText(flags)
+  await expect(d.locator('.detail-origin-list li')).toHaveCount(c0.origins.length)
+  for (const o of c0.origins) await expect(d.locator('.detail-origin-list')).toContainText(`${flag(o.country)} `)
   await page.keyboard.press('Escape')
   await expect(d).toBeHidden()
   await expect(rseat(page, cheaters[0].seat)).toBeFocused()

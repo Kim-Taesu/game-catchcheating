@@ -51,3 +51,28 @@ test('결과 화면의 다시 하기는 안내 없이 바로 시작한다', asyn
   await expect(intro(page)).toHaveCount(0)
   await expect(page.locator('[data-seat]')).toHaveCount(9)
 })
+
+test('안내 그림: 1장 시험장 9칸(그림 18장), 2장 6칸, 3장 누르기 장면, 모두 로드된다', async ({ page }) => {
+  await page.goto('/play?seed=7')
+  const imgsLoaded = () =>
+    page.evaluate(() => [...document.querySelectorAll<HTMLImageElement>('#intro img')].every((i) => i.complete && i.naturalWidth > 0))
+  await expect(intro(page).locator('.mini-hall .mini-seat')).toHaveCount(9)
+  await expect(intro(page).locator('.mini-hall img')).toHaveCount(18)
+  await expect.poll(imgsLoaded).toBe(true)
+  await intro(page).getByRole('button', { name: '다음' }).click()
+  await expect(intro(page).locator('.intro-row .mini-seat')).toHaveCount(6)
+  await expect.poll(imgsLoaded).toBe(true)
+  await intro(page).getByRole('button', { name: '다음' }).click()
+  await expect(intro(page).locator('.tap-demo .mini-seat')).toHaveCount(2)
+  await expect(intro(page)).toContainText('적발! AI 스마트안경')
+  await expect.poll(imgsLoaded).toBe(true)
+})
+
+test('움직임 줄이기: 안내 애니메이션 없이 행동 장면을 멈춘 그림으로', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/play?seed=7')
+  const first = intro(page).locator('.mini-hall .motion-repeat .mini-img-1').first()
+  await expect(first).toHaveCSS('animation-name', 'none')
+  await expect(first).toHaveCSS('opacity', '1')
+  await expect(intro(page).locator('.mini-scan')).toBeHidden()
+})

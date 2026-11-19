@@ -2,7 +2,7 @@
 // the explanation), and the share button with fallbacks. All text goes in via textContent.
 import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
-import { BEFORE_SWAP_NOTE, basisLine, statusLabel } from './labels.js'
+import { BEFORE_SWAP_NOTE, basisLine, originFlags, originLine, statusLabel } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '정상 응시자를 잡아 시험이 끝났어요' }
 
@@ -45,6 +45,16 @@ function fact(label, text, cls = 'detail-fact') {
   return p
 }
 
+/** "보도된 사례" with one line per origin ("🇯🇵 일본 2024 · 와세다대 입시"); null when there is none. */
+function origins(list) {
+  if (!list?.length) return null
+  const box = el('div', 'detail-fact detail-origins')
+  const ul = el('ul', 'detail-origin-list')
+  ul.append(...list.map((o) => el('li', '', originLine(o))))
+  box.append(el('strong', '', '보도된 사례'), ul)
+  return box
+}
+
 /**
  * The round's nine seats in their play positions, each labelled with its outcome and name.
  * A tap opens a dialog with the explanation. Returns the grid and the dialog.
@@ -77,6 +87,9 @@ function resultGrid(recap, cases, innocents) {
     tags.append(el('span', `badge badge-${o.cls}`, o.badge))
     const st = statusLabel(c)
     if (st) tags.append(' ', el('span', 'chip', st))
+    // Where the case was reported: one flag per country.
+    const flags = isCheater ? originFlags(c?.origins) : ''
+    if (flags) tags.append(' ', el('span', 'detail-flags', flags))
     const head = el('div', 'detail-head')
     const headText = el('div')
     headText.append(title, tags)
@@ -88,6 +101,7 @@ function resultGrid(recap, cases, innocents) {
           fact('수법', c?.summary),
           fact('게임에서 보인 행동', c?.tell?.action),
           fact('실제로 알아챈 단서', c?.cue),
+          origins(c?.origins),
           c?.tell ? el('p', 'end-basis', basisLine(c.tell)) : null,
           dexLink(s.id, name),
         ]
