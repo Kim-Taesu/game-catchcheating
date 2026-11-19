@@ -2,7 +2,7 @@
 
 필기시험 부정행위 도감(`/dex`) + 3×3 감독관 게임(`/play`) + 결과 공유(`/r`). Cloudflare Worker `catchcheating`, 정적 파일은 `public/`, Worker는 `/r`만 직접 처리. 설계 원문은 `docs/superpowers/specs/2026-11-17-catchcheating-design.md`.
 
-**에셋 교체 전 공개 배포 금지.** GitHub 저장소 생성, 배포, 서브도메인 연결, 허브 카드 추가는 모두 사용자의 명시적 승인이 있어야 한다.
+**배포, 서브도메인 연결, 허브 카드 추가는 모두 사용자의 명시적 승인이 있어야 한다.** 실제 에셋은 2026-11-19에 교체됐다(배포 전제 조건 충족).
 
 ## Commands
 
@@ -40,13 +40,13 @@ public/game/result-ui.js  결과 화면: 칭호·숫자 + 판 그대로의 3×3 
 public/game/labels.js   상태·근거 라벨, 행동 문장, 교체 전 오해 안내 (scene·result-ui 공용)
 public/game/identity.js  게임 중 정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
-public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 현재 임시본
+public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 실제 에셋(소품시트2 9개는 아직 없음)
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
 scripts/                make-placeholders / slice-sheet / make-og, 공용 코드는 scripts/lib/ (caption, slice, esc, assets=PROP_IDS)
 tests/                  vitest: content*(콘텐츠 규칙), identity(정답 숨김 불변식)·round·engine·result·share-text·dex·worker·slice·placeholders·smoke
 e2e/                    Playwright: home·dex·play·play-resilience·share, 공용 도우미 helpers.ts(planFor·seat·startRound)
 docs/research/cheating-methods.md   조사 원문. 모든 주장·출처의 기준 (A~H절, G=행동 단서 근거)
-docs/assets/image-prompts.md        이미지 생성 프롬프트 v3 (부드러운 hi-bit 도트, 시트 5종, 생성 후 점검 §8)
+docs/assets/image-prompts.md        이미지 생성 프롬프트 v4 (부드러운 hi-bit 도트, 시트 6종: 응시자 3·소품 2·배경 1, 생성 후 점검 §8, 자르기 명령 §10)
 images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 ```
 
@@ -96,9 +96,9 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 
 ## 에셋 교체 절차
 
-현재 `public/px/`는 임시 에셋이다. 교체 전 공개 배포 금지.
+`public/px/`는 실제 에셋(2026-11-19 교체)이다. 소품시트2 아이콘 9개만 아직 없고, 해당 사건은 기존 소품 아이콘을 빌려 쓴다.
 
-1. 사용자가 `docs/assets/image-prompts.md`의 시트 5종(수법시트1, 시트2, 시트3, 소품시트, 시험장 배경)을 `images/`(git 제외)에 넣는다
+1. 사용자가 `docs/assets/image-prompts.md`의 시트(수법시트1, 시트2, 시트3, 소품시트, 소품시트2, 시험장 배경)를 `images/`(git 제외)에 넣는다. 소품시트2를 넣으면 `PROP_IDS`와 `public/dex.js`의 `PROP` 표도 새 아이콘으로 바꾼다
 2. 시트마다 `node scripts/slice-sheet.mjs <sheet.png> <pair|prop> <9 ids> <임시 디렉터리>`로 자른다 (임시 디렉터리에 먼저 낸다). 시험장 배경(`catch_시험장.png`)은 3×3 시트가 아니라서 따로 변환한다:
    `node -e "require('sharp')('images/catch_시험장.png').resize(1152, 648, { fit: 'cover', kernel: 'lanczos3' }).webp({ lossless: true }).toFile('<임시 디렉터리>/classroom.webp')"` → 점검 후 `public/px/classroom.webp`
 3. 프롬프트 문서 §8 점검표로 결과를 확인한다: 같은 인물 두 포즈, 몸·어깨·책상 위치가 같고 머리·눈·한쪽 팔만 다른지(크로스페이드 흔들림), 마젠타 배경, 단서가 티 나지 않는지, 평범 응시자에 장비 없음, 글자·워터마크 없음
