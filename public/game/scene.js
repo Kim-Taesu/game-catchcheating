@@ -1,7 +1,7 @@
 // Play screen: renders the 3x3 seats, HUD, a short top toast after each tap, and drives the
 // engine each frame. Full explanations live on the result screen (recap passed to onEnd).
 import { buildRound, seededRng } from './round.js'
-import { createEngine, poseAt, tap, status, result } from './engine.js'
+import { DURATION_MS, createEngine, poseAt, tap, status, result } from './engine.js'
 import { markDiscovered, safeStorage } from './storage.js'
 import { actionOf } from './labels.js'
 import { seatLabel, tapMessage } from './identity.js'
@@ -19,8 +19,9 @@ function el(tag, props = {}, ...children) {
 
 /**
  * @param {HTMLElement} root
- * Recap: caught/missed case ids (catch order / seat order) and misjudged seats in tap order.
- * @typedef {{caught:string[], missed:string[], misjudged:{seat:number, id:string, beforeSwap:boolean}[]}} Recap
+ * Recap: caught case ids (catch order), misjudged seats (tap order) and every seat of the round.
+ * @typedef {{caught:string[], misjudged:{seat:number, id:string, beforeSwap:boolean}[],
+ *   seats:{seat:number, kind:'cheater'|'innocent', id:string}[]}} Recap
  * @param {{cases:any[], innocents:any[], seed?:number, now?:()=>number, onEnd:(r:{c:number,m:number,f:number,t:number}, recap:Recap)=>void}} opts
  * @returns {{stop():void}}
  */
@@ -47,6 +48,15 @@ export function startGame(root, opts) {
   // The toast sits inside the HUD box, so it can never cover a seat. #panel-live announces it.
   const toast = el('p', { class: 'toast', id: 'toast', hidden: '', 'aria-hidden': 'true' })
   const hud = el('div', { class: 'hud' }, el('p', { class: 'hud-row' }, hudTime), hudCaught, toast)
+  // Time bar below the HUD (the toast covers only the HUD, so the bar stays visible).
+  // It shrinks and goes green -> yellow -> red as time runs out; pulses in the last 10 s.
+  const timeFill = el('span', { class: 'timebar-fill' })
+  const timeBar = el(
+    'div',
+    { class: 'timebar', id: 'timebar', role: 'progressbar', 'aria-label': '남은 시간', 'aria-valuemin': '0', 'aria-valuemax': String(DURATION_MS / 1000) },
+    timeFill,
+  )
+  const LOW_MS = 10000
 
   const grid = el('div', { class: 'seats' })
   const views = new Map()
@@ -86,7 +96,7 @@ export function startGame(root, opts) {
   // Always-rendered live region: screen readers announce text changes in it reliably.
   const live = el('div', { class: 'sr-only', id: 'panel-live', role: 'status', 'aria-live': 'polite' })
 
-  root.append(hud, grid, live)
+  root.append(hud, timeBar, grid, live)
 
   // ---- toast ----
   let toastTimer = 0
@@ -125,7 +135,17 @@ export function startGame(root, opts) {
   function render() {
     const t = now()
     const st = status(engine, t)
-    setHud(hudTime, 'time', `남은 시간 ${Math.ceil(st.remainingMs / 1000)}초`)
+    const secs = Math.ceil(st.remainingMs / 1000)
+    setHud(hudTime, 'time', `남은 시간 ${secs}초`)
+    if (hudShown.secs !== secs) {
+      hudShown.secs = secs
+      timeBar.setAttribute('aria-valuenow', String(secs))
+      timeBar.toggleAttribute('data-low', st.remainingMs <= LOW_MS)
+    }
+    const frac = Math.max(0, Math.min(1, st.remainingMs / DURATION_MS))
+    timeFill.style.transform = `scaleX(${frac})`
+    // Hue 120 (green) at full time down to 0 (red) at the end.
+    timeFill.style.backgroundColor = `hsl(${Math.round(120 * frac)} 72% 42%)`
     setHud(hudCaught, 'caught', `수상한 응시자 ${st.total}명 중 ${st.caught}명 적발`)
     for (const v of views.values()) {
       // A caught seat stays idle for good; the engine's poseAt stays pure.
@@ -144,8 +164,8 @@ export function startGame(root, opts) {
       hideToast(false)
       for (const v of views.values()) v.btn.disabled = true
       root.dataset.ended = st.ended
-      const missed = plan.seats.filter((x) => x.kind === 'cheater' && !recap.caught.includes(x.id)).map((x) => x.id)
-      opts.onEnd(result(engine, t), { caught: [...recap.caught], missed, misjudged: [...recap.misjudged] })
+      const seats = plan.seats.map(({ seat, kind, id }) => ({ seat, kind, id }))
+      opts.onEnd(result(engine, t), { caught: [...recap.caught], misjudged: [...recap.misjudged], seats })
     }
   }
   function frame() {

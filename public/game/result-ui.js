@@ -1,9 +1,8 @@
-// Result screen: title, numbers, share button with fallbacks, and the round's explanations
-// (cases met, misjudged examinees, missed cases). All data goes in via textContent.
+// Result screen: title, numbers, the round's 3x3 seats labelled with their outcome (a tap opens
+// the explanation), and the share button with fallbacks. All text goes in via textContent.
 import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
-import { beforeSwapLine } from './identity.js'
-import { SINGLE_ACTION_NOTE, basisLine, statusLabel } from './labels.js'
+import { BEFORE_SWAP_NOTE, basisLine, statusLabel } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '정상 응시자를 잡아 시험이 끝났어요' }
 
@@ -21,67 +20,119 @@ function dexLink(id, name) {
   return a
 }
 
-/** A titled list section; null for an empty list so callers can filter it out. */
-function section(id, heading, items) {
-  if (!items.length) return null
-  const sec = el('section', 'end-sec')
-  sec.id = id
-  const list = el('ul', 'end-list')
-  list.append(...items)
-  sec.append(el('h3', 'end-sec-title', heading), list)
-  return sec
+/** Outcome of a seat on the result grid. */
+const OUTCOME = {
+  caught: { badge: '잡음', cls: 'ok' },
+  missed: { badge: '놓침', cls: 'miss' },
+  wrong: { badge: '오해', cls: 'wrong' },
+  innocent: { badge: '정상', cls: 'calm' },
 }
 
-/** Lists for the recap the play screen passes to onEnd. Empty lists are left out. */
-function recapSections(recap, cases, innocents) {
+/** The seat's action-pose image (it shows what the examinee did). */
+function poseImg(id, cls) {
+  const img = el('img', cls)
+  img.src = `/px/${id}-1.webp`
+  img.alt = ''
+  img.addEventListener('error', () => img.remove())
+  return img
+}
+
+/** "<label> <text>" paragraph; null when there is no text. */
+function fact(label, text, cls = 'detail-fact') {
+  if (!text) return null
+  const p = el('p', cls)
+  p.append(el('strong', '', label), ' ', text)
+  return p
+}
+
+/**
+ * The round's nine seats in their play positions, each labelled with its outcome and name.
+ * A tap opens a dialog with the explanation. Returns the grid and the dialog.
+ */
+function resultGrid(recap, cases, innocents) {
   const caseById = new Map(cases.map((c) => [c.id, c]))
   const innById = new Map(innocents.map((i) => [i.id, i]))
-  const caseName = (id) => caseById.get(id)?.name ?? id
+  const caught = new Set(recap.caught)
+  const wrongBySeat = new Map(recap.misjudged.map((m) => [m.seat, m]))
 
-  const met = recap.caught.map((id) => {
-    const c = caseById.get(id)
-    const li = el('li', 'end-item')
-    const title = el('p', 'end-item-title', caseName(id))
+  const dialog = el('dialog', 'detail')
+  dialog.id = 'end-detail'
+  dialog.setAttribute('aria-labelledby', 'end-detail-title')
+  // A click on the backdrop (the dialog box itself, outside its content) closes it.
+  dialog.addEventListener('click', (ev) => {
+    if (ev.target === dialog) dialog.close()
+  })
+  let opener = null
+  dialog.addEventListener('close', () => opener?.focus())
+
+  function openDetail(btn, s, outcome) {
+    const isCheater = s.kind === 'cheater'
+    const c = isCheater ? caseById.get(s.id) : undefined
+    const inn = isCheater ? undefined : innById.get(s.id)
+    const name = (isCheater ? c?.name : inn?.name) ?? s.id
+    const o = OUTCOME[outcome]
+    const title = el('h3', 'detail-title', `응시자 ${s.seat + 1} · ${name}`)
+    title.id = 'end-detail-title'
+    const tags = el('p', 'detail-tags')
+    tags.append(el('span', `badge badge-${o.cls}`, o.badge))
     const st = statusLabel(c)
-    if (st) title.append(' ', el('span', 'chip', st))
-    li.append(title)
-    if (c?.cue) li.append(el('p', '', c.cue))
-    const t = c?.tell
-    if (t) li.append(el('p', 'end-basis', basisLine(t)))
-    li.append(dexLink(id, caseName(id)))
-    return li
-  })
+    if (st) tags.append(' ', el('span', 'chip', st))
+    const head = el('div', 'detail-head')
+    const headText = el('div')
+    headText.append(title, tags)
+    head.append(poseImg(s.id, 'detail-img'), headText)
 
-  const wrong = recap.misjudged.map((m) => {
-    const li = el('li', 'end-item')
-    if (m.beforeSwap) {
-      // A wrong tap ends the round, so the case is never caught later: no case name here.
-      li.append(el('p', 'end-item-title', beforeSwapLine(m.seat)))
-    } else {
-      const inn = innById.get(m.id)
-      li.append(el('p', 'end-item-title', inn?.name ?? m.id), el('p', '', inn?.why ?? ''))
-    }
-    li.append(el('p', 'end-basis', SINGLE_ACTION_NOTE))
-    return li
-  })
+    const facts = isCheater
+      ? [
+          wrongBySeat.get(s.seat)?.beforeSwap ? el('p', 'end-note', BEFORE_SWAP_NOTE) : null,
+          fact('수법', c?.summary),
+          fact('게임에서 보인 행동', c?.tell?.action),
+          fact('실제로 알아챈 단서', c?.cue),
+          c?.tell ? el('p', 'end-basis', basisLine(c.tell)) : null,
+          dexLink(s.id, name),
+        ]
+      : [
+          outcome === 'wrong' ? el('p', 'end-note', '이 응시자를 잡아서 시험이 끝났어요.') : null,
+          fact('보인 행동', inn?.action),
+          fact('정상인 이유', inn?.why),
+          fact('부정행위와 다른 점', inn?.vs),
+        ]
+    const close = el('button', 'btn detail-close', '닫기')
+    close.type = 'button'
+    close.addEventListener('click', () => dialog.close())
+    dialog.replaceChildren(head, ...facts.filter(Boolean), close)
+    opener = btn
+    if (typeof dialog.showModal === 'function') dialog.showModal()
+    else dialog.setAttribute('open', '')
+    close.focus()
+  }
 
-  const missed = recap.missed.map((id) => {
-    const li = el('li', 'end-item')
-    li.append(el('p', 'end-item-title', caseName(id)), dexLink(id, caseName(id)))
-    return li
-  })
-  return [
-    section('end-met', '이번 판에서 만난 수법', met),
-    section('end-misjudged', '오해한 응시자', wrong),
-    section('end-missed', '놓친 수법', missed),
-  ].filter(Boolean)
+  const grid = el('div', 'seats rgrid')
+  grid.id = 'end-grid'
+  for (const s of [...recap.seats].sort((a, b) => a.seat - b.seat)) {
+    const isCheater = s.kind === 'cheater'
+    const outcome = isCheater ? (caught.has(s.id) ? 'caught' : 'missed') : wrongBySeat.has(s.seat) ? 'wrong' : 'innocent'
+    const name = (isCheater ? caseById.get(s.id)?.name : innById.get(s.id)?.name) ?? s.id
+    const o = OUTCOME[outcome]
+    const btn = el('button', `seat rseat is-${outcome}`)
+    btn.type = 'button'
+    btn.dataset.resultSeat = String(s.seat)
+    btn.dataset.outcome = outcome
+    btn.setAttribute('aria-haspopup', 'dialog')
+    btn.setAttribute('aria-label', `응시자 ${s.seat + 1} ${o.badge}: ${name}. 설명 보기`)
+    btn.append(poseImg(s.id, 'rseat-img'), el('span', `badge badge-${o.cls} rseat-badge`, o.badge), el('span', 'rseat-name', name))
+    btn.addEventListener('click', () => openDetail(btn, s, outcome))
+    grid.append(btn)
+  }
+  return { grid, dialog }
 }
 
 /**
  * @param {HTMLElement} root
  * @param {{c:number,m:number,f:number,t:number}} r
  * @param {{share?:Function, clipboard?:object, reason?:'clear'|'timeout'|'lives',
- *   recap?:{caught:string[], missed:string[], misjudged:{seat:number,id:string,beforeSwap:boolean}[]},
+ *   recap?:{caught:string[], misjudged:{seat:number,id:string,beforeSwap:boolean}[],
+ *     seats:{seat:number,kind:'cheater'|'innocent',id:string}[]},
  *   cases?:any[], innocents?:any[]}} [deps]
  */
 export function showResult(root, r, deps = {}) {
@@ -97,17 +148,16 @@ export function showResult(root, r, deps = {}) {
   root.append(el('p', 'end-numbers', `잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}`))
   const timeLine = endTimeLine(r, deps.reason)
   if (timeLine) root.append(el('p', 'end-time', timeLine))
-  root.append(
-    el(
-      'p',
-      'end-hint',
-      tier === 'eagle'
-        ? '오해 없이 30초 안에 모두 잡았어요!'
-        : '오해 없이 30초 안에 모두 잡으면 매의 눈 감독관',
-    ),
+  const board = deps.recap ? resultGrid(deps.recap, deps.cases ?? [], deps.innocents ?? []) : null
+  if (board) root.append(board.grid, el('p', 'end-hint', '좌석을 누르면 설명을 볼 수 있어요'))
+  // Below the buttons: the seats and the share button come first on a small screen.
+  const goal = el(
+    'p',
+    'end-hint end-goal',
+    tier === 'eagle' ? '오해 없이 30초 안에 모두 잡았어요!' : '오해 없이 30초 안에 모두 잡으면 매의 눈 감독관',
   )
 
-  const shareBtn = el('button', 'btn btn-primary', '자랑하기')
+  const shareBtn = el('button', 'btn btn-primary', '공유하기')
   shareBtn.type = 'button'
   const status = el('p', 'end-status')
   status.setAttribute('role', 'status')
@@ -139,8 +189,8 @@ export function showResult(root, r, deps = {}) {
   dex.href = '/dex'
   const actions = el('div', 'end-actions')
   actions.append(shareBtn, again, dex)
-  root.append(actions, status, fallback)
-  if (deps.recap) root.append(...recapSections(deps.recap, deps.cases ?? [], deps.innocents ?? []))
+  root.append(actions, status, fallback, goal)
+  if (board) root.append(board.dialog)
 
   root.hidden = false
   h.focus()

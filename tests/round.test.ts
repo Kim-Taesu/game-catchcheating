@@ -154,11 +154,12 @@ describe('buildRound constraints', () => {
     }
   })
 
-  it('every non-swap seat acts within the first 12 s', () => {
+  it('every seat, swap seat included, visibly changes within the first 12 s', () => {
     for (const r of rounds) {
-      for (const s of r.seats.filter((x) => x.swapAtMs === undefined)) {
-        expect(s.onsets.length, s.id).toBeGreaterThan(0)
-        expect(s.onsets[0], s.id).toBeLessThanOrEqual(12000)
+      for (const s of r.seats) {
+        const first = s.swapAtMs ?? s.onsets[0]
+        expect(first, s.id).toBeDefined()
+        expect(first, s.id).toBeLessThanOrEqual(12000)
       }
     }
   })
@@ -180,14 +181,12 @@ describe('buildRound constraints', () => {
           }
         } else {
           oneoff++
-          expect([1, 2]).toContain(s.onsets.length)
-          // first action early (2–12 s) so every examinee moves before a typical round ends
+          // always twice, both inside a typical 20–30 s round: first 2–10 s, second 8–14 s later
+          expect(s.onsets).toHaveLength(2)
           expect(s.onsets[0]).toBeGreaterThanOrEqual(2000)
-          expect(s.onsets[0]).toBeLessThanOrEqual(12000)
-          if (s.onsets.length === 2) {
-            expect(s.onsets[1] - s.onsets[0]).toBeGreaterThanOrEqual(8000)
-            expect(s.onsets[1] - s.onsets[0]).toBeLessThanOrEqual(20000)
-          }
+          expect(s.onsets[0]).toBeLessThanOrEqual(10000)
+          expect(s.onsets[1] - s.onsets[0]).toBeGreaterThanOrEqual(8000)
+          expect(s.onsets[1] - s.onsets[0]).toBeLessThanOrEqual(14000)
         }
       }
     }
@@ -195,7 +194,7 @@ describe('buildRound constraints', () => {
     expect(oneoff).toBeGreaterThan(0)
   })
 
-  it('swap case has swapAtMs 18000-22000 and no onsets', () => {
+  it('swap case has swapAtMs 6000-12000 and no onsets', () => {
     let seen = 0
     for (const r of rounds) {
       for (const s of r.seats.filter((x) => x.kind === 'cheater')) {
@@ -205,8 +204,8 @@ describe('buildRound constraints', () => {
         }
         seen++
         expect(s.onsets).toEqual([])
-        expect(s.swapAtMs).toBeGreaterThanOrEqual(18000)
-        expect(s.swapAtMs).toBeLessThanOrEqual(22000)
+        expect(s.swapAtMs).toBeGreaterThanOrEqual(6000)
+        expect(s.swapAtMs).toBeLessThanOrEqual(12000)
       }
     }
     expect(seen).toBeGreaterThan(0)

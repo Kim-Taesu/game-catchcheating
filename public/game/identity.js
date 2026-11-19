@@ -24,9 +24,3 @@ export function tapMessage(outcome, caseById) {
   }
   return null
 }
-
-/** Result-screen line for a before-swap misjudgment; names the case only if caught later. */
-export function beforeSwapLine(seatIndex, laterCaseName) {
-  const later = laterCaseName ? ` (나중에 적발: ${laterCaseName})` : ''
-  return `응시자 ${seatIndex + 1} — 이때는 아직 수상한 점이 보이지 않았어요${later}`
-}

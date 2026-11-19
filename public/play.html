@@ -34,6 +34,8 @@
           onEnd(result, recap) {
             const endEl = document.getElementById('end')
             endEl.dataset.endCount = String(Number(endEl.dataset.endCount ?? 0) + 1)
+            // The result grid takes the play grid's place, so the result fits one screen.
+            game.hidden = true
             showResult(endEl, result, { reason: game.dataset.ended, recap, cases, innocents })
           },
         })

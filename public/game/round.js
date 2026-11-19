@@ -54,17 +54,17 @@ function repeatingOnsets(rng, firstMax, gapMin, gapMax) {
   return onsets
 }
 
-// One-off innocents act early (2–12 s) so nobody sits still for a whole round
-// that usually ends in 20–30 s; a second action (half the time) comes 8–20 s later.
+// One-off innocents act twice, both inside a round that usually ends in 20–30 s:
+// first at 2–10 s, second 8–14 s later. Still fewer than a cheater's 7 s rhythm.
 function oneoffOnsets(rng) {
-  const first = randInt(rng, 2000, 12000)
-  if (rng() < 0.5) return [first]
-  return [first, randInt(rng, first + 8000, first + 20000)]
+  const first = randInt(rng, 2000, 10000)
+  return [first, randInt(rng, first + 8000, first + 14000)]
 }
 
 function cheaterSeat(rng, c) {
   if (c.tell.swap === true) {
-    return { kind: 'cheater', id: c.id, onsets: [], swapAtMs: randInt(rng, 18000, 22000) }
+    // Swaps early (6–12 s) like every other seat's first move; before that it looks normal.
+    return { kind: 'cheater', id: c.id, onsets: [], swapAtMs: randInt(rng, 6000, 12000) }
   }
   return { kind: 'cheater', id: c.id, onsets: repeatingOnsets(rng, 6000, 5500, 8500) }
 }

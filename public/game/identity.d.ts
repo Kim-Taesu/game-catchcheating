@@ -4,4 +4,3 @@ export function tapMessage(
   outcome: TapOutcome,
   caseById: Map<string, { name?: string; status?: string }>,
 ): { toast: string; label: string } | null
-export function beforeSwapLine(seatIndex: number, laterCaseName?: string): string

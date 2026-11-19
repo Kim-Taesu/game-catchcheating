@@ -28,17 +28,17 @@ public/index.html       소개 + 도감/게임 진입
 public/dex.html, dex.js, dex-logic.js   도감 (목록·필터 3축·상세·발견 표시). 순수 로직은 dex-logic.js
 public/play.html, play.css              게임 화면
 public/site.css         공통 스타일
-public/data/cases.json      사건·수법 도감 데이터 (수법 12종 출전 + 도감 전용 6종 + 미검증 소문)
-public/data/innocents.json  평범한 응시자 15명 (id, name, behavior, action, why). `action`은 `tell.action`과 같은 "…한다" 문장
+public/data/cases.json      사건·수법 도감 데이터 (수법 12종 출전 + 도감 전용 15종 + 미검증 소문 3건). 분류 device·collab·classic·proxy·leak
+public/data/innocents.json  평범한 응시자 15명 (id, name, behavior, action, why, vs). `action`은 `tell.action`과 같은 "…한다" 문장, `why`는 정상인 구체적 이유, `vs`는 비슷한 부정행위 단서와 겉으로 보이는 차이
 public/game/round.js    판 구성: 수법 3~4 + 평범 5~6, 해외 사례 최소 1, 헷갈리는 쌍 배치, 좌석별 행동 포즈 시각(onsets·swapAtMs) 생성
 public/game/engine.js   60초·오해 1번이면 종료(`LIVES=1`)·포즈 판정(poseAt)·탭 판정·적발 좌석 재탭 무시·glasses-swap
 public/game/result.js   기록(c·m·f·t)과 칭호 계산, 결과 화면 시간 줄(endTimeLine)
 public/game/share.js    공유 문구·링크 (navigator.share → 클립보드 → 선택 가능 링크)
 public/game/storage.js  도감 발견 표시 저장 (localStorage)
-public/game/scene.js    3×3 좌석·HUD·상단 짧은 알림(toast). 끝나면 onEnd(result, recap)
-public/game/result-ui.js  결과 화면: 칭호·숫자·공유 + 목록 3개(만난 수법·오해한 응시자·놓친 수법)
-public/game/labels.js   상태·근거 라벨, 단일 행동 안내 문구 (scene·result-ui 공용)
-public/game/identity.js  정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage), 교체 전 오해 줄
+public/game/scene.js    3×3 좌석·HUD·남은 시간 막대·상단 짧은 알림(toast). 끝나면 onEnd(result, recap{caught, misjudged, seats})
+public/game/result-ui.js  결과 화면: 칭호·숫자 + 판 그대로의 3×3 결과 좌석(잡음·놓침·오해·정상) + 좌석 설명 창(dialog) + 공유
+public/game/labels.js   상태·근거 라벨, 행동 문장, 교체 전 오해 안내 (scene·result-ui 공용)
+public/game/identity.js  게임 중 정체를 숨기는 문구의 단일 출처: 좌석 라벨, 탭 알림(tapMessage)
 public/game/*.d.ts      위 JS의 타입 선언 (tests가 TS로 import)
 public/px/              스프라이트 `<id>-0|1.webp`(기본·행동), `prop-*.webp`, `classroom.webp`. 현재 임시본
 public/og/              칭호별 공유 카드 PNG 5장 (eagle·veteran·suspicious·rookie·sleepy)
@@ -56,10 +56,11 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 - 수법 응시자는 약 7초(±1.5초) 간격으로 행동 포즈를 4초(겹치지 않음). 좌석별 시작은 무작위
 - 포즈 전환은 기본·행동 두 이미지를 겹쳐 두고 행동 이미지만 기본 이미지 위에서 0.25초 페이드(opacity 250ms, 기본 이미지는 늘 불투명). `prefers-reduced-motion: reduce`면 즉시 전환. 두 이미지는 `alt=""`, 한 번만 로드
 - 잡힌 좌석은 "잡힘" 도장·흐리게 표시, 접근성 라벨 "응시자 N 잡힘: 이름", `aria-disabled`, 이후 행동 포즈를 멈춤(항상 기본 포즈). 멈춤은 scene render에서 처리하고 `engine.poseAt`은 순수하게 둔다
-- 평범한 응시자: `oneoff`는 판당 1~2회(첫 행동 2~12초, 두 번째는 8~20초 뒤), `repeat`는 약 8초 간격. `glasses-swap`은 18~22초에 포즈가 바뀌어 유지
+- 모든 좌석이 12초 안에 처음 움직인다(판이 보통 20~30초에 끝나므로). 평범한 응시자: `oneoff`는 판당 2회(첫 행동 2~10초, 두 번째는 8~14초 뒤), `repeat`는 약 8초 간격. `glasses-swap`은 6~12초에 포즈가 바뀌어 유지
 - 수법 응시자를 탭하면 적발, 평범한 응시자를 탭하면 그 즉시 종료(`ended: 'lives'`, `f=1`). `glasses-swap`을 교체 전에 탭해도 평범한 응시자와 똑같이 종료되고(다르게 반응하면 정체가 드러남), 교체 후에는 적발 가능. 적발한 좌석 재탭은 무시
+- 남은 시간은 숫자와 함께 HUD 아래 막대(`#timebar`, `role=progressbar`, `aria-valuenow`=남은 초)로 보인다. 막대는 줄어들며 초록 → 노랑 → 빨강(hue 120→0)으로 바뀌고, 10초 이하면 `data-low`로 깜빡인다(reduced-motion은 깜빡임 없음). 알림은 HUD만 덮으므로 막대는 늘 보인다
 - 게임 중 안내는 HUD 자리에 뜨는 짧은 알림(toast)뿐이다. 좌석 격자를 절대 덮지 않고(높이 ≤72px), 2.5초 뒤 사라지고, 새 탭이 바꾸고, Esc로 닫힌다. 링크·긴 설명 없음. 문구: 적발 "적발! 수법 이름 · 상태 라벨", 적발이 아닌 탭(평범·교체 전)은 모두 "정상 행동입니다 · 응시자 N"(평범 이름도 쓰지 않는다. 교체 전 좌석과 구별되지 않게). `#panel-live`(sr-only)가 같은 문구를 읽어 준다
-- 자세한 설명은 결과 화면(`#end`) 목록: "이번 판에서 만난 수법"(이름·상태·단서·근거 라벨·`/dex#id` 링크), "오해한 응시자"(이름·이유·"단일 행동만으로는 부정행위라고 단정할 수 없습니다.", 교체 전 탭은 "응시자 N — 이때는 아직 수상한 점이 보이지 않았어요", 사건 이름 없음), "놓친 수법"(이름·링크). 시간 줄은 전원 적발 "걸린 시간 t초", 시간 종료 "시간 종료", 오해 종료는 시간 줄 없이 "정상 응시자를 잡아 시험이 끝났어요"
+- 자세한 설명은 결과 화면(`#end`)에서 본다. 판이 끝나면 게임 격자(`#game`)를 숨기고 같은 자리에 결과 격자(`#end-grid`, 좌석 `data-result-seat`·`data-outcome`)를 띄운다. 9칸 모두 행동 포즈 그림 + 결과 배지(잡음 초록 / 놓침 빨강 / 오해 주황 / 정상 회색) + 이름. 375×667에서 결과 격자와 "공유하기"가 스크롤 없이 보여야 한다(e2e). 좌석을 누르면 설명 창(`<dialog id="end-detail">`, Esc·닫기·바깥 클릭으로 닫히고 누른 좌석으로 초점 복귀)이 뜬다. 부정행위: 수법 요약·게임에서 보인 행동·실제로 알아챈 단서(`cue`)·근거 라벨·도감 링크, 교체 전에 탭한 `glasses-swap`은 놓침으로 표시하고 "안경을 바꾸기 전에 잡아서 오해가 됐어요…"를 붙인다. 정상: 보인 행동·정상인 이유(`why`)·부정행위와 다른 점(`vs`), 오해한 좌석은 "이 응시자를 잡아서 시험이 끝났어요."를 붙인다. 시간 줄은 전원 적발 "걸린 시간 t초", 시간 종료 "시간 종료", 오해 종료는 시간 줄 없이 "정상 응시자를 잡아 시험이 끝났어요"
 - 정답 노출 금지: 적발 전 좌석의 글자·ARIA는 "응시자 N"뿐이고, 이미지 실패 대체 카드는 행동 문장(`tell.action` / 평범 `action`, 같은 문장 형식)만 보여 준다
 - 종료: 전원 적발 / 60초 / 정상 응시자 탭. 기록 `c`(잡음) `m`(놓침) `f`(오해) `t`(초, 전원 적발 못 하면 60)
 - 공유 링크 `/r?c=&m=&f=&t=`: `f` 0~1, `c+m`은 3 또는 4, `t` 0~60. 서명 없음(랭킹이 없어 위조 이득 없음)
@@ -82,6 +83,7 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 - 모든 주장에는 출처 URL이 있어야 하고, `docs/research/cheating-methods.md`와 대조해 확인한다
 - **미검증 소문은 도감 전용**. 게임에 쓰지 않는다
 - 행동 단서가 없는 수법은 게임에서 빼고 도감에서 "알아채기 어렵다"로 표시(`visibility: "low"`)
+- 평범한 응시자 `why`·`vs`는 구체적으로 쓴다(각 120자 이하). "…만으로는 단정할 수 없어요" 같은 일반론은 금지, 그림에서 보이는 차이(손 위치·시선·기기 유무)를 적는다
 
 안티목표 (기술적으로 돌아가도 실패):
 
@@ -102,7 +104,7 @@ images/                 사용자가 넣는 생성 원본 시트 (git 제외)
 3. 프롬프트 문서 §8 점검표로 결과를 확인한다: 같은 인물 두 포즈, 몸·어깨·책상 위치가 같고 머리·눈·한쪽 팔만 다른지(크로스페이드 흔들림), 마젠타 배경, 단서가 티 나지 않는지, 평범 응시자에 장비 없음, 글자·워터마크 없음
 4. 통과한 파일을 `public/px/`로 복사한다. 실제 파일은 `make-placeholders.mjs`가 `--force` 없이는 덮어쓰지 않는다
 5. `node scripts/make-og.mjs`로 공유 카드를 다시 만든다
-6. OG 이미지가 바뀌면 `src/share.ts`의 `OG_VERSION`을 올린다 (카카오톡이 URL 기준으로 캐시)
+6. OG 이미지가 바뀌면 `src/share.ts`의 `OG_VERSION`과 `public/index.html`의 `og:image` `?v=`를 함께 올린다 (카카오톡이 URL 기준으로 캐시)
 7. `npm test`, `npm run e2e` 통과 후 사용자 승인을 받고 배포
 
 슬라이서는 부드러운 hi-bit 그림용이다: 192×192로 lanczos3 축소(부드러운 hi-bit 그림을 nearest로 줄이면 계단이 생김), 무손실 webp, 마젠타 키(거리 ≤60) 뒤 despill(거리 ≤140인 테두리 픽셀의 R·B를 G 쪽으로 당기고 알파를 비례해 낮춤). 그래도 분홍 테두리가 남는지 눈으로 확인한다. `make-og.mjs`도 스프라이트를 raw로 디코드한 뒤 lanczos3로 줄인다(WebP shrink-on-load가 커널을 무시하므로).

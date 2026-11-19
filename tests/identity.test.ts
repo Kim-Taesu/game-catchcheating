@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import fs from 'node:fs'
-import { beforeSwapLine, seatLabel, tapMessage } from '../public/game/identity.js'
+import { seatLabel, tapMessage } from '../public/game/identity.js'
 import { statusLabel } from '../public/game/labels.js'
 
 const cases: { id: string; name: string; status?: string }[] = JSON.parse(fs.readFileSync('public/data/cases.json', 'utf8'))
@@ -30,7 +30,6 @@ describe('identity text', () => {
         tapMessage({ kind: 'innocent', seat: 3, id: c.id, reason: 'before-swap' }, caseById)!.toast,
         tapMessage({ kind: 'innocent', seat: 3, id: c.id }, caseById)!.label,
         seatLabel(3),
-        beforeSwapLine(3),
       ]
       for (const t of texts) expect(t, c.id).not.toContain(c.name)
     }
@@ -42,7 +41,6 @@ describe('identity text', () => {
         tapMessage({ kind: 'innocent', seat: 5, id: i.id }, caseById)!.label,
         tapMessage({ kind: 'innocent', seat: 5, id: i.id, reason: 'before-swap' }, caseById)!.toast,
         seatLabel(5),
-        beforeSwapLine(5),
       ]
       for (const t of texts) expect(t, i.id).not.toContain(i.name)
     }

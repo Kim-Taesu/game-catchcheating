@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { cases, cheatersOf, innocents, innocentsOf, planFor, seat, startRound } from './helpers'
 
 test.use({ viewport: { width: 375, height: 667 } })
@@ -6,6 +6,9 @@ test.use({ viewport: { width: 375, height: 667 } })
 // seed 7: 3 cheaters, none with a swap -> deterministic without a mocked clock.
 const SEED = 7
 const p7 = planFor(SEED)
+// Result screen: the same 3x3 seats, each labelled with its outcome; a tap opens the detail dialog.
+const rseat = (page: Page, n: number) => page.locator(`#end-grid [data-result-seat="${n}"]`)
+const detail = (page: Page) => page.locator('#end-detail')
 const cheaters = cheatersOf(p7)
 const innos = innocentsOf(p7)
 
@@ -127,8 +130,11 @@ test('평범 좌석 한 번 탭하면 즉시 종료: 의심 많은 감독관, �
   await expect(page.locator('#toast')).toBeHidden()
   for (let i = 0; i < 9; i++) await expect(seat(page, i)).toBeDisabled()
   const inn = innocents.find((i: { id: string }) => i.id === innos[0].id)
-  await expect(page.locator('#end-misjudged li')).toHaveCount(1)
-  await expect(page.locator('#end-misjudged')).toContainText(inn.name)
+  await expect(page.locator('#end-grid [data-outcome="wrong"]')).toHaveCount(1)
+  const wrong = rseat(page, innos[0].seat)
+  await expect(wrong).toHaveAttribute('data-outcome', 'wrong')
+  await expect(wrong).toContainText(inn.name)
+  await expect(wrong).toContainText('오해')
 })
 
 test('수법 전원 적발 시 종료', async ({ page }) => {
@@ -138,8 +144,8 @@ test('수법 전원 적발 시 종료', async ({ page }) => {
   await expect(page.locator('#end')).toContainText('시험 종료')
 })
 
-test('안경 바꿔치기: 교체 전 탭도 평범 응시자와 똑같이 즉시 종료, 사건 이름 없이 응시자 N 표시', async ({ page }) => {
-  // seed 4: one seat is glasses-swap (swapAtMs 18-22 s).
+test('안경 바꿔치기: 교체 전 탭도 평범 응시자와 똑같이 즉시 종료, 결과에서는 놓친 수법으로 표시', async ({ page }) => {
+  // seed 4: one seat is glasses-swap (swapAtMs 6-12 s).
   const p = planFor(4)
   const sw = p.seats.find((s) => s.swapAtMs !== undefined)!
   await page.clock.install()
@@ -150,10 +156,16 @@ test('안경 바꿔치기: 교체 전 탭도 평범 응시자와 똑같이 즉�
   await expect(page.locator('#end')).toContainText(WRONG_REASON)
   await expect(page.locator('#panel-live')).toHaveText(`정상 행동입니다 · 응시자 ${sw.seat + 1}`)
   await expect(seat(page, sw.seat)).not.toContainText('안경 바꿔치기')
-  const item = page.locator('#end-misjudged li').first()
-  await expect(item).toContainText(`응시자 ${sw.seat + 1} — 이때는 아직 수상한 점이 보이지 않았어요`)
-  await expect(item).not.toContainText('안경 바꿔치기')
-  await expect(page.locator('#end-missed')).toContainText('안경 바꿔치기')
+  // After the round the swap seat is shown as what it was: a missed case, tapped before its swap.
+  const item = rseat(page, sw.seat)
+  await expect(item).toHaveAttribute('data-outcome', 'missed')
+  await expect(item).toContainText('안경 바꿔치기')
+  await expect(item).toContainText('놓침')
+  await expect(page.locator('#end-grid [data-outcome="wrong"]')).toHaveCount(0)
+  await item.click()
+  await expect(detail(page)).toBeVisible()
+  await expect(detail(page)).toContainText(`응시자 ${sw.seat + 1} · 안경 바꿔치기`)
+  await expect(detail(page)).toContainText('안경을 바꾸기 전에 잡아서 오해가 됐어요')
 })
 
 test('안경 바꿔치기: 교체 후에는 적발', async ({ page }) => {
@@ -235,7 +247,7 @@ for (const vp of [{ width: 375, height: 667 }, { width: 360, height: 600 }]) {
   })
 }
 
-test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번, 만난 수법 목록', async ({ page }) => {
+test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번, 결과 3×3 좌석과 상세 창', async ({ page }) => {
   await page.clock.install()
   await startRound(page, SEED)
   for (const s of cheaters) await seat(page, s.seat).click()
@@ -250,33 +262,106 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   // onEnd ran exactly once (showResult rebuilds the DOM, so only the counter can tell).
   await page.waitForTimeout(300)
   await expect(page.locator('#end')).toHaveAttribute('data-end-count', '1')
-  const met = page.locator('#end-met')
-  await expect(met).toContainText('이번 판에서 만난 수법')
-  await expect(met.locator('li')).toHaveCount(cheaters.length)
+  // The play grid gives way to the result grid in the same place: nine seats, no list to scroll.
+  await expect(page.locator('#game')).toBeHidden()
+  await expect(page.locator('#end-grid [data-result-seat]')).toHaveCount(9)
   for (const s of cheaters) {
-    await expect(met).toContainText(caseName(s.id))
-    await expect(met.locator(`a[href="/dex#${s.id}"]`)).toHaveText('도감에서 자세히')
+    const r = rseat(page, s.seat)
+    await expect(r).toHaveAttribute('data-outcome', 'caught')
+    await expect(r).toContainText('잡음')
+    await expect(r).toContainText(caseName(s.id))
+    await expect(r.locator('img')).toHaveAttribute('src', `/px/${s.id}-1.webp`)
   }
-  await expect(met).toContainText('근거:')
-  await expect(page.locator('#end-misjudged')).toHaveCount(0)
-  await expect(page.locator('#end-missed')).toHaveCount(0)
+  for (const s of innos) {
+    const inn = innocents.find((i: { id: string }) => i.id === s.id)
+    const r = rseat(page, s.seat)
+    await expect(r).toHaveAttribute('data-outcome', 'innocent')
+    await expect(r).toContainText('정상')
+    await expect(r).toContainText(inn.name)
+  }
+  // Cheater detail: what was shown, the clue, its basis, and the dex link.
+  await rseat(page, cheaters[0].seat).click()
+  const d = detail(page)
+  await expect(d).toBeVisible()
+  await expect(d).toContainText(`응시자 ${cheaters[0].seat + 1} · ${caseName(cheaters[0].id)}`)
+  await expect(d).toContainText('근거:')
+  await expect(d.locator(`a[href="/dex#${cheaters[0].id}"]`)).toHaveText('도감에서 자세히')
+  await page.keyboard.press('Escape')
+  await expect(d).toBeHidden()
+  await expect(rseat(page, cheaters[0].seat)).toBeFocused()
+  // Innocent detail: what they did, why it is normal, and how it differs from a cheating tell.
+  const inn0 = innocents.find((i: { id: string }) => i.id === innos[0].id)
+  await rseat(page, innos[0].seat).click()
+  await expect(d).toContainText(inn0.action)
+  await expect(d).toContainText(inn0.why)
+  await expect(d).toContainText(inn0.vs)
+  await expect(d).not.toContainText('단정할 수 없')
+  await d.getByRole('button', { name: '닫기' }).click()
+  await expect(d).toBeHidden()
 })
 
-test('오해 종료 결과: 오해한 응시자 1명과 놓친 수법 목록', async ({ page }) => {
+test('오해 종료 결과: 3×3 좌석에 오해·잡음·놓침 표시, 놓친 좌석을 누르면 설명', async ({ page }) => {
   await startRound(page, SEED)
   await seat(page, cheaters[0].seat).click()
   await seat(page, innos[0].seat).click()
   await expect(page.locator('#game')).toHaveAttribute('data-ended', 'lives')
-  const wrong = page.locator('#end-misjudged')
-  await expect(wrong).toContainText('오해한 응시자')
-  await expect(wrong.locator('li')).toHaveCount(1)
   const inn = innocents.find((i: { id: string }) => i.id === innos[0].id)
-  await expect(wrong).toContainText(inn.name)
-  await expect(wrong).toContainText(inn.why)
-  await expect(wrong.locator('li').first()).toContainText('단일 행동만으로는 부정행위라고 단정할 수 없습니다.')
-  const missed = page.locator('#end-missed')
-  await expect(missed).toContainText('놓친 수법')
-  await expect(missed.locator('li')).toHaveCount(cheaters.length - 1)
-  for (const s of cheaters.slice(1)) await expect(missed.locator(`a[href="/dex#${s.id}"]`)).toBeVisible()
-  await expect(page.locator('#end-met li')).toHaveCount(1)
+  await expect(rseat(page, innos[0].seat)).toHaveAttribute('data-outcome', 'wrong')
+  await rseat(page, innos[0].seat).click()
+  await expect(detail(page)).toContainText(inn.why)
+  await expect(detail(page)).toContainText(inn.vs)
+  await page.keyboard.press('Escape')
+  await expect(rseat(page, cheaters[0].seat)).toHaveAttribute('data-outcome', 'caught')
+  await expect(page.locator('#end-grid [data-outcome="missed"]')).toHaveCount(cheaters.length - 1)
+  // A missed seat explains itself: what the method is, the behavior shown, and the real clue.
+  for (const s of cheaters.slice(1)) {
+    const c = cases.find((x: { id: string }) => x.id === s.id)
+    const r = rseat(page, s.seat)
+    await expect(r).toHaveAttribute('data-outcome', 'missed')
+    await expect(r).toContainText('놓침')
+    await r.click()
+    await expect(detail(page)).toContainText(c.summary)
+    await expect(detail(page)).toContainText(c.tell.action)
+    await expect(detail(page)).toContainText(c.cue)
+    await expect(detail(page).locator(`a[href="/dex#${s.id}"]`)).toBeVisible()
+    await page.keyboard.press('Escape')
+  }
+})
+
+for (const vp of [
+  { width: 375, height: 667 },
+  { width: 390, height: 844 },
+]) {
+  test(`${vp.width}×${vp.height}: 결과 좌석 9개와 공유 버튼이 스크롤 없이 한 화면에`, async ({ page }) => {
+    await page.setViewportSize(vp)
+    await startRound(page, SEED)
+    await seat(page, innos[0].seat).click()
+    await expect(page.locator('#end-grid')).toBeVisible()
+    await page.evaluate(() => window.scrollTo(0, 0))
+    const grid = (await page.locator('#end-grid').boundingBox())!
+    const share = (await page.getByRole('button', { name: '공유하기' }).boundingBox())!
+    expect(grid.y + grid.height).toBeLessThanOrEqual(vp.height)
+    expect(share.y + share.height).toBeLessThanOrEqual(vp.height)
+  })
+}
+
+test('남은 시간 막대: 처음엔 가득·초록, 시간이 줄수록 짧아지고 10초 이하면 빨강', async ({ page }) => {
+  await page.clock.install()
+  await startRound(page, SEED)
+  const bar = page.locator('#timebar')
+  await expect(bar).toHaveAttribute('role', 'progressbar')
+  await expect(bar).toHaveAttribute('aria-valuenow', '60')
+  const fill = bar.locator('.timebar-fill')
+  const rgb = async () => (await fill.evaluate((n) => getComputedStyle(n).backgroundColor)).match(/\d+/g)!.map(Number)
+  const [r0, g0] = await rgb()
+  expect(g0).toBeGreaterThan(r0)
+  await expect(bar).not.toHaveAttribute('data-low', /.*/)
+  await page.clock.fastForward(52000)
+  await expect(bar).toHaveAttribute('aria-valuenow', '8')
+  await expect(bar).toHaveAttribute('data-low', '')
+  const [r1, g1] = await rgb()
+  expect(r1).toBeGreaterThan(g1)
+  const w = async () => (await fill.boundingBox())!.width
+  const full = (await bar.boundingBox())!.width
+  expect(await w()).toBeLessThan(full * 0.2)
 })
