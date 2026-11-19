@@ -4,6 +4,8 @@
   "compatibility_date": "2026-11-01",
   // /r 만 Worker가 직접 처리하고 나머지는 정적 파일.
   "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/r"] },
-  // 실제 에셋 교체 전에는 공개 배포하지 않는다 (설계 §6.8).
-  "workers_dev": false
+  // 공개 주소는 custom domain 하나. workers.dev·미리보기 주소는 열지 않는다.
+  "routes": [{ "pattern": "cheatfinder.ktslab.xyz", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
 }

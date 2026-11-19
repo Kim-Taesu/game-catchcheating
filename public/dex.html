@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>도감 - 치팅 파인더</title>
+    <meta name="description" content="실제로 보도된 시험 부정행위 수법 도감. 확인됨·수사 중·거론됨·미검증 소문을 구분하고 출처를 함께 보여 줍니다." />
+    <link rel="stylesheet" href="/site.css" />
+    <style>
+      h1 { margin: 0 0 4px; font-size: 1.75rem; letter-spacing: -0.02em; }
+      .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+      .progress { color: var(--muted); font-size: 0.9375rem; margin: 0; }
+      .filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+      .filters label { display: grid; gap: 2px; font-size: 0.8125rem; color: var(--muted); min-width: 0; }
+      .filters select { width: 100%; min-height: 44px; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 6px; }
+      .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; list-style: none; margin: 0; padding: 0; }
+      .grid li { min-width: 0; }
+      .dcard { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; font: inherit; color: inherit; cursor: pointer; padding: 10px; }
+      .dcard:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+      .dcard.found { border-color: var(--accent); }
+      .dcard .thumb { width: 100%; aspect-ratio: 1; object-fit: contain; background: var(--bg); border-radius: 6px; }
+      .dcard .nm { font-weight: 700; line-height: 1.3; }
+      .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+      .chip.s-confirmed { color: var(--accent); border-color: var(--accent); }
+      .chip.s-investigating { color: #8a5a00; border-color: #8a5a00; }
+      .chip.s-unverified { color: #8a2b2b; border-color: #8a2b2b; border-style: dashed; }
+      .chip.found-chip { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+      .empty { color: var(--muted); }
+      details.rumor { margin-top: 24px; }
+      details.rumor > summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+      .rumor-note { margin: 4px 0 12px; color: #8a2b2b; font-size: 0.875rem; }
+      .links { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+      .links .btn { flex: 1; }
+      #detail { position: fixed; inset: 0; z-index: 10; background: rgba(35, 32, 26, 0.55); overflow-y: auto; }
+      #detail[hidden] { display: none; }
+      #detail .sheet { max-width: 640px; margin: 0 auto; min-height: 100%; background: var(--bg); padding: 16px 16px 40px; }
+      #detail .sheet:focus { outline: none; }
+      #detail h2 { margin: 12px 0 8px; font-size: 1.5rem; }
+      #detail h3 { margin: 20px 0 6px; font-size: 1rem; }
+      #detail p { margin: 0; }
+      #detail ul { margin: 0; padding-left: 20px; }
+      #detail .hero-img { width: 96px; height: 96px; object-fit: contain; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+      .low-note { margin-top: 8px; font-size: 0.875rem; color: var(--muted); }
+      .tell-basis { margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="top">
+        <h1>도감</h1>
+        <p class="progress">발견 <span id="progress">0 / 15</span></p>
+      </div>
+      <p class="progress">보도된 수법과 그 출처를 모았습니다. 게임에서 찾아내면 발견 표시가 붙습니다.</p>
+
+      <div class="filters">
+        <label>지역
+          <select id="f-region">
+            <option value="all">전체</option>
+            <option value="kr">국내</option>
+            <option value="world">해외</option>
+          </select>
+        </label>
+        <label>분류
+          <select id="f-group">
+            <option value="all">전체</option>
+            <option value="device">전자기기</option>
+            <option value="collab">협력</option>
+            <option value="classic">고전</option>
+            <option value="proxy">대리응시</option>
+            <option value="leak">사전 유출</option>
+          </select>
+        </label>
+        <label>확인 수준
+          <select id="f-status">
+            <option value="all">전체</option>
+            <option value="confirmed">확인됨</option>
+            <option value="investigating">수사 중·일부 추정</option>
+            <option value="mentioned">거론됨</option>
+          </select>
+        </label>
+      </div>
+
+      <ul id="grid" class="grid"></ul>
+      <p id="empty" class="empty" hidden>조건에 맞는 항목이 없습니다.</p>
+
+      <details class="rumor card" id="rumor">
+        <summary>확인되지 않은 소문</summary>
+        <p class="rumor-note">아래는 출처가 불분명한 소문입니다. 사실로 확인되지 않았으니 그대로 믿지 마세요.</p>
+        <ul id="rumor-grid" class="grid"></ul>
+      </details>
+
+      <nav class="links">
+        <a class="btn" href="/">홈으로</a>
+        <a class="btn btn-primary" href="/play">게임 시작</a>
+      </nav>
+      <p class="disclaimer">뉴스 보도 기준 개요이며 따라 하기 안내가 아닙니다. 수사 중인 사건은 바뀔 수 있습니다.</p>
+    </main>
+
+    <div id="detail" hidden>
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="d-title" tabindex="-1">
+        <button type="button" class="btn" id="d-close">닫기</button>
+        <div id="d-body"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/dex.js"></script>
+  </body>
+</html>

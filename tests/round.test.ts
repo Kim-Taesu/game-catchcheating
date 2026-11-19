@@ -1,0 +1,258 @@
+import { describe, expect, it } from 'vitest'
+import {
+  ACTION_MS,
+  buildRound,
+  seededRng,
+  type CaseEntry,
+  type Innocent,
+  type RoundPlan,
+} from '../public/game/round.js'
+
+const src = [{ title: 't', url: 'https://example.com' }]
+
+function playable(
+  id: string,
+  extra: Partial<CaseEntry> = {},
+  swap = false,
+): CaseEntry {
+  return {
+    id,
+    name: id,
+    group: 'device',
+    origins: [{ country: 'KR', year: 2026, label: 'kr' }],
+    summary: 's',
+    cue: 'c',
+    detect: 'd',
+    status: 'confirmed',
+    sources: src,
+    playable: true,
+    tell: { action: 'a', basisKind: 'report', basisSources: src, ...(swap ? { swap: true } : {}) },
+    ...extra,
+  }
+}
+
+function notPlayable(id: string, extra: Partial<CaseEntry> = {}): CaseEntry {
+  return {
+    id,
+    name: id,
+    group: 'classic',
+    origins: [{ country: 'KR', year: 2020, label: 'kr' }],
+    summary: 's',
+    cue: 'c',
+    detect: 'd',
+    status: 'confirmed',
+    sources: src,
+    playable: false,
+    ...extra,
+  }
+}
+
+const cases: CaseEntry[] = [
+  playable('glasses', {
+    origins: [
+      { country: 'KR', year: 2026, label: 'kr' },
+      { country: 'JP', year: 2025, label: 'jp' },
+    ],
+    lookalike: 'inn-glasses',
+  }),
+  playable('watch', { lookalike: 'inn-watch' }),
+  playable('earpiece'),
+  playable('sleeve'),
+  playable('swap', {}, true),
+  playable('shoe'),
+  playable('wig'),
+  playable('chest'),
+  playable('peek'),
+  notPlayable('hidden-camera'),
+  playable('rumor', { status: 'unverified' }),
+]
+
+const innocents: Innocent[] = [
+  { id: 'inn-glasses', name: 'g', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-watch', name: 'w', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-3', name: '3', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-4', name: '4', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-5', name: '5', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-6', name: '6', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-7', name: '7', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-8', name: '8', behavior: 'repeat', action: '한다', why: 'w' },
+  { id: 'inn-9', name: '9', behavior: 'oneoff', action: '한다', why: 'w' },
+  { id: 'inn-10', name: '10', behavior: 'repeat', action: '한다', why: 'w' },
+]
+
+const seeds = Array.from({ length: 200 }, (_, i) => i + 1)
+const rounds: RoundPlan[] = seeds.map((s) => buildRound(cases, innocents, seededRng(s)))
+const caseById = new Map(cases.map((c) => [c.id, c]))
+const innById = new Map(innocents.map((i) => [i.id, i]))
+
+function gaps(xs: number[]): number[] {
+  return xs.slice(1).map((x, i) => x - xs[i]!)
+}
+
+describe('buildRound constraints', () => {
+  it('exports ACTION_MS = 4000 (long enough to read the pose)', () => {
+    expect(ACTION_MS).toBe(4000)
+  })
+
+  it('never overlaps two action poses of the same seat', () => {
+    for (let seed = 1; seed <= 200; seed++) {
+      for (const s of buildRound(cases, innocents, seededRng(seed)).seats) {
+        for (let i = 1; i < s.onsets.length; i++) expect(s.onsets[i] - s.onsets[i - 1]).toBeGreaterThanOrEqual(ACTION_MS)
+      }
+    }
+  })
+
+  it('has 9 unique seats, 5 to 8 cheaters, unique ids, only eligible cases', () => {
+    for (const r of rounds) {
+      expect(r.seats).toHaveLength(9)
+      expect(r.seats.map((s) => s.seat).sort((a, b) => a - b)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8])
+      expect([5, 6, 7, 8]).toContain(r.cheaterCount)
+      const cheaters = r.seats.filter((s) => s.kind === 'cheater')
+      expect(cheaters).toHaveLength(r.cheaterCount)
+      expect(new Set(r.seats.map((s) => s.id)).size).toBe(9)
+      for (const c of cheaters) {
+        const entry = caseById.get(c.id)!
+        expect(entry.playable).toBe(true)
+        expect(entry.status).not.toBe('unverified')
+      }
+      for (const s of r.seats.filter((x) => x.kind === 'innocent')) {
+        expect(innById.has(s.id)).toBe(true)
+      }
+    }
+  })
+
+  it('includes at least one overseas case in every round', () => {
+    for (const r of rounds) {
+      const overseas = r.seats
+        .filter((s) => s.kind === 'cheater')
+        .filter((s) => caseById.get(s.id)!.origins.some((o) => o.country !== 'KR'))
+      expect(overseas.length).toBeGreaterThanOrEqual(1)
+    }
+  })
+
+  it('is deterministic per seed and varies across seeds', () => {
+    for (const s of [1, 7, 42, 200]) {
+      expect(buildRound(cases, innocents, seededRng(s))).toEqual(
+        buildRound(cases, innocents, seededRng(s)),
+      )
+    }
+    const distinct = new Set(rounds.map((r) => JSON.stringify(r)))
+    expect(distinct.size).toBeGreaterThanOrEqual(2)
+    const layouts = new Set(rounds.map((r) => r.seats.map((s) => s.id).join('|')))
+    expect(layouts.size).toBeGreaterThanOrEqual(2)
+  })
+
+  it('cheater onsets are ascending, spaced 5500-8500ms, start 0-6000, end < 60000', () => {
+    for (const r of rounds) {
+      for (const s of r.seats.filter((x) => x.kind === 'cheater')) {
+        if (caseById.get(s.id)!.tell?.swap) continue
+        expect(s.onsets.length).toBeGreaterThan(0)
+        expect(s.onsets[0]).toBeGreaterThanOrEqual(0)
+        expect(s.onsets[0]).toBeLessThanOrEqual(6000)
+        expect(s.onsets[s.onsets.length - 1]).toBeLessThan(60000)
+        for (const g of gaps(s.onsets)) {
+          expect(g).toBeGreaterThanOrEqual(5500)
+          expect(g).toBeLessThanOrEqual(8500)
+        }
+      }
+    }
+  })
+
+  it('every seat, swap seat included, visibly changes within the first 12 s', () => {
+    for (const r of rounds) {
+      for (const s of r.seats) {
+        const first = s.swapAtMs ?? s.onsets[0]
+        expect(first, s.id).toBeDefined()
+        expect(first, s.id).toBeLessThanOrEqual(12000)
+      }
+    }
+  })
+
+  it('innocent onsets follow their behavior', () => {
+    let repeat = 0
+    let oneoff = 0
+    for (const r of rounds) {
+      for (const s of r.seats.filter((x) => x.kind === 'innocent')) {
+        expect(s.swapAtMs).toBeUndefined()
+        const inn = innById.get(s.id)!
+        if (inn.behavior === 'repeat') {
+          repeat++
+          expect(s.onsets.length).toBeGreaterThan(0)
+          expect(s.onsets[s.onsets.length - 1]).toBeLessThan(60000)
+          for (const g of gaps(s.onsets)) {
+            expect(g).toBeGreaterThanOrEqual(6000)
+            expect(g).toBeLessThanOrEqual(10000)
+          }
+        } else {
+          oneoff++
+          // always twice, both inside a typical 20–30 s round: first 2–10 s, second 8–14 s later
+          expect(s.onsets).toHaveLength(2)
+          expect(s.onsets[0]).toBeGreaterThanOrEqual(2000)
+          expect(s.onsets[0]).toBeLessThanOrEqual(10000)
+          expect(s.onsets[1] - s.onsets[0]).toBeGreaterThanOrEqual(8000)
+          expect(s.onsets[1] - s.onsets[0]).toBeLessThanOrEqual(14000)
+        }
+      }
+    }
+    expect(repeat).toBeGreaterThan(0)
+    expect(oneoff).toBeGreaterThan(0)
+  })
+
+  it('swap case has swapAtMs 6000-12000 and no onsets', () => {
+    let seen = 0
+    for (const r of rounds) {
+      for (const s of r.seats.filter((x) => x.kind === 'cheater')) {
+        if (!caseById.get(s.id)!.tell?.swap) {
+          expect(s.swapAtMs).toBeUndefined()
+          continue
+        }
+        seen++
+        expect(s.onsets).toEqual([])
+        expect(s.swapAtMs).toBeGreaterThanOrEqual(6000)
+        expect(s.swapAtMs).toBeLessThanOrEqual(12000)
+      }
+    }
+    expect(seen).toBeGreaterThan(0)
+  })
+
+  it('uses every cheater count from 5 to 8 and always keeps at least one innocent', () => {
+    const counts = new Set(rounds.map((r) => r.cheaterCount))
+    expect([...counts].sort()).toEqual([5, 6, 7, 8])
+    for (const r of rounds) expect(r.seats.filter((s) => s.kind === 'innocent').length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('seats the lookalike innocents first: all of them when they fit, otherwise only lookalikes', () => {
+    let checked = 0
+    for (const r of rounds) {
+      const innocentIds = r.seats.filter((s) => s.kind === 'innocent').map((s) => s.id)
+      const required = new Set(
+        r.seats.filter((x) => x.kind === 'cheater').flatMap((x) => caseById.get(x.id)!.lookalike ?? []),
+      )
+      if (required.size === 0) continue
+      checked++
+      if (required.size <= innocentIds.length) for (const id of required) expect(innocentIds).toContain(id)
+      else for (const id of innocentIds) expect(required.has(id)).toBe(true)
+    }
+    expect(checked).toBeGreaterThan(0)
+  })
+
+  it('builds a round without throwing when no overseas case exists', () => {
+    const domestic = cases.map((c) => ({
+      ...c,
+      origins: [{ country: 'KR', year: 2026, label: 'kr' }],
+    }))
+    for (const s of seeds.slice(0, 50)) {
+      const r = buildRound(domestic, innocents, seededRng(s))
+      expect(r.seats).toHaveLength(9)
+    }
+  })
+
+  it('ignores a lookalike id that is not in the innocents list', () => {
+    const odd = cases.map((c) => (c.id === 'watch' ? { ...c, lookalike: 'missing' } : c))
+    for (const s of seeds.slice(0, 50)) {
+      const r = buildRound(odd, innocents, seededRng(s))
+      expect(r.seats).toHaveLength(9)
+      expect(new Set(r.seats.map((x) => x.id)).size).toBe(9)
+    }
+  })
+})

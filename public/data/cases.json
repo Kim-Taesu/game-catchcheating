@@ -1,0 +1,672 @@
+[
+  {
+    "id": "smart-glasses-frame",
+    "name": "AI 스마트안경",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "정보처리기사 CBT" },
+      { "country": "KR", "year": 2026, "label": "전기산업기사" },
+      { "country": "KR", "year": 2026, "label": "중·고교 내신 시험" },
+      { "country": "JP", "year": 2024, "label": "와세다대 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
+      { "country": "IN", "year": 2026, "label": "심바이오시스공대 시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
+      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험(카메라 안경)", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+    ],
+    "summary": "카메라가 달린 AI 안경으로 문제를 찍어 답을 받는 수법. 2026년 국내 국가기술자격시험과 학교 시험에서 잇따라 적발됐다.",
+    "cue": "평소 안경을 안 쓰던 응시자가 안경테를 자꾸 어색하게 만졌다. 안경테의 카메라 렌즈·표시등, 렌즈에 비친 초록 불빛도 단서였다.",
+    "detect": "의심되면 시험이 끝난 뒤 안경을 벗어 책상에 올리게 하고 카메라·표시등·두꺼운 안경다리를 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: AI 스마트안경 쓰고 국가자격시험 부정행위… 20대 불구속 송치", "url": "https://www.hankookilbo.com/news/article/A2026102217110004674" },
+      { "title": "뉴데일리: 전기산업기사 시험 AI 안경 부정행위 적발", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+      { "title": "이투데이: 중·고교 'AI 안경 부정행위' 4건 적발", "url": "https://www.etoday.co.kr/news/view/2645738" },
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" },
+      { "title": "헤럴드경제: 수능 감독관 '육안검사만으론 한계' (교육부 지침)", "url": "https://biz.heraldcorp.com/article/10938494" },
+      { "title": "Al Jazeera: Thailand students caught in high-tech cheating scam (2016)", "url": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "안경테를 만지며 우측 상단을 힐끗 본다",
+      "basisKind": "report",
+      "basisNote": "안경테를 반복해서 만진 행동은 보도, 위쪽을 올려다보는 시선은 업계 설명, 오른쪽 방향은 연출",
+      "basisSources": [
+        { "title": "뉴데일리: 감독관이 안경테를 부자연스럽게 만지는 모습을 수상히 여겨 적발", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+        { "title": "이투데이: 시험 중 안경테를 자꾸 만지는 모습이 의심을 삼", "url": "https://www.etoday.co.kr/news/view/2645738" },
+        { "title": "VICTVS: 안경 쪽을 반복해서 올려다보는 행동을 신호로 봄(업계 설명)", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" }
+      ]
+    },
+    "lookalike": "plain-glasses"
+  },
+  {
+    "id": "glasses-lens-heat",
+    "name": "두꺼운 뿔테와 모자",
+    "group": "device",
+    "origins": [
+      { "country": "TW", "year": 2026, "label": "국립대만대 의학계열 입학시험", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "summary": "스마트안경으로 문제를 찍으면 렌즈에 답이 표시되는 방식이었다고 보도됐다. 두꺼운 뿔테와 모자를 썼고, 성적 0점 처리 후 경찰에 신고됐다.",
+    "cue": "문제지를 얼굴 가까이 가져가 부자연스럽게 들여다봤다. 안경을 검사하자 비정상적인 발열이 느껴졌다.",
+    "detect": "안경을 벗겨 두께·발열·렌즈를 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "문제지를 얼굴 앞으로 바짝 들었다 내린다",
+      "basisKind": "report",
+      "basisSources": [
+        { "title": "이투데이: 문제지를 얼굴 가까이 가져가며 부자연스럽게 응시", "url": "https://www.etoday.co.kr/news/view/2648649" }
+      ]
+    }
+  },
+  {
+    "id": "earpiece-hidden",
+    "name": "귀 속 초소형 이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" },
+      { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" },
+      { "country": "VN", "year": 2025, "label": "고교 졸업시험(문학)", "sourceUrl": "https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm" }
+    ],
+    "summary": "귀에 숨긴 초소형 이어폰으로 시험장 밖 공범이 불러 주는 답을 듣는 수법. 모자·귀마개로 귀를 가렸다.",
+    "cue": "2017년 사건에서는 모자·귀마개로 귀를 가렸다. 업계에서는 중얼거림·혼잣말을 숨긴 이어폰의 신호로 본다.",
+    "detect": "귓속 초소형 이어폰은 육안으로 찾기 어렵다. 시험장 전파탐지기 도입이 검토되고 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: 영상통화 앱으로 부정행위 운전면허 딴 시리아인 적발", "url": "https://www.hankookilbo.com/news/article/201703101486877952" },
+      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" },
+      { "title": "대구신문: 안경에 초소형 이어폰까지…수능 감독 비상 (전파탐지기 검토)", "url": "https://www.idaegu.co.kr/news/articleView.html?idxno=565328" },
+      { "title": "Tuoi Tre: Criminal probe over use of ChatGPT to cheat on Vietnam's national high school exam (2025)", "url": "https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "허공을 보며 혼잣말하듯 입술을 움직인다",
+      "basisKind": "industry",
+      "basisNote": "모자·귀마개로 귀를 가린 외형은 보도, 중얼거림은 업계 설명(실제 적발 단서로 보도된 것은 아님)",
+      "basisSources": [
+        { "title": "VICTVS: 중얼거리거나 혼잣말하는 행동은 숨긴 이어폰의 신호", "url": "https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/" },
+        { "title": "한국일보: 이어폰을 감추려 모자·귀마개를 씀", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+      ]
+    },
+    "lookalike": "sneeze"
+  },
+  {
+    "id": "bone-conduction",
+    "name": "뼈 전도 이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "수능 앞 신종 수단으로 거론" }
+    ],
+    "summary": "귀에 꽂지 않고 뼈로 소리를 전달하는 이어폰. 운동용으로 정식 유통돼 금지 품목으로 규정하기 어렵다는 지적이 나왔다.",
+    "cue": "귀에 꽂지 않아 겉으로 찾기 어렵다. 업계에서는 작은 속삭임이나 새어 나오는 소리를 신호로 본다.",
+    "detect": "금속탐지기·전파탐지기 같은 장비가 필요하다. 육안 식별은 어렵다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "공감신문: 시험 부정행위 수법은 진화했는데 규정은 그대로", "url": "https://www.gokorea.kr/news/articleView.html?idxno=886022" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "목 뒤 밴드를 만지며 입술을 작게 움직인다",
+      "basisKind": "industry",
+      "basisNote": "속삭임을 신호로 보는 것은 업계 설명, 밴드를 만지는 포즈는 연출",
+      "basisSources": [
+        { "title": "Talview: 작은 속삭임·뼈 전도 소리 새어 나옴을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
+      ]
+    }
+  },
+  {
+    "id": "smartwatch",
+    "name": "스마트워치·손목시계형 기기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2013, "label": "토익·텝스 조직적 부정행위" },
+      { "country": "KR", "year": 2026, "label": "국가자격시험 반입 금지 품목" },
+      { "country": "TH", "year": 2016, "label": "랑싯대 의대·치대 입학시험(시계형 기기)", "sourceUrl": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+    ],
+    "summary": "손목시계 모양의 기기로 정답을 받아 본 수법. 2013년 토익·텝스 조직 사건에서 고막 이어폰과 함께 쓰였다.",
+    "cue": "2013년 사건에서는 시계형 기기로 답을 받았다. 업계에서는 반복되는 이상한 몸짓·시선을 신호로 본다.",
+    "detect": "스마트워치는 착용·소지만으로 부정행위. 일반 전자시계도 개조 여부는 겉모습으로 가리기 어렵다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "쿠키뉴스: 토익·텝스 고막 이어폰·스마트 시계 부정행위 (2013)", "url": "https://www.kukinews.com/article/view/kuk201304170016" },
+      { "title": "와이드경제: 계산기·전자시계 개조하면 속수무책?", "url": "https://www.widedaily.com/news/articleView.html?idxno=303738" },
+      { "title": "Al Jazeera: Thailand students caught in high-tech cheating scam (2016)", "url": "https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "손목을 눈높이로 들어 시계 화면을 본다",
+      "basisKind": "industry",
+      "basisNote": "이상한 몸짓·시선을 신호로 보는 것은 업계 설명, 손목을 보는 포즈는 연출",
+      "basisSources": [
+        { "title": "Talview: 몸짓 이상·시선 방향 이상을 신호로 봄", "url": "https://www.talview.com/blog/meta-ai-glasses-exam-cheating" }
+      ]
+    },
+    "lookalike": "analog-watch"
+  },
+  {
+    "id": "phone-in-clothes",
+    "name": "옷 속에 숨긴 휴대폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "전기산업기사" },
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" }
+    ],
+    "summary": "휴대폰 2대를 준비해 1대만 내고 나머지를 몸에 숨긴 채 들어간 수법. AI 안경·영상통화와 함께 쓰였다.",
+    "cue": "실제 적발은 안경테 만지기 같은 다른 행동에서 시작됐다. 몸에 숨긴 폰은 겉으로 잘 안 보인다.",
+    "detect": "휴대폰을 일괄 수거하고, 의심되면 금속탐지기로 추가 검사한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴데일리: 휴대전화 2대 중 1대만 제출하고 1대는 몸에 숨김", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" },
+      { "title": "한국일보: 휴대폰 두 대 중 한 대는 옷 속에 숨겨 반입", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "가슴께를 손으로 누르고 옷 안쪽을 내려다본다",
+      "basisKind": "report",
+      "basisNote": "수법은 보도, 행동 포즈는 연출",
+      "basisSources": [
+        { "title": "뉴데일리: 휴대전화 2대 중 1대는 몸에 숨김", "url": "https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html" }
+      ]
+    }
+  },
+  {
+    "id": "glasses-swap",
+    "name": "안경 바꿔치기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "법학적성시험(LEET)" },
+      { "country": "KR", "year": 2026, "label": "고교 내신 시험" }
+    ],
+    "summary": "감독관 검사 때는 일반 안경을 쓰고 있다가 교시 사이에 AI 스마트안경으로 바꿔 쓴 수법. 0점 처리와 4년 응시 제한을 받았다.",
+    "cue": "검사가 끝난 뒤 시험 도중에 안경이 바뀌어 있었다. 한 번 검사했다고 끝이 아니다.",
+    "detect": "쉬는 시간 뒤나 교시가 바뀔 때 안경을 다시 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "YTN: 리트(LEET)에서 감독관 검사 뒤 AI 스마트안경 바꿔치기 적발", "url": "https://www.ytn.co.kr/_cs/_ln_0101_202611170916524557_005.html" },
+      { "title": "이투데이: 시험 도중 일반 안경을 스마트안경으로 바꿔 쓴 장면 확인", "url": "https://www.etoday.co.kr/news/view/2645738" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "시험 중간에 안경을 다른 안경으로 바꿔 쓴다",
+      "basisKind": "report",
+      "basisSources": [
+        { "title": "YTN: 1·2교시 사이 AI 스마트안경으로 교체", "url": "https://www.ytn.co.kr/_cs/_ln_0101_202611170916524557_005.html" },
+        { "title": "이투데이: 시험 도중 안경을 바꿔 쓰는 장면 확인", "url": "https://www.etoday.co.kr/news/view/2645738" }
+      ],
+      "swap": true
+    },
+    "lookalike": "plain-glasses"
+  },
+  {
+    "id": "earbud-swallow",
+    "name": "들키자 이어폰 삼키기",
+    "group": "device",
+    "origins": [
+      { "country": "IT", "year": 2023, "label": "볼차노 운전면허 필기시험", "sourceUrl": "https://www.etnews.com/20231115000253" }
+    ],
+    "summary": "한쪽 귀에 이어폰을 꽂고 있다가 사복 경찰에게 들키자 이어폰을 삼켰다. 병원 X-ray로 배 속 이어폰이 확인됐다.",
+    "cue": "귀의 이어폰을 사복 경찰이 발견했다. 들킨 순간 입으로 가져가 삼켰다.",
+    "detect": "이탈리아는 운전면허 시험장에 사복 경찰을 투입해 단속을 강화했다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "전자신문: 운전 필기 보던 伊 응시자, 커닝 들키자 이어폰 '꿀꺽'", "url": "https://www.etnews.com/20231115000253" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "손으로 입을 가리고 무언가를 삼킨다",
+      "basisKind": "report",
+      "basisNote": "들키자 삼킨 행동은 보도, 입을 가리는 포즈는 연출",
+      "basisSources": [
+        { "title": "전자신문: 들키자 이어폰을 삼킴", "url": "https://www.etnews.com/20231115000253" }
+      ]
+    },
+    "lookalike": "sneeze"
+  },
+  {
+    "id": "ear-bandage",
+    "name": "붕대·귀마개로 귀 가리기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2017, "label": "운전면허 학과시험" }
+    ],
+    "summary": "귀의 이어폰을 감추려고 모자·귀마개를 쓰거나 귀를 다친 것처럼 붕대를 감았다. 공범이 영상통화로 답을 불러 줬다.",
+    "cue": "귀를 가리는 붕대·귀마개 자체가 단서였다.",
+    "detect": "본인 확인 때 귀를 가린 물건을 확인한다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국일보: 영상통화 앱으로 부정행위 운전면허 딴 시리아인 적발", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "귀 붕대를 만지며 앞쪽을 힐끗 본다",
+      "basisKind": "report",
+      "basisNote": "귀를 가린 외형은 보도, 붕대를 만지는 동작은 연출",
+      "basisSources": [
+        { "title": "한국일보: 모자·귀마개·붕대로 이어폰을 감춤", "url": "https://www.hankookilbo.com/news/article/201703101486877952" }
+      ]
+    }
+  },
+  {
+    "id": "signal-fingers",
+    "name": "손가락·동작 신호",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "턱 괴기·이마 짚기 같은 동작이나 필기구 방향으로 옆 사람에게 답을 알려 주는 고전 수법.",
+    "cue": "같은 동작을 반복하는 응시자, 답안이 똑같이 틀린 패턴.",
+    "detect": "같은 오답·같은 풀이 과정이 나오는지 답안을 대조한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "책상 옆으로 손가락 숫자를 내밀고 옆자리를 힐끗 본다",
+      "basisKind": "community",
+      "basisNote": "동작으로 신호를 주고받는 수법은 커뮤니티 정리, 손가락 숫자 포즈는 연출",
+      "basisSources": [
+        { "title": "나무위키: 특정 동작·필기구 방향으로 신호 교환", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "peek",
+    "name": "곁눈질",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "옆 사람 답안을 훔쳐보는 가장 오래된 수법. 홀짝형 문제지로 효과가 줄었다.",
+    "cue": "머리를 자주 돌리거나 옆 답안을 노골적으로 살폈다.",
+    "detect": "홀짝형 문제지를 쓰면 옆 답안을 봐도 소용이 없다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "옆자리 쪽으로 고개를 돌렸다 돌아온다",
+      "basisKind": "community",
+      "basisSources": [
+        { "title": "나무위키: 머리를 자주 돌리는 행동", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "cheat-sheet-sleeve",
+    "name": "소매 속 쪽지",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "작은 쪽지를 소매·옷에 숨겨 몰래 보는 수법. 쉬는 시간마다 쪽지를 찢는 모습이 친구들 눈에 띄어 들킨 사례도 있다.",
+    "cue": "소맷단 안쪽을 자꾸 내려다봤다.",
+    "detect": "본인 확인 때 단추·옷깃·소매를 확인한다(대전교육청 수능 감독 강화).",
+    "status": "mentioned",
+    "sources": [
+      { "title": "SBS: Exam Proctors to Check Buttons, Collars, and Sleeves", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "소맷단 안쪽을 내려다본다",
+      "basisKind": "guideline",
+      "basisNote": "소매 확인은 감독 지침, 쉬는 시간마다 쪽지를 찢은 사례는 커뮤니티 정리, 소맷단을 내려다보는 포즈는 연출",
+      "basisSources": [
+        { "title": "SBS: 대전교육청, 수험생 단추·옷깃·소매 확인", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
+        { "title": "나무위키: 쉬는 시간마다 커닝 페이퍼를 찢은 사례", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+      ]
+    }
+  },
+  {
+    "id": "button-camera",
+    "name": "단추형 초소형 카메라",
+    "group": "device",
+    "origins": [
+      { "country": "TR", "year": 2024, "label": "이스파르타 대학입시", "sourceUrl": "https://www.etoday.co.kr/news/view/2648649" },
+      { "country": "VN", "year": 2025, "label": "고교 졸업시험(문학)", "sourceUrl": "https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm" }
+    ],
+    "summary": "셔츠 단추로 위장한 카메라로 문제를 찍어 밖으로 보내고, 공범이 AI로 만든 답을 귀 속 이어폰으로 받았다.",
+    "cue": "수상한 행동을 감독관이 발견했다. 단추 자체는 겉으로 거의 구별되지 않는다.",
+    "detect": "본인 확인 때 단추·옷깃·소매를 확인한다. 전파탐지기 도입이 검토되고 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "이투데이: AI 날개 단 스마트안경, 세계 곳곳 부정행위 골머리", "url": "https://www.etoday.co.kr/news/view/2648649" },
+      { "title": "SBS: Exam Proctors to Check Buttons, Collars, and Sleeves", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008849407" },
+      { "title": "Tuoi Tre: Criminal probe over use of ChatGPT to cheat on Vietnam's national high school exam (2025)", "url": "https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "calculator-mod",
+    "name": "개조 계산기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "세무사 시험" }
+    ],
+    "summary": "세무사 시험 수석 합격자가 초소형 카메라와 생성형 AI로 부정행위를 했다고 자수했다. 자수서에 계산기를 개조해 썼다고 적었고, 계산기의 역할은 수사 중이다.",
+    "cue": "감독위원 4명이 특이사항을 못 봤다고 했다. 겉모습으로는 개조 여부를 가리기 어렵다는 지적이 나왔다.",
+    "detect": "외관 점검만으로는 한계가 있다. 통신을 막거나 잡아내는 장비 도입이 거론된다.",
+    "status": "investigating",
+    "sources": [
+      { "title": "한국일보: AI 부정행위 세무사 수석 '계산기 개조해 활용'", "url": "https://www.hankookilbo.com/news/article/A2026111713030003155" },
+      { "title": "한국경제: 세무사 수석 만든 쌀집 계산기?", "url": "https://www.hankyung.com/article/202611171766H" },
+      { "title": "경향신문: 감독관 코앞, 첫 줄 앉아 부정행위", "url": "https://www.khan.co.kr/article/202611152118005/" },
+      { "title": "와이드경제: 계산기·전자시계 개조하면 속수무책?", "url": "https://www.widedaily.com/news/articleView.html?idxno=303738" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "body-writing",
+    "name": "몸·책상에 적어 두기",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "책상·벽·옷·피부에 내용을 적어 두는 고전 수법.",
+    "cue": "행동만으로는 알아채기 어렵다. 시험 전 자리 점검에서 드러난다.",
+    "detect": "시험 전에 책상과 주변을 확인한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "disguised-item",
+    "name": "물건에 숨긴 쪽지",
+    "group": "classic",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "커뮤니티 정리(고전 수법)" }
+    ],
+    "summary": "필통·지우개 커버·물병 장식·신발 깔창 같은 물건에 내용을 숨기는 수법.",
+    "cue": "행동만으로는 알아채기 어렵다. 소지품 점검에서 드러난다.",
+    "detect": "책상 위 물품을 제한하고 소지품을 확인한다.",
+    "status": "mentioned",
+    "sources": [
+      { "title": "나무위키: 부정행위", "url": "https://namu.wiki/w/%EB%B6%80%EC%A0%95%ED%96%89%EC%9C%84" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "phone-in-bag",
+    "name": "가방 속 휴대폰",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2016, "label": "2017학년도 수능" }
+    ],
+    "summary": "어머니가 깜빡하고 도시락 가방에 넣어 둔 휴대폰이 시험 중 울려 더 응시하지 못한 사례. 직접 쓰지 않아도 소지만으로 부정행위다.",
+    "cue": "가방 속 휴대폰이 10초 동안 울렸다.",
+    "detect": "휴대폰은 시험 전에 모두 걷는다. 전원을 끄고 가방에 넣게만 하면 구멍이 생긴다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴스핌: 수능 도시락 가방 속 휴대전화 울려 시험 중단 (2016)", "url": "https://newspim.com/news/view/20161118000026" },
+      { "title": "경향신문: 휴대폰 미수거·CCTV 없는 시험장", "url": "https://www.khan.co.kr/article/202611152118005/" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "proxy-id",
+    "name": "위조 신분증 대리응시",
+    "group": "proxy",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "TOPIK 대리시험 조직" },
+      { "country": "KR", "year": 2014, "label": "TOPIK 대리시험" },
+      { "country": "US", "year": 2011, "label": "롱아일랜드 SAT·ACT 대리시험", "sourceUrl": "https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal" },
+      { "country": "CN", "year": 2014, "label": "가오카오 지문 필름 대리시험", "sourceUrl": "https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints" }
+    ],
+    "summary": "의뢰자 인적사항에 닮은 대리 응시자의 사진을 합성한 신분증으로 대신 시험을 봤다. 2026년 113명이 입건됐다.",
+    "cue": "신분증 사진과 얼굴을 맨눈으로 대조하는 허점을 노렸다. 2014년에는 응시자가 신분증 번호를 잘못 적어 들켰다.",
+    "detect": "경찰은 생체인식 본인 확인을 요청했다. 미국 SAT는 점수가 갑자기 크게 오르면 표시해 취소했고, 중국은 지문 필름을 막으려 손가락 정맥 인식을 들였다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "뉴시스: TOPIK 대리시험 조직 113명 입건", "url": "https://www.newsis.com/view/NISX20260721_0003716808" },
+      { "title": "경향신문: TOPIK 대리시험 적발 (2014)", "url": "https://www.khan.co.kr/article/201403111659421" },
+      { "title": "CBS New York: 롱아일랜드 SAT·ACT 대리시험 수사 (2011)", "url": "https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal" },
+      { "title": "Inverse: 가오카오 대리시험 지문 필름과 대응 (2018)", "url": "https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "shoe-device",
+    "name": "신발 속 통신기기",
+    "group": "device",
+    "origins": [
+      { "country": "IN", "year": 2021, "label": "라자스탄 교사자격시험(REET)", "sourceUrl": "https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics" }
+    ],
+    "summary": "슬리퍼 밑창에 휴대폰·블루투스 장치를 숨기고, 귀 속 초소형 이어폰으로 밖에서 불러 주는 답을 들었다. 한 조직이 이런 슬리퍼 25켤레를 만들었다.",
+    "cue": "시험장 감독관이 수상한 행동을 보고 귀 속 이어폰을 찾아냈고, 응시자가 신발 속 장치를 털어놨다. 다른 지역에서도 같은 슬리퍼가 나왔다.",
+    "detect": "주 정부는 시험 당일 여러 지역의 인터넷과 모바일 서비스를 12시간 끊었다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Free Press Journal: REET 블루투스 슬리퍼 부정행위 (2021)", "url": "https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics" },
+      { "title": "Sentinel Assam: 블루투스 슬리퍼로 부정행위 5명 체포 (2021)", "url": "https://www.sentinelassam.com/more-news/national-news/five-held-in-rajasthan-for-cheating-in-exam-with-bluetooth-chappals-556611" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "책상 아래 발 쪽을 내려다보며 한 팔을 내린다",
+      "basisKind": "report",
+      "basisNote": "감독관이 수상한 행동을 보고 귀 속 이어폰을 발견했다는 보도에 근거한다. 발 쪽을 보는 포즈는 연출이다.",
+      "basisSources": [
+        { "title": "Free Press Journal: REET 블루투스 슬리퍼 부정행위 (2021)", "url": "https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics" }
+      ]
+    },
+    "lookalike": "pick-up-pencil"
+  },
+  {
+    "id": "wig-device",
+    "name": "가발 속 카메라·이어폰",
+    "group": "device",
+    "origins": [
+      { "country": "ES", "year": 2023, "label": "과달라하라 운전면허 필기", "sourceUrl": "https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html" }
+    ],
+    "summary": "귀를 덮는 가발 속에 초소형 카메라나 마이크를 숨기고, 밖의 공범이 문제를 보고 답을 불러 줬다.",
+    "cue": "스페인어를 거의 못 하는데 다른 응시자보다 훨씬 일찍 끝냈고, 가발이 한눈에 티가 났다.",
+    "detect": "형사처벌은 피했지만 6개월간 필기시험 재응시가 금지됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Murcia Today: 가발 속 장비로 운전면허 필기 부정행위 (2023)", "url": "https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "한 손으로 가발을 누르며 옆을 힐끗 본다",
+      "basisKind": "report",
+      "basisNote": "눈에 띄는 가발과 초조한 태도는 보도에 근거한다. 가발을 누르는 포즈는 연출이다.",
+      "basisSources": [
+        { "title": "Murcia Today: 가발 속 장비로 운전면허 필기 부정행위 (2023)", "url": "https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html" }
+      ]
+    },
+    "lookalike": "fix-hair"
+  },
+  {
+    "id": "camera-ai-watch",
+    "name": "카메라로 보내고 AI 답을 시계로 받기",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "대학 중간고사" }
+    ],
+    "summary": "가슴께에 숨긴 카메라로 문제를 친구에게 보내고, 친구가 AI로 푼 답을 스마트워치로 받았다.",
+    "cue": "만점을 받자 교수가 같은 문제를 감독 아래 다시 풀게 했고, 제대로 풀지 못하다 자백했다.",
+    "detect": "시험 0점과 과목 F. 학과는 기말고사부터 카메라·시계 반입을 막고 안경도 검사하기로 했다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Korea JoongAng Daily: AI cheating tests Korean universities (2026)", "url": "https://www.koreajoongangdaily.com/korea/ai-cheating-tests-korean-universities-as-school-struggle-to-keep-up/12931532" }
+    ],
+    "playable": true,
+    "tell": {
+      "action": "가슴께가 시험지에 가까워지도록 상체를 살짝 숙인다",
+      "basisKind": "report",
+      "basisNote": "빌바오 운전면허 시험에서 가슴을 시험 화면에 바짝 댔다는 보도를 바탕으로, 게임에서는 시험지 쪽을 향하도록 연출했다.",
+      "basisSources": [
+        { "title": "Orain: 빌바오 운전면허 시험 부정행위 (2025)", "url": "https://orain.eus/en/current-events/society-and-social-news-now/2025/11/04/surprised-in-bilbao-with-technological-devices-hidden-in-the-driving-exam/" }
+      ]
+    }
+  },
+  {
+    "id": "eraser-receiver",
+    "name": "지우개·스카프 속 수신 화면",
+    "group": "device",
+    "origins": [
+      { "country": "CN", "year": 2016, "label": "베이징 대학원 입학시험", "sourceUrl": "https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves" }
+    ],
+    "summary": "작은 액정이 달린 수신기를 지우개와 실크 스카프에 숨기고, 초소형 이어폰도 함께 써서 밖에서 보낸 답을 받았다. 6명이 징역형을 받았다.",
+    "cue": "경찰은 시험 당일 33명의 부정행위를 도운 6명을 체포했다.",
+    "detect": "중국은 무선 신호를 잡는 드론·차량, 얼굴 인식, 금속탐지기를 쓴다. 2025년엔 AI 앱들이 시험 시간 동안 사진 풀이 기능을 멈췄다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Mothership: 지우개·스카프 속 화면으로 부정행위, 6명 징역형 (2018)", "url": "https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves" },
+      { "title": "CBS News: China uses drones to catch exam cheaters", "url": "https://www.cbsnews.com/news/china-drones-catch-students-cheating-gaokao-college-entrance-exam" },
+      { "title": "Fortune: Alibaba, Tencent freeze AI tools during gaokao (2025)", "url": "https://fortune.com/asia/2025/06/09/alibaba-tencent-freeze-ai-tools-gaokao-china-exam/" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "sms-relay",
+    "name": "문자로 답 돌리기",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2004, "label": "2005학년도 수능" }
+    ],
+    "summary": "잘하는 응시자가 숨긴 휴대폰으로 답을 보내면, 밖의 도우미가 다른 응시자들에게 다시 보냈다. 전국에서 374명이 입건됐다.",
+    "cue": "광주에서 먼저 드러났고, 경찰이 수능 당일 오간 숫자 문자를 통신사에서 받아 추려 내며 수사가 전국으로 넓어졌다.",
+    "detect": "226명이 시험 무효 처분을 받았다. 시험장에 휴대폰을 들이지 못하게 막는 것이 기본이 됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "한국교육신문: 수능 부정 수사 마무리 374명 입건 (2004)", "url": "https://hangyo.com/mobile/article.html?no=9804" },
+      { "title": "주간경향: 수능 부정 수사 (2004)", "url": "https://weekly.khan.co.kr/article/8735" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "online-ask",
+    "name": "시험 중 인터넷에 문제 올리기",
+    "group": "collab",
+    "origins": [
+      { "country": "JP", "year": 2011, "label": "교토대 입시", "sourceUrl": "https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp" },
+      { "country": "JP", "year": 2022, "label": "대학입학공통테스트", "sourceUrl": "https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml" }
+    ],
+    "summary": "숨긴 휴대폰으로 문제를 질문 사이트나 온라인 과외 서비스에 보내 풀이를 받았다. 2022년엔 소매에 숨긴 폰으로 문제를 찍었다.",
+    "cue": "2011년엔 시험 중에 문제가 올라오고 답이 달려 드러났고, 경찰이 사이트 접속 기록으로 추적했다. 2022년엔 풀이를 부탁받은 대학생이 시험 문제임을 알아채고 신고했다.",
+    "detect": "2022년 응시자는 해당 시험 성적이 무효가 됐고, 이듬해부터 전자기기 취급 규정이 강화됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "Phys.org: 교토대 입시 문제 인터넷 게시 수사 (2011)", "url": "https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp" },
+      { "title": "데일리스포츠: 공통테스트 유출, 소매에 숨긴 스마트폰으로 촬영 (2022)", "url": "https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "outside-help",
+    "name": "벽 타고 쪽지 건네기",
+    "group": "collab",
+    "origins": [
+      { "country": "IN", "year": 2015, "label": "비하르주 10학년 시험", "sourceUrl": "https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal" }
+    ],
+    "summary": "가족과 지인들이 시험장 건물 벽을 타고 올라가 창문으로 쪽지를 건넸다.",
+    "cue": "대낮에 벌어진 장면이 영상으로 보도됐다.",
+    "detect": "약 600명이 퇴학 처리되고 수백 명이 체포됐다. 경찰이 돈을 받고 출입을 눈감아 줬다는 의혹도 나왔다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "NPR: Police in India arrest hundreds in cheating scandal (2015)", "url": "https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal" },
+      { "title": "CBS News: Indian parents scale school wall to help students cheat (2015)", "url": "https://www.cbsnews.com/news/indian-parents-scale-school-wall-to-help-students-cheat-on-exams" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "restroom-relay",
+    "name": "쉬는 시간 화장실 답 전달",
+    "group": "collab",
+    "origins": [
+      { "country": "KR", "year": 2023, "label": "토익 대리 답안 조직" }
+    ],
+    "summary": "듣기평가가 끝난 뒤 화장실 가는 시간에, 변기·라디에이터 뒤에 숨겨 둔 휴대폰이나 쪽지로 답을 건넸다. 건당 300만~500만 원을 받았다.",
+    "cue": "시험 주관사의 제보로 수사가 시작돼 23차례의 부정행위가 드러났다.",
+    "detect": "화장실 가는 시간처럼 감독이 느슨한 순간이 빈틈이 됐다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "쿠키뉴스: 토익 화장실 답안 전달 조직 검거 (2023)", "url": "https://www.kukinews.com/article/view/kuk202308030111" },
+      { "title": "파이낸셜뉴스: 토익 부정행위 브로커 검거 (2023)", "url": "https://www.fnnews.com/news/202308030903031907" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "insider-leak",
+    "name": "시험지·답안 사전 유출",
+    "group": "leak",
+    "origins": [
+      { "country": "KR", "year": 2018, "label": "고교 정기고사 답안 유출" },
+      { "country": "KR", "year": 2024, "label": "대학 수시 논술" }
+    ],
+    "summary": "관리하는 쪽에서 문제나 답이 새어 나갔다. 교사가 자녀에게 정기고사 답안을 넘겼고(징역 3년 확정), 감독관 착각으로 논술 시험지가 1시간 일찍 배부됐다.",
+    "cue": "2018년엔 의혹 제기 뒤 수사로 드러났다. 2024년엔 시험지 사진이 온라인에 올라오며 알려졌다.",
+    "detect": "응시자 행동으로는 알 수 없다. 출제·보관·배부 절차를 관리해야 막을 수 있다.",
+    "status": "confirmed",
+    "sources": [
+      { "title": "YTN: 시험문제 유출 고교 전 교무부장 징역 3년 확정 (2020)", "url": "https://www.ytn.co.kr/_ln/0103_202003121918269376" },
+      { "title": "YTN: 논술 시험지 사진 온라인 유출 (2024)", "url": "https://www.ytn.co.kr/_ln/0103_202410141919523364" },
+      { "title": "법률신문: 서울고법, 논술시험 효력 인정 (2024)", "url": "https://www.lawtimes.co.kr/news/articleViewAmp.html?idxno=203463" }
+    ],
+    "playable": false,
+    "visibility": "low"
+  },
+  {
+    "id": "rumor-forum-confession",
+    "name": "커뮤니티 자백 글",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "온라인 커뮤니티 글" }
+    ],
+    "summary": "단추형 카메라 셔츠와 AI로 수능을 봤다는 익명 자백 글이 올라왔다. 진위는 확인되지 않았고 증빙도 없다.",
+    "cue": "확인되지 않은 주장이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  },
+  {
+    "id": "rumor-video-comment",
+    "name": "공무원 시험 기기 대여 주장",
+    "group": "device",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "영상 댓글" }
+    ],
+    "summary": "전자기기로 공무원 시험에 붙었고 지인에게 기기를 빌려줬다는 댓글이 퍼졌다. 진위는 확인되지 않았다.",
+    "cue": "확인되지 않은 주장이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  },
+  {
+    "id": "rumor-broker-telegram",
+    "name": "메신저 장비 알선 의혹",
+    "group": "proxy",
+    "origins": [
+      { "country": "KR", "year": 2026, "label": "온라인 의혹" }
+    ],
+    "summary": "메신저에서 부정행위 장비를 알선하는 브로커가 있다는 의혹이 제기됐다. 확인된 사실은 없다.",
+    "cue": "확인되지 않은 의혹이다.",
+    "detect": "해당 없음.",
+    "status": "unverified",
+    "sources": [
+      { "title": "KMJ: 수능 D-2 AI 부정행위 비상 (미검증 주장으로 소개)", "url": "https://www.kmjournal.net/news/articleView.html?idxno=14247" }
+    ],
+    "playable": false
+  }
+]

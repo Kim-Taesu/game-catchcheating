@@ -51,7 +51,7 @@
 - 최근 5년 AI 글라스 부정행위 교육부 집계에 이 1건 (YTN, 김희정 의원실 자료)
 - 단서: 한 번 검사했다고 끝이 아니라 **쉬는 시간 뒤 재점검**이 필요
 
-**'리트냥이'(LEET 만점자) 건은 사례로 쓰지 않는다**: 온라인 의혹 단계. 공식 확인된 부정행위 없음. 근거로 거론된 것은 답 고친 흔적 등이고, 높은 점수 자체가 증거는 아니라는 점이 보도에서도 지적됨. 특정 개인을 부정행위자로 보이게 만들 수 있어 화면·게임 모두에서 제외한다.
+**LEET 만점자 온라인 의혹 건은 사례로 쓰지 않는다**: 온라인 의혹 단계. 공식 확인된 부정행위 없음. 근거로 거론된 것은 답 고친 흔적 등이고, 높은 점수 자체가 증거는 아니라는 점이 보도에서도 지적됨. 특정 개인을 부정행위자로 보이게 만들 수 있어 화면·게임 모두에서 제외한다.
 
 ## B. 신호·협력형 (전통 + 현재도)
 
@@ -103,7 +103,7 @@
 | AI 스마트안경 | 우측 상단 시선 | 업계 설명 | 프록터링 업체 글(독립 검증 아님). 사용자 제안과 일치 |
 | 두꺼운 뿔테 + 모자 | 문제지를 얼굴 가까이 댐, 안경 발열 | 보도 | 이투데이 https://www.etoday.co.kr/news/view/2648649 (대만) |
 | 안경 바꿔치기 | 시험 도중 안경을 바꿔 씀 | 보도 | YTN https://www.ytn.co.kr/_cs/_ln_0101_202611170916524557_005.html (LEET), 이투데이 2645738 (내신) |
-| 귀 속 이어폰 | 귀를 반복해서 만지거나 고개를 까딱임 | 감독 지침 | 서울시교육청 '초소형 카메라 관련 부정행위 대응 지침' 보도 (원문 URL은 구현 때 확인). 같은 지침: "단일 행동만으로 부정행위를 단정하지 말라" |
+| 귀 속 이어폰 | 중얼거림·혼잣말 (모자·귀마개로 귀를 가린 외형) | 업계 설명 + 보도(외형) | VICTVS https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/ ("mumbling or talking to themselves"), 한국일보 2017 (모자·귀마개·붕대로 가림). ※ "귀 반복 만짐·고개 까딱임(서울시교육청 지침)"은 검색 요약에만 나오고 원문 기사 7곳에서 확인되지 않아 **쓰지 않는다** (2026-11-17 확인) |
 | 옷 속 폰 | 폰 2대 중 1대만 제출하고 몸에 숨김 | 보도(수법만) | 뉴데일리 (전기산업기사). 행동 포즈는 연출 |
 | 이어폰 삼킴 | 적발되자 삼킴 | 보도 | 전자신문 https://www.etnews.com/20231115000253 |
 | 귀 붕대 | 모자·귀마개·붕대로 가림 | 보도 | 한국일보 https://www.hankookilbo.com/news/article/201703101486877952 |
@@ -111,11 +111,81 @@
 | 스마트워치 | 손목을 반복해서 봄 | 업계 설명 | 프록터링 업체 글 |
 | 손가락 신호 | 특정 동작·필기구 방향 | 커뮤니티 정리 | 나무위키 '부정행위' |
 | 곁눈질 | 머리를 자주 돌림 | 커뮤니티 정리 | 나무위키 '부정행위' |
-| 소매 쪽지 | 소맷단 확인, 쉬는 시간마다 쪽지를 찢음 | 지침 + 커뮤니티 | 서울시교육청 지침(옷깃·소매 확인), 나무위키(광주대동고 사례) |
+| 소매 쪽지 | 소맷단 확인, 쉬는 시간마다 쪽지를 찢음 | 지침 + 커뮤니티 | 대전교육청 수능 감독 강화(단추·옷깃·소매 확인) SBS https://news.sbs.co.kr/english/article.do?news_id=N1008849407 (2026-11-17), 나무위키(광주대동고 사례) |
+| 신발 속 통신기기 | 수상한 행동 → 귀 속 이어폰 발견 → 신발 속 기기 자백. 발 쪽을 보는 포즈는 연출 | 보도(수법·외형) | Free Press Journal https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics (인도 2021) |
+| 가발 속 카메라·이어폰 | 티 나는 가발, 초조한 행동, 너무 일찍 끝냄. 가발을 누르는 포즈는 연출 | 보도 | Murcia Today https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html (스페인 2023) |
+| 가슴 카메라 | 시험 내내 가슴을 화면 가까이 붙임, 초조하고 부자연스러운 태도 | 보도 | Orain https://orain.eus/en/current-events/society-and-social-news-now/2025/11/04/surprised-in-bilbao-with-technological-devices-hidden-in-the-driving-exam/ (스페인 빌바오 2025, 셔츠 구멍 속 휴대폰). 한국 대학 2026은 수법만 보도 |
+| (공통 단서) | 지나가다 전자음을 들음, 렌즈에 비친 홀로그램 | 보도 | SBS https://news.sbs.co.kr/english/article.do?news_id=N1008847527 (가스기능사 2026-06-29) |
 
-**근거 없음 (도감 전용, 게임 제외)**: 단추 카메라, 개조 계산기, 팔뚝 필기, 물병 라벨, 가방 속 폰, 위조 신분증. 세무사 사건에서는 감독위원 4명이 "특이사항 없음"이라고 했다. 행동으로 알아채기 어려운 수법이라는 사실 자체가 교훈이다.
+**행동 단서 근거 없음 (도감 전용, 게임 제외)**: 단추 카메라, 개조 계산기, 팔뚝 필기, 물병 라벨, 가방 속 폰, 위조 신분증. 사건 자체는 보도된 것도 있다(가방 속 폰·대리응시·단추 카메라는 `confirmed`). 없는 것은 "반복되는 의심 행동"의 근거다. 세무사 사건에서는 감독위원 4명이 "특이사항 없음"이라고 했다. 행동으로 알아채기 어려운 수법이라는 사실 자체가 교훈이다.
 
-**서울시교육청 지침 보도에서 확인된 감독 요령**: 1·3교시 본인 확인 때 단추·옷깃·소매 확인, 귀 반복 만짐·고개 까딱임 확인, 의심되면 금속탐지기로 추가 검사, 시험 중 즉시 확인하지 않고 답안지 수거 뒤 확인(스마트안경, 파이낸셜뉴스·MBC).
+**원문으로 확인된 감독 요령**: 대전교육청 — 수험생 단추·옷깃·소매 확인(SBS 2026-11-17). 교육부 — 스마트안경 의심 시 시험 중 바로 벗기지 않고 답안지 수거 뒤 확인, 카메라·표시등·두꺼운 안경다리 확인(헤럴드경제 2026-11-16, MBC). 서울교육청 — 기말고사 전 "AI 글라스 사용은 부정행위" 공문(뉴스1 2026-06-12).
+**확인 못 한 것**: "귀 반복 만짐·고개 까딱임 관찰", "단일 행동만으로 단정하지 말라"는 지침 문구 — 검색 요약에만 있고 원문 미확인. 게임 문구는 지침 인용이 아니라 자체 안내로 쓴다.
+
+## H. 데이터 작성 중 원문으로 추가 확인한 출처 (2026-11-17)
+
+| 사건 | 확인한 사실 | 출처 |
+| --- | --- | --- |
+| 중·고교 내신 AI 안경 4건 (교육부 2026-11-09 발표) | 평소 안경을 쓰지 않던 학생이 시험 중 안경을 쓰고 테를 자꾸 만짐, 안경에 비친 초록 불빛, 시험 도중 안경 교체. 4건 모두 0점 | 이투데이 https://www.etoday.co.kr/news/view/2645738 |
+| 전기산업기사 2026-05-24 | 안경테를 부자연스럽게 만지는 모습을 감독관이 수상히 여김, 휴대전화 2대 중 1대만 제출하고 1대는 몸에 숨김, 렌즈에 답 표시 | 뉴데일리 https://www.newdaily.co.kr/site/data/html/2026/07/15/2026071500094.amp.html |
+| 토익·텝스 조직 (2013-04 발표) | 고막 이어폰과 스마트 시계(손목시계형 컴퓨터)로 정답 전달, 9회 시험, 구속 | 쿠키뉴스 https://www.kukinews.com/article/view/kuk201304170016 |
+| 2017학년도 수능 (2016-11-17) | 어머니가 깜빡하고 도시락 가방에 넣은 휴대폰이 1교시에 10초 울림, 응시 중단·귀가 | 뉴스핌 https://newspim.com/news/view/20161118000026 |
+| TOPIK 대리시험 (2014-01-19 시험, 2014-03 발표) | 응시자가 신분증 번호를 잘못 적어 감독관 확인 중 발각 | 경향신문 https://www.khan.co.kr/article/201403111659421 |
+| 태국 랑싯대 의대·치대 입시 (2016-05) | 카메라 안경과 스마트워치, 3명 적발, 시험 취소 | Al Jazeera https://www.aljazeera.com/news/2016/5/12/thailand-students-caught-in-high-tech-cheating-scam |
+| 베트남 고교 졸업시험 (2025-06) | 단추 크기 카메라와 무선 이어폰, 조력자가 ChatGPT로 답 생성, 감독관이 수상한 행동을 보고 검사 | Tuoi Tre https://news.tuoitre.vn/criminal-probe-launched-over-use-of-chatgpt-to-cheat-on-vietnams-national-high-school-exam-103250628155023443.htm |
+| 업계 설명 (행동 신호) | "mumbling or talking to themselves", "repeatedly glancing up into their glasses" | VICTVS https://www.victvs.co.uk/2025/09/01/wearable-technology-exam-security/ |
+| 업계 설명 (감지 항목) | "Subtle whispers", "Bone-conduction leaks", "Irregular gaze direction", "Gesture anomalies" | Talview https://www.talview.com/blog/meta-ai-glasses-exam-cheating |
+| 이탈리아 운전면허 필기 (2023) | 당국이 사복 경찰을 시험장에 투입하는 등 단속을 강화 (원문 문장 확인 2회: 컨트롤러·T5 재검토자) | 전자신문 https://www.etnews.com/20231115000253 |
+| 광주대동고 (고전 사례) | 쉬는 시간마다 커닝 페이퍼를 찢는 모습을 같은 반 친구들이 수상히 여겨 적발 | 나무위키 '부정행위' |
+| 곁눈질 대응 | 홀짝형 문제지 배치로 효과가 떨어짐 | 나무위키 '부정행위' |
+
+### H-2. 해외 사례 매핑 (T6, 기존 수법의 `origins`에 추가)
+
+| 나라 | 사건 | 매핑한 수법 |
+| --- | --- | --- |
+| JP | 와세다대 입시 2024 | AI 스마트안경 |
+| IN | 심바이오시스공대 2026 | AI 스마트안경 |
+| TH | 랑싯대 의대·치대 입시 2016 | AI 스마트안경, 스마트워치 |
+| TW | 국립대만대 의학계열 입시 2026 | 두꺼운 뿔테와 모자 |
+| IT | 볼차노 운전면허 필기 2023 | 들키자 이어폰 삼키기 |
+| TR | 이스파르타 대학입시 2024 | 단추형 초소형 카메라 |
+| VN | 고교 졸업시험 2025 | 귀 속 초소형 이어폰, 단추형 초소형 카메라 |
+
+합계 9건, 7개국. 쓰지 않은 것: 중국 가오카오 기기(연도·원문 미확인, 나무위키 서술만), 일본 마스크 속 마이크·인도 큰 단추 금지(원문 미확인). 모든 출처 URL 25개는 2026-11-17에 HTTP 200 확인.
+
+라벨 기준: 언론이 적발·체포·처분을 사건으로 보도했으면 `confirmed`(이투데이처럼 해외 사건을 국내 언론이 전한 경우 포함). 수법 세부가 수사 중이면 `investigating`. 개별 적발 없이 위험·고전 수법으로 거론되면 `mentioned`.
+
+## I. 추가 조사 (2026-11-19, 도감 전용 9건 + 대리응시 해외 2건)
+
+사용자 요청 "더 다양한 국내·해외 사례". 모두 언론의 적발·체포·처분 보도가 있어 `confirmed`, 게임용 그림이 없어 도감 전용(`visibility: low`). 개인 이름·학교 이름은 쓰지 않는다(고교 유출 사건은 "고교 정기고사"로만 표기).
+
+| id | 수법 | 사례 | 어떻게 드러났나 | 출처 |
+| --- | --- | --- | --- | --- |
+| shoe-device | 슬리퍼 밑창에 휴대폰·블루투스 장치, 귀 속 초소형 이어폰 | 인도 라자스탄 교사자격시험(REET) 2021-09-26. 한 조직이 25켤레 제작 | 감독관이 수상한 행동을 보고 귀 속 이어폰 발견 → 응시자가 신발 속 장치 자백. 주 정부는 당일 여러 지역 인터넷·모바일 12시간 차단 | Free Press Journal https://www.freepressjournal.in/india/reet-2021-5-held-for-cheating-via-bluetooth-chappals-worth-rs-6-lakhs-in-rajasthans-ajmer-see-pics , Sentinel Assam https://www.sentinelassam.com/more-news/national-news/five-held-in-rajasthan-for-cheating-in-exam-with-bluetooth-chappals-556611 |
+| wig-device | 귀를 덮는 가발 속 초소형 카메라·마이크, 밖의 공범이 답을 불러 줌 | 스페인 과달라하라 운전면허 필기, 2023-05 보도 | 스페인어를 거의 못 하는데 훨씬 일찍 끝냄, 티 나는 가발. 6개월 재응시 금지 | Murcia Today https://m.murciatoday.com/toupee-trick-fraudsters-think-up-ingenious-way-to-pass-spanish-theory-test_2143938-a.html |
+| camera-ai-watch | 가슴께 카메라로 문제 전송 → 친구가 AI로 풀이 → 스마트워치로 답 수신 | 한국 대학 중간고사, 2026-10 보도 | 만점 뒤 교수가 감독 아래 같은 문제를 다시 풀게 함 → 못 풀고 자백. 0점·F, 학과가 카메라·시계 반입 금지와 안경 검사 도입 | Korea JoongAng Daily https://www.koreajoongangdaily.com/korea/ai-cheating-tests-korean-universities-as-school-struggle-to-keep-up/12931532 |
+| eraser-receiver | 작은 액정 달린 수신기를 지우개·실크 스카프에 숨김, 초소형 이어폰 | 중국 베이징 대학원 입학시험(2016-12 시행), 6명 징역 20개월~4년 | 시험 당일 33명을 도운 6명 체포(적발 경위는 기사에 없음) | Mothership https://mothership.sg/2018/08/beijing-entrance-exam-jailed-cheating-screens-erasers-scarves |
+| sms-relay | 잘하는 응시자가 숨긴 휴대폰으로 답 전송 → 밖의 도우미가 다른 응시자에게 재전송 | 2005학년도 수능(2004-11-17). 전국 374명 입건, 226명 시험 무효 | 광주에서 먼저 드러남 → 경찰이 수능 당일 숫자 문자를 통신사에서 받아 추려 냄 | 한국교육신문 https://hangyo.com/mobile/article.html?no=9804 , 주간경향 https://weekly.khan.co.kr/article/8735 |
+| online-ask | 시험 중 숨긴 휴대폰으로 문제를 질문 사이트·온라인 과외 서비스에 보내 풀이 받음 | 일본 교토대 등 입시 2011-02(Yahoo 지식 Q&A), 대학입학공통테스트 2022-01(소매 속 스마트폰 촬영) | 2011: 시험 중 문제·답이 올라옴, 경찰이 접속 기록 요청. 2022: 풀이를 부탁받은 대학생이 신고, 성적 무효, 이듬해 전자기기 규정 강화 | Phys.org https://phys.org/news/2011-03-japan-police-yahoo-exam-probe.amp , 데일리스포츠 https://www.daily.co.jp/gossip/2022/01/28/0015016800.shtml |
+| outside-help | 가족·지인이 시험장 건물 벽을 타고 올라가 창문으로 쪽지 전달 | 인도 비하르주 10학년 시험 2015-03. 약 600명 퇴학, 수백 명 체포 | 영상 보도. 경찰 뇌물 의혹 | NPR https://www.npr.org/sections/thetwo-way/2015/03/21/394486567/police-in-india-arrest-hundreds-in-10th-grade-cheating-scandal , CBS https://www.cbsnews.com/news/indian-parents-scale-school-wall-to-help-students-cheat-on-exams |
+| restroom-relay | 듣기평가 뒤 화장실 가는 시간에 변기·라디에이터 뒤 숨긴 휴대폰·쪽지로 답 전달, 건당 300만~500만 원 | 토익, 2021-07~2022-10 범행, 2023-08 서울경찰청 발표(브로커+의뢰인 20명, 23차례) | 시험 주관사 제보로 수사 | 쿠키뉴스 https://www.kukinews.com/article/view/kuk202308030111 , 파이낸셜뉴스 https://www.fnnews.com/news/202308030903031907 |
+| insider-leak | 관리하는 쪽에서 문제·답이 새어 나감 (새 분류 `leak`) | 고교 정기고사 답안 유출 2018(교사인 아버지 징역 3년 확정 2020-03), 대학 수시 논술 2024-10(감독관 착각으로 1시간 일찍 배부, 시험지 사진 온라인 유출, 법원은 시험 효력 인정) | 2018: 의혹 제기 후 수사. 2024: 온라인 사진 | YTN https://www.ytn.co.kr/_ln/0103_202003121918269376 , YTN https://www.ytn.co.kr/_ln/0103_202410141919523364 , 법률신문 https://www.lawtimes.co.kr/news/articleViewAmp.html?idxno=203463 |
+| proxy-id (해외 추가) | 대리시험 | 미국 롱아일랜드 SAT·ACT 2011(SAT는 점수 급등을 표시해 취소 → ACT로 우회), 중국 가오카오 2014(지문 필름, 이후 손가락 정맥 인식 도입) | — | CBS New York https://cbsnews.com/newyork/news/prosecutors-to-arrest-at-least-35-students-in-sat-act-cheating-scandal , Inverse https://www.inverse.com/article/45738-spy-tech-gaokao-cheaters-fake-fingerprints |
+
+### I-2. 감지·대응 사례 (추가)
+
+- 중국: 무선 신호를 잡는 드론·차량, 얼굴 인식, 금속탐지기 (CBS https://www.cbsnews.com/news/china-drones-catch-students-cheating-gaokao-college-entrance-exam ). 2025 가오카오 기간 알리바바·텐센트 등 AI 앱이 시험 시간에 사진 인식·풀이 기능 중단 (Fortune https://fortune.com/asia/2025/06/09/alibaba-tencent-freeze-ai-tools-gaokao-china-exam/ ). 2026년에도 같은 조치 보도는 단일 출처라 쓰지 않음
+- 알제리·이라크(2018~), 시리아(2015~): 국가 시험 기간 인터넷 전면 차단. 효과 없고 인권 침해라는 비판(#NoExamShutdown) (Al Jazeera https://www.aljazeera.com/news/2018/6/21/algeria-and-iraq-shut-down-internet-to-prevent-exam-cheating )
+- 영국 Ofqual: GCSE·A레벨 학생 부정행위 처분 중 휴대폰·통신기기 위반이 가장 많음(2024년 약 41%). 처분은 감점이 가장 흔함 (Ofqual 블로그 https://ofqual.blog.gov.uk/2023/04/18/mobile-phones-in-exams-what-malpractice-stats-show-us/ ). 정확한 연도별 수치는 공식 통계로 재확인 필요
+
+### I-3. 찾았지만 넣지 않은 것
+
+- 나이지리아 UV 펜(책상에 보이지 않는 잉크로 쓰고 UV 펜으로 읽음, 2025): 원문 403으로 확인 못 함
+- 스페인 말라가 펜 몸통에 새긴 메모: 일화성 보도, 적발·처분 정보 없음
+- 2026 중국 초소형 카메라→외부 풀이→이어폰: 단일 출처
+- 2015 인도 비하르는 "부모" 대신 "가족·지인"으로 표기(기사마다 다름)
+
+모든 새 출처 URL은 2026-11-19에 HTTP 200 확인 (403이 난 Japan Times·한국경제·SCMP·Washington Times·Olive Press는 같은 내용의 200 출처로 바꿈).
 
 ## 한계
 
