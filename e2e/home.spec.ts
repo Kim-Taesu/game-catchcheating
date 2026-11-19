@@ -19,7 +19,7 @@ test('탭 아이콘이 있고, 로컬에서는 허브(ktslab.xyz)로 아무 요�
   page.on('request', (r) => {
     if (new URL(r.url()).hostname.endsWith('ktslab.xyz')) hubCalls.push(r.url())
   })
-  for (const path of ['/', '/dex', '/play?seed=7']) {
+  for (const path of ['/', '/dex', '/play?seed=7', '/play?again=1&seed=7']) {
     await page.goto(path)
     const href = await page.locator('link[rel="icon"]').getAttribute('href')
     expect(href, path).toBe('/favicon.png')

@@ -2,7 +2,7 @@
 // the explanation), and the share button with fallbacks. All text goes in via textContent.
 import { TITLE_TEXT, endTimeLine, titleFor } from './result.js'
 import { shareResult, shareText, shareUrl } from './share.js'
-import { BEFORE_SWAP_NOTE, basisLine, statusLabel } from './labels.js'
+import { BEFORE_SWAP_NOTE, basisLine, originFlags, originLine, statusLabel } from './labels.js'
 
 const REASON = { clear: '수상한 응시자를 모두 찾았어요.', timeout: '시간이 끝났어요.', lives: '정상 응시자를 잡아 시험이 끝났어요' }
 
@@ -45,6 +45,16 @@ function fact(label, text, cls = 'detail-fact') {
   return p
 }
 
+/** "보도된 사례" with one line per origin ("🇯🇵 일본 2024 · 와세다대 입시"); null when there is none. */
+function origins(list) {
+  if (!list?.length) return null
+  const box = el('div', 'detail-fact detail-origins')
+  const ul = el('ul', 'detail-origin-list')
+  ul.append(...list.map((o) => el('li', '', originLine(o))))
+  box.append(el('strong', '', '보도된 사례'), ul)
+  return box
+}
+
 /**
  * The round's nine seats in their play positions, each labelled with its outcome and name.
  * A tap opens a dialog with the explanation. Returns the grid and the dialog.
@@ -77,6 +87,9 @@ function resultGrid(recap, cases, innocents) {
     tags.append(el('span', `badge badge-${o.cls}`, o.badge))
     const st = statusLabel(c)
     if (st) tags.append(' ', el('span', 'chip', st))
+    // Where the case was reported: one flag per country.
+    const flags = isCheater ? originFlags(c?.origins) : ''
+    if (flags) tags.append(' ', el('span', 'detail-flags', flags))
     const head = el('div', 'detail-head')
     const headText = el('div')
     headText.append(title, tags)
@@ -88,6 +101,7 @@ function resultGrid(recap, cases, innocents) {
           fact('수법', c?.summary),
           fact('게임에서 보인 행동', c?.tell?.action),
           fact('실제로 알아챈 단서', c?.cue),
+          origins(c?.origins),
           c?.tell ? el('p', 'end-basis', basisLine(c.tell)) : null,
           dexLink(s.id, name),
         ]
@@ -120,7 +134,10 @@ function resultGrid(recap, cases, innocents) {
     btn.dataset.outcome = outcome
     btn.setAttribute('aria-haspopup', 'dialog')
     btn.setAttribute('aria-label', `응시자 ${s.seat + 1} ${o.badge}: ${name}. 설명 보기`)
-    btn.append(poseImg(s.id, 'rseat-img'), el('span', `badge badge-${o.cls} rseat-badge`, o.badge), el('span', 'rseat-name', name))
+    // 🔍 on every seat says "tap for the explanation"; the button's aria-label already says it.
+    const zoom = el('span', 'rseat-zoom', '🔍')
+    zoom.setAttribute('aria-hidden', 'true')
+    btn.append(poseImg(s.id, 'rseat-img'), el('span', `badge badge-${o.cls} rseat-badge`, o.badge), zoom, el('span', 'rseat-name', name))
     btn.addEventListener('click', () => openDetail(btn, s, outcome))
     grid.append(btn)
   }
@@ -149,7 +166,7 @@ export function showResult(root, r, deps = {}) {
   const timeLine = endTimeLine(r, deps.reason)
   if (timeLine) root.append(el('p', 'end-time', timeLine))
   const board = deps.recap ? resultGrid(deps.recap, deps.cases ?? [], deps.innocents ?? []) : null
-  if (board) root.append(board.grid, el('p', 'end-hint', '좌석을 누르면 설명을 볼 수 있어요'))
+  if (board) root.append(board.grid, el('p', 'end-hint', '🔍 좌석을 누르면 설명을 볼 수 있어요'))
   // Below the buttons: the seats and the share button come first on a small screen.
   const goal = el(
     'p',
@@ -184,7 +201,8 @@ export function showResult(root, r, deps = {}) {
   })
 
   const again = el('a', 'btn', '다시 하기')
-  again.href = '/play'
+  // Skips the how-to-play intro: the player has just seen it.
+  again.href = '/play?again=1'
   const dex = el('a', 'btn', '도감 보기')
   dex.href = '/dex'
   const actions = el('div', 'end-actions')

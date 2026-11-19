@@ -20,34 +20,48 @@
     <script type="module">
       import { startGame } from '/game/scene.js'
       import { showResult } from '/game/result-ui.js'
+      import { showIntro } from '/game/intro.js'
       import { createPlayTracker } from '/game/hub.js'
 
       const game = document.getElementById('game')
-      // Hub metrics: one request when the round starts (enter + play_start), one at the result.
+      const params = new URLSearchParams(location.search)
+      const q = params.get('seed')
+      const seed = q !== null && /^\d+$/.test(q) ? Number(q) : undefined
+      // Hub metrics: enter on load (intro shown), play_start at 게임 시작, play_end at the result.
       const tracker = createPlayTracker()
-      try {
-        const [cases, innocents] = await Promise.all([
-          fetch('/data/cases.json').then((r) => r.json()),
-          fetch('/data/innocents.json').then((r) => r.json()),
-        ])
-        const q = new URLSearchParams(location.search).get('seed')
-        const seed = q !== null && /^\d+$/.test(q) ? Number(q) : undefined
-        startGame(game, {
-          cases,
-          innocents,
-          seed,
-          onEnd(result, recap) {
-            const endEl = document.getElementById('end')
-            endEl.dataset.endCount = String(Number(endEl.dataset.endCount ?? 0) + 1)
-            // The result grid takes the play grid's place, so the result fits one screen.
-            game.hidden = true
-            showResult(endEl, result, { reason: game.dataset.ended, recap, cases, innocents })
-            tracker.end()
-          },
-        })
-        tracker.start()
-      } catch {
-        game.textContent = '게임을 불러오지 못했어요. 새로고침해 주세요.'
+      // Data loads while the intro is on screen.
+      const data = Promise.all([
+        fetch('/data/cases.json').then((r) => r.json()),
+        fetch('/data/innocents.json').then((r) => r.json()),
+      ])
+
+      async function begin() {
+        try {
+          const [cases, innocents] = await data
+          startGame(game, {
+            cases,
+            innocents,
+            seed,
+            onEnd(result, recap) {
+              const endEl = document.getElementById('end')
+              endEl.dataset.endCount = String(Number(endEl.dataset.endCount ?? 0) + 1)
+              // The result grid takes the play grid's place, so the result fits one screen.
+              game.hidden = true
+              showResult(endEl, result, { reason: game.dataset.ended, recap, cases, innocents })
+              tracker.end()
+            },
+          })
+          tracker.start()
+        } catch {
+          game.textContent = '게임을 불러오지 못했어요. 새로고침해 주세요.'
+        }
+      }
+
+      // "다시 하기" (?again=1) has just seen the intro: start right away.
+      if (params.get('again') === '1') begin()
+      else {
+        tracker.enter()
+        showIntro(game, { onStart: begin })
       }
     </script>
   </body>

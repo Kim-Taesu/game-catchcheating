@@ -267,6 +267,11 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   // The play grid gives way to the result grid in the same place: nine seats, no list to scroll.
   await expect(page.locator('#game')).toBeHidden()
   await expect(page.locator('#end-grid [data-result-seat]')).toHaveCount(9)
+  // Every seat carries a 🔍 so it reads as "tap for the explanation" (decorative, hidden from screen readers).
+  await expect(page.locator('#end-grid [data-result-seat] .rseat-zoom')).toHaveCount(9)
+  for (let i = 0; i < 9; i++) await expect(rseat(page, i).locator('.rseat-zoom')).toBeVisible()
+  await expect(page.locator('#end-grid .rseat-zoom').first()).toHaveAttribute('aria-hidden', 'true')
+  await expect(page.locator('#end')).toContainText('🔍 좌석을 누르면 설명을 볼 수 있어요')
   for (const s of cheaters) {
     const r = rseat(page, s.seat)
     await expect(r).toHaveAttribute('data-outcome', 'caught')
@@ -288,6 +293,13 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   await expect(d).toContainText(`응시자 ${cheaters[0].seat + 1} · ${caseName(cheaters[0].id)}`)
   await expect(d).toContainText('근거:')
   await expect(d.locator(`a[href="/dex#${cheaters[0].id}"]`)).toHaveText('도감에서 자세히')
+  // Reported countries as flags, plus one "🇰🇷 한국 2026 · …" line per origin.
+  const c0 = cases.find((c: { id: string }) => c.id === cheaters[0].id)
+  const flag = (code: string) => String.fromCodePoint(...[...code].map((ch) => 0x1f1e6 + ch.charCodeAt(0) - 65))
+  const flags = [...new Set(c0.origins.map((o: { country: string }) => o.country))].map((x) => flag(x as string)).join('')
+  await expect(d.locator('.detail-flags')).toHaveText(flags)
+  await expect(d.locator('.detail-origin-list li')).toHaveCount(c0.origins.length)
+  for (const o of c0.origins) await expect(d.locator('.detail-origin-list')).toContainText(`${flag(o.country)} `)
   await page.keyboard.press('Escape')
   await expect(d).toBeHidden()
   await expect(rseat(page, cheaters[0].seat)).toBeFocused()

@@ -169,3 +169,96 @@
 .detail-tags { margin: 0; }
 .detail-fact strong { display: block; font-size: 0.8125rem; color: var(--muted); }
 .detail-close { width: 100%; min-height: 44px; margin-top: 4px; }
+
+/* How to play (before the round): one card, three steps, fits a phone screen.
+   Every picture is a live demo made of the game's own sprites (CSS only, no timers). */
+.intro { display: grid; gap: 10px; text-align: center; }
+.intro-step { margin: 0; color: var(--muted); font-size: 0.875rem; font-weight: 700; }
+.intro-title { margin: 0; font-size: 1.375rem; line-height: 1.3; outline: none; word-break: keep-all; }
+.intro-art { display: grid; justify-items: center; gap: 10px; }
+.intro-fig { margin: 0; display: grid; justify-items: center; gap: 2px; }
+.intro-cap { font-size: 0.75rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.intro-lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; line-height: 1.5; word-break: keep-all; }
+.intro-dots { display: flex; justify-content: center; gap: 6px; }
+.intro-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.intro-dot.is-on { background: var(--accent); }
+.intro-next { width: 100%; min-height: 48px; margin-top: 2px; }
+
+/* A mini seat: idle and action images stacked; the action image fades in and out. */
+.mini-seat { position: relative; display: grid; width: 72px; height: 72px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 250, 240, 0.7); overflow: hidden; }
+.mini-img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; }
+.mini-img-1 { opacity: 0; }
+.motion-repeat .mini-img-1 { animation: act-repeat 3.5s ease-in-out var(--d, 0s) infinite; }
+.motion-repeat-fast .mini-img-1 { animation: act-repeat 2.4s ease-in-out var(--d, 0s) infinite; }
+.motion-once .mini-img-1 { animation: act-once 11s ease-in-out var(--d, 0s) infinite; }
+@keyframes act-repeat { 0%, 38% { opacity: 0; } 48%, 82% { opacity: 1; } 92%, 100% { opacity: 0; } }
+@keyframes act-once { 0%, 62% { opacity: 0; } 66%, 80% { opacity: 1; } 84%, 100% { opacity: 0; } }
+
+/* Step 1: live mini exam hall. */
+.mini-wrap { display: grid; gap: 6px; width: min(100%, 264px); }
+.mini-timebar { height: 8px; overflow: hidden; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); }
+.mini-timebar-fill { display: block; height: 100%; transform-origin: left center; animation: mini-time 9s linear infinite; }
+@keyframes mini-time { 0% { transform: scaleX(1); background: hsl(120 72% 42%); } 50% { background: hsl(60 72% 42%); } 100% { transform: scaleX(0); background: hsl(0 72% 42%); } }
+.mini-hall { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 6px; border: 2px solid var(--ink); border-radius: var(--radius); background: #cdbf9d url('/px/classroom.webp') center / cover; }
+.mini-hall .mini-seat { width: 100%; height: auto; aspect-ratio: 1; }
+.mini-scan { position: absolute; left: 0; top: 0; font-size: 1.75rem; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35)); animation: mini-scan 9s ease-in-out infinite; }
+@keyframes mini-scan {
+  0%, 100% { transform: translate(18px, 22px); }
+  25% { transform: translate(196px, 40px); }
+  50% { transform: translate(110px, 120px); }
+  75% { transform: translate(24px, 196px); }
+}
+
+/* Step 2: repeat vs once. */
+.intro-row { display: grid; gap: 4px; width: 100%; }
+.intro-row-label { margin: 0; font-size: 0.8125rem; font-weight: 800; }
+.intro-row.is-cheat .intro-row-label { color: #b3261e; }
+.intro-row.is-calm .intro-row-label { color: var(--accent); }
+.intro-row-seats { display: flex; justify-content: center; gap: 8px; }
+.intro-row.is-cheat .mini-seat { border: 2px solid #b3261e; }
+.mini-badge { position: absolute; right: 2px; top: 2px; padding: 0 4px; border-radius: 4px; background: #b3261e; color: #fff; font-size: 0.6875rem; font-weight: 800; opacity: 0; animation: act-repeat 2.4s ease-in-out var(--d, 0s) infinite; }
+
+/* Step 3: tap demo, one 7 s loop: act, tap, caught; then tap an innocent and the exam ends. */
+.tap-demo { position: relative; width: min(100%, 280px); padding-top: 40px; overflow: hidden; }
+.tap-seats { display: flex; justify-content: space-around; }
+.tap-demo .mini-seat { width: 96px; height: 96px; }
+.motion-demo .mini-img-1 { animation: demo-a 7s ease-in-out infinite; }
+.motion-demo-b .mini-img-1 { animation: demo-b 7s ease-in-out infinite; }
+@keyframes demo-a { 0%, 4% { opacity: 0; } 8%, 30% { opacity: 1; } 33%, 100% { opacity: 0; } }
+@keyframes demo-b { 0%, 52% { opacity: 0; } 56%, 74% { opacity: 1; } 77%, 100% { opacity: 0; } }
+.intro-stamp { position: absolute; right: 4px; bottom: 4px; padding: 0 5px; border: 2px solid #b3261e; border-radius: 4px; background: rgba(255, 250, 240, 0.92); color: #b3261e; font-size: 0.75rem; font-weight: 800; transform: rotate(-8deg); }
+.intro-stamp-wrong { border-color: #5f5a52; color: #5f5a52; }
+.tap-stamp { opacity: 0; animation: stamp-a 7s ease-out infinite; }
+.tap-stamp-b { opacity: 0; animation: stamp-b 7s ease-out infinite; }
+@keyframes stamp-a { 0%, 31% { opacity: 0; transform: rotate(-8deg) scale(1.8); } 34%, 96% { opacity: 1; transform: rotate(-8deg) scale(1); } 100% { opacity: 0; } }
+@keyframes stamp-b { 0%, 76% { opacity: 0; transform: rotate(-8deg) scale(1.8); } 79%, 96% { opacity: 1; transform: rotate(-8deg) scale(1); } 100% { opacity: 0; } }
+.tap-toast { position: absolute; left: 0; right: 0; top: 0; margin: 0; padding: 4px 8px; border: 2px solid var(--ink); border-radius: var(--radius); background: var(--paper); font-size: 0.8125rem; font-weight: 800; opacity: 0; }
+.tap-toast-a { animation: toast-a 7s ease-out infinite; }
+.tap-toast-b { border-color: #b3261e; color: #b3261e; animation: toast-b 7s ease-out infinite; }
+@keyframes toast-a { 0%, 32% { opacity: 0; } 35%, 58% { opacity: 1; } 61%, 100% { opacity: 0; } }
+@keyframes toast-b { 0%, 77% { opacity: 0; } 80%, 96% { opacity: 1; } 100% { opacity: 0; } }
+.tap-finger { position: absolute; left: 0; top: 0; font-size: 2rem; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35)); animation: finger 7s ease-in-out infinite; }
+@keyframes finger {
+  0%, 10% { transform: translate(124px, 104px) scale(1); }
+  28% { transform: translate(58px, 76px) scale(1); }
+  31% { transform: translate(58px, 76px) scale(0.8); }
+  34%, 50% { transform: translate(58px, 76px) scale(1); }
+  72% { transform: translate(196px, 76px) scale(1); }
+  76% { transform: translate(196px, 76px) scale(0.8); }
+  79%, 100% { transform: translate(196px, 76px) scale(1); }
+}
+
+/* Reduced motion: no animation; show the action poses, the stamps and the first toast as a still. */
+@media (prefers-reduced-motion: reduce) {
+  .intro *, .intro *::before, .intro *::after { animation: none !important; }
+  .motion-repeat .mini-img-1, .motion-repeat-fast .mini-img-1, .motion-demo .mini-img-1 { opacity: 1; }
+  .mini-badge, .tap-stamp, .tap-stamp-b, .tap-toast-a { opacity: 1; }
+  .tap-finger, .mini-scan { display: none; }
+  .mini-timebar-fill { transform: scaleX(0.5); background: hsl(60 72% 42%); }
+}
+.detail-flags { font-size: 1.125rem; letter-spacing: 2px; vertical-align: -2px; }
+.detail-origins { margin: 0 0 8px; }
+.detail-origin-list { margin: 2px 0 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+/* Magnifier on every result seat: "tap me for the explanation". */
+.rseat-zoom { align-self: start; justify-self: end; display: grid; place-items: center; width: 26px; height: 26px; margin: 2px; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper); font-size: 0.8125rem; line-height: 1; box-shadow: 0 2px 0 var(--ink); }
+.rseat:hover .rseat-zoom, .rseat:focus-visible .rseat-zoom { background: var(--accent); }
