@@ -134,7 +134,10 @@ function resultGrid(recap, cases, innocents) {
     btn.dataset.outcome = outcome
     btn.setAttribute('aria-haspopup', 'dialog')
     btn.setAttribute('aria-label', `응시자 ${s.seat + 1} ${o.badge}: ${name}. 설명 보기`)
-    btn.append(poseImg(s.id, 'rseat-img'), el('span', `badge badge-${o.cls} rseat-badge`, o.badge), el('span', 'rseat-name', name))
+    // 🔍 on every seat says "tap for the explanation"; the button's aria-label already says it.
+    const zoom = el('span', 'rseat-zoom', '🔍')
+    zoom.setAttribute('aria-hidden', 'true')
+    btn.append(poseImg(s.id, 'rseat-img'), el('span', `badge badge-${o.cls} rseat-badge`, o.badge), zoom, el('span', 'rseat-name', name))
     btn.addEventListener('click', () => openDetail(btn, s, outcome))
     grid.append(btn)
   }
@@ -163,7 +166,7 @@ export function showResult(root, r, deps = {}) {
   const timeLine = endTimeLine(r, deps.reason)
   if (timeLine) root.append(el('p', 'end-time', timeLine))
   const board = deps.recap ? resultGrid(deps.recap, deps.cases ?? [], deps.innocents ?? []) : null
-  if (board) root.append(board.grid, el('p', 'end-hint', '좌석을 누르면 설명을 볼 수 있어요'))
+  if (board) root.append(board.grid, el('p', 'end-hint', '🔍 좌석을 누르면 설명을 볼 수 있어요'))
   // Below the buttons: the seats and the share button come first on a small screen.
   const goal = el(
     'p',

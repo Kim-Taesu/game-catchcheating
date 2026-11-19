@@ -267,6 +267,11 @@ test('종료 후: 알림 없음, 좌석 비활성, 재탭 무시, onEnd 한 번,
   // The play grid gives way to the result grid in the same place: nine seats, no list to scroll.
   await expect(page.locator('#game')).toBeHidden()
   await expect(page.locator('#end-grid [data-result-seat]')).toHaveCount(9)
+  // Every seat carries a 🔍 so it reads as "tap for the explanation" (decorative, hidden from screen readers).
+  await expect(page.locator('#end-grid [data-result-seat] .rseat-zoom')).toHaveCount(9)
+  for (let i = 0; i < 9; i++) await expect(rseat(page, i).locator('.rseat-zoom')).toBeVisible()
+  await expect(page.locator('#end-grid .rseat-zoom').first()).toHaveAttribute('aria-hidden', 'true')
+  await expect(page.locator('#end')).toContainText('🔍 좌석을 누르면 설명을 볼 수 있어요')
   for (const s of cheaters) {
     const r = rseat(page, s.seat)
     await expect(r).toHaveAttribute('data-outcome', 'caught')
