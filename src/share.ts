@@ -1,4 +1,4 @@
-import { TITLE_TEXT, parseShare, titleFor, type Result } from '../public/game/result.js'
+import { TITLE_TEXT, parseShare, rewardLine, titleFor, type Result } from '../public/game/result.js'
 
 /** Bump when the og/*.png images change so crawlers refetch them. */
 export const OG_VERSION = '2'
@@ -12,7 +12,7 @@ const BRAND = '치팅 파인더'
 export function renderShare(r: Result, origin: string): string {
   const tier = titleFor(r)
   const title = TITLE_TEXT[tier]
-  const ogTitle = `잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}`
+  const ogTitle = `${rewardLine(r)} 잡은 ${r.c} · 놓친 ${r.m} · 오해 ${r.f}`
   const ogDescription = `${title} - ${BRAND}에서 시험장 부정행위를 잡아보세요`
   const ogImage = `${origin}/og/${tier}.png?v=${OG_VERSION}`
 

@@ -13,8 +13,15 @@ describe('shareUrl / shareText', () => {
     const text = shareText(r, url)
     expect(text).toContain(TITLE_TEXT.eagle)
     expect(text).toContain('잡은 4 · 놓친 0 · 오해 0')
+    expect(text.split('\n')[0]).toBe(`치팅 파인더 — ${TITLE_TEXT.eagle}! 💰 포상금 4억!`)
     expect(text.split('\n').at(-1)).toBe(url)
     expect(text.split(url).length - 1).toBe(1)
+  })
+})
+
+describe('shareText reward', () => {
+  it('nobody caught shares 0억', () => {
+    expect(shareText({ c: 0, m: 5, f: 1, t: 60 }, 'u').split('\n')[0]).toContain('💸 포상금 0억')
   })
 })
 
