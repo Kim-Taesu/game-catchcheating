@@ -58,7 +58,7 @@ export function startGame(root, opts) {
   for (const s of plan.seats) {
     // Both poses stay in the DOM and load once; a pose change only toggles which one is opaque
     // (CSS crossfade). alt="" keeps them out of the accessibility tree.
-    const img0 = el('img', { class: 'px seat-img seat-img-0 is-on', src: `/px/${s.id}-0.webp`, alt: '' })
+    const img0 = el('img', { class: 'px seat-img seat-img-0', src: `/px/${s.id}-0.webp`, alt: '' })
     const img1 = el('img', { class: 'px seat-img seat-img-1', src: `/px/${s.id}-1.webp`, alt: '' })
     const art = el('span', { class: 'seat-art' }, img0, img1)
     const btn = el(
@@ -133,7 +133,6 @@ export function startGame(root, opts) {
       if (pose !== v.pose) {
         v.pose = pose
         if (!v.failed) {
-          v.img0.classList.toggle('is-on', pose === 0)
           v.img1.classList.toggle('is-on', pose === 1)
         } else paintFallback(v)
       }

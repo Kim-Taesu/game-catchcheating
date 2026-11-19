@@ -41,6 +41,26 @@ test('두 포즈 이미지 18장이 2초 안에 모두 존재하고 로드된다
   }
 })
 
+test('행동 포즈 중에 잡으면 행동 이미지는 즉시 투명, 기본 이미지는 불투명', async ({ page }) => {
+  await page.clock.install()
+  await startRound(page, SEED)
+  const target = cheaters.find((s) => s.id === 'phone-in-clothes')! as unknown as { seat: number; onsets: number[] }
+  const sp = seat(page, target.seat)
+  await page.clock.runFor(target.onsets[0] + 1000)
+  const action = sp.locator('img.seat-img-1')
+  await expect(action).toHaveClass(/is-on/)
+  await sp.click()
+  await expect(sp).toHaveAttribute('data-caught', '')
+  await expect(action).toHaveCSS('opacity', '0')
+  await expect(sp.locator('img.seat-img-0')).toHaveCSS('opacity', '1')
+})
+
+test('reduced-motion: 행동 이미지 전환 시간 0s', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await startRound(page, SEED)
+  await expect(seat(page, 0).locator('img.seat-img-1')).toHaveCSS('transition-duration', '0s')
+})
+
 const caseName = (id: string) => cases.find((c: { id: string }) => c.id === id).name as string
 const WRONG_REASON = '정상 응시자를 잡아 시험이 끝났어요'
 
@@ -82,7 +102,7 @@ test('잡힌 좌석: "잡힘" 표시, 행동 멈춤(포즈 0 유지), aria-disab
   const on = await page.evaluate(() => (window as unknown as { __on: boolean[] }).__on)
   expect(on.every((v) => v === false)).toBe(true)
   await expect(action).toHaveCSS('opacity', '0')
-  await expect(sp.locator('img.seat-img-0')).toHaveClass(/is-on/)
+  await expect(sp.locator('img.seat-img-0')).toHaveCSS('opacity', '1')
   await expect(sp.locator('.stamp-caught')).toHaveText('잡힘')
   await expect(sp).toHaveAttribute('aria-disabled', 'true')
 })

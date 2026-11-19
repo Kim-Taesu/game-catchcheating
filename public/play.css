@@ -36,9 +36,11 @@
 .seat:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .seat:active { background: rgba(255, 250, 240, 0.85); }
 .seat-art { display: grid; width: 100%; height: 100%; animation: bob 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * -0.3s); }
-/* Both poses are stacked in one cell; the pose change is a 0.25 s crossfade of opacity. */
-.seat-img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 250ms ease; }
-.seat-img.is-on { opacity: 1; }
+/* Both poses are stacked in one cell. The idle image is always opaque underneath; only the
+   action image on top fades in and out (0.25 s), so combined alpha never dips. */
+.seat-img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; }
+.seat-img-1 { opacity: 0; transition: opacity 250ms ease; }
+.seat-img-1.is-on { opacity: 1; }
 .seat-fallback {
   display: grid;
   place-items: center;

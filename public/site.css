@@ -19,7 +19,7 @@ body {
   word-break: keep-all;
 }
 img { max-width: 100%; height: auto; }
-.px { image-rendering: pixelated; }
+.px { image-rendering: auto; } /* smooth hi-bit art; class kept as the sprite hook */
 a { color: var(--accent); }
 .wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px 40px; }
 
